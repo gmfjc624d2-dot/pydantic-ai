@@ -4,6 +4,7 @@ import asyncio
 import inspect
 import json
 import math
+import sys
 from collections.abc import Awaitable, Callable
 from dataclasses import dataclass, field
 from functools import partial, wraps
@@ -519,6 +520,66 @@ async def test_evaluate_with_retried_task_and_evaluator(
             'total_duration': _any_duration,
             'trace_id': _any_trace_id,
         }
+    )
+
+
+@pytest.mark.skipif(not tenacity_import_successful(), reason='tenacity not installed')
+async def test_evaluate_retries_need_only_tenacity(monkeypatch: pytest.MonkeyPatch):
+    """Retrying a task or evaluator works with `tenacity` installed and the legacy `httpx` package absent.
+
+    `pydantic_ai.retries` also imports `httpx` for its deprecated transports, so evals must not import
+    `retry` from there. Hiding `httpx` and dropping the cached module reproduces an install without it.
+    """
+    monkeypatch.setitem(sys.modules, 'httpx', None)
+    monkeypatch.delitem(sys.modules, 'pydantic_ai.retries', raising=False)
+
+    task_attempts = 0
+    evaluator_attempts = 0
+
+    def flaky_task(inputs: str) -> str:
+        nonlocal task_attempts
+        task_attempts += 1
+        if task_attempts == 1:
+            raise RuntimeError('transient task failure')
+        return inputs.upper()
+
+    @dataclass
+    class FlakyEvaluator(Evaluator[str, str, Any]):
+        def evaluate(self, ctx: EvaluatorContext[str, str, Any]) -> bool:
+            nonlocal evaluator_attempts
+            evaluator_attempts += 1
+            if evaluator_attempts == 1:
+                raise RuntimeError('transient evaluator failure')
+            return ctx.output == 'HELLO'
+
+    dataset = Dataset[str, str, Any](
+        name='retries', cases=[Case(name='case', inputs='hello')], evaluators=[FlakyEvaluator()]
+    )
+    report = await dataset.evaluate(
+        flaky_task,
+        progress=False,
+        retry_task=RetryConfig(stop=stop_after_attempt(2)),
+        retry_evaluators=RetryConfig(stop=stop_after_attempt(2)),
+    )
+
+    assert report.failures == []
+    assert [
+        (case.output, case.assertions['FlakyEvaluator'].value, case.evaluator_failures) for case in report.cases
+    ] == [('HELLO', True, [])]
+    assert (task_attempts, evaluator_attempts) == (2, 2)
+
+
+@pytest.mark.skipif(not tenacity_import_successful(), reason='tenacity not installed')
+async def test_evaluate_retry_without_tenacity(monkeypatch: pytest.MonkeyPatch):
+    monkeypatch.setitem(sys.modules, 'tenacity', None)
+
+    dataset = Dataset[str, str, Any](name='retries', cases=[Case(name='case', inputs='hello')])
+    report = await dataset.evaluate(
+        lambda inputs: inputs.upper(), progress=False, retry_task=RetryConfig(stop=stop_after_attempt(2))
+    )
+
+    assert [failure.error_message for failure in report.failures] == snapshot(
+        ['ImportError: Please install `tenacity` to use `retry_task` or `retry_evaluators` — `pip install tenacity`']
     )
 
 

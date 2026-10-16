@@ -11,7 +11,7 @@ from pydantic import (
 )
 from typing_extensions import TypeVar
 
-from pydantic_evals._utils import logfire_span
+from pydantic_evals._utils import logfire_span, with_retry
 
 from .context import EvaluatorContext
 from .evaluator import (
@@ -55,10 +55,7 @@ async def run_evaluator(
     """
     evaluate = evaluator.evaluate_async
     if retry is not None:
-        # import from pydantic_ai.retries to trigger more descriptive import error if tenacity is missing
-        from pydantic_ai.retries import retry as tenacity_retry  # pyright: ignore[reportPrivateImportUsage]
-
-        evaluate = tenacity_retry(**retry)(evaluate)
+        evaluate = with_retry(evaluate, retry)
 
     evaluator_version = evaluator.get_evaluator_version()
     evaluator_name = evaluator.get_default_evaluation_name()

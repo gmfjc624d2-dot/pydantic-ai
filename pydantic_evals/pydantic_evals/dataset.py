@@ -34,7 +34,7 @@ from pydantic_ai._utils import await_maybe, is_async_callable
 from pydantic_evals._utils import run_until_complete
 
 from . import _task_run
-from ._utils import get_unwrapped_function_name, logfire_span, task_group_gather
+from ._utils import get_unwrapped_function_name, logfire_span, task_group_gather, with_retry
 from .evaluators import EvaluationResult, Evaluator
 from .evaluators._base import BaseEvaluator
 from .evaluators._run_evaluator import run_evaluator
@@ -983,10 +983,7 @@ async def _run_task(
             _task_run.CURRENT_TASK_RUN.reset(token)
 
     if retry:
-        # import from pydantic_ai.retries to trigger more descriptive import error if tenacity is missing
-        from pydantic_ai.retries import retry as tenacity_retry  # pyright: ignore[reportPrivateImportUsage]
-
-        _run_once = tenacity_retry(**retry)(_run_once)
+        _run_once = with_retry(_run_once, retry)
 
     task_run, task_output, duration, span_tree = await _run_once()
 

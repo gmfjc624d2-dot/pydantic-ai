@@ -13,6 +13,9 @@ import anyio
 import logfire_api
 from typing_extensions import ParamSpec, TypeIs
 
+if TYPE_CHECKING:
+    from pydantic_ai.retries import RetryConfig
+
 # Optional, not a dependency: it used to arrive only transitively, and AnyIO dropped it in 4.12.
 try:
     import sniffio as _sniffio
@@ -84,6 +87,21 @@ def get_unwrapped_function_name(func: Callable[..., Any]) -> str:
 
 _P = ParamSpec('_P')
 _R = TypeVar('_R')
+_F = TypeVar('_F', bound=Callable[..., Any])
+
+
+def with_retry(func: _F, retry: RetryConfig) -> _F:
+    """Wrap `func` in `tenacity.retry(**retry)`.
+
+    Imported from `tenacity` directly rather than `pydantic_ai.retries`, which also requires the legacy `httpx`.
+    """
+    try:
+        from tenacity import retry as tenacity_retry
+    except ImportError as e:
+        raise ImportError(
+            'Please install `tenacity` to use `retry_task` or `retry_evaluators` — `pip install tenacity`'
+        ) from e
+    return tenacity_retry(**retry)(func)
 
 
 def get_event_loop() -> asyncio.AbstractEventLoop:
