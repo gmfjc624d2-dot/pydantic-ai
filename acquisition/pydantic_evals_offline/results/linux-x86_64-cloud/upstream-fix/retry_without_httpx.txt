@@ -1,0 +1,6 @@
+## pydantic-evals==2.57.0 from PyPI + tenacity (no httpx)
+2.57.0 attempts 0 cases 0 failures ['ImportError: Please install `httpx` to use the retries utilities, you can use the `retries']
+## a3251fb wheel + tenacity (no httpx), before fix
+2.57.1.dev17+a3251fb attempts 0 cases 0 failures ['ImportError: Please install `httpx` to use the retries utilities, you can use the `retries']
+## same venv, wheel built from the fix commit
+2.57.1.dev17+a3251fb attempts 2 cases 1 failures []

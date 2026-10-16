@@ -1,0 +1,170 @@
+{
+  "worker_exception": {
+    "n_cases": 0,
+    "n_failures": 2,
+    "failure_fields": [
+      "__orig_class__",
+      "error_message",
+      "error_stacktrace",
+      "expected_output",
+      "inputs",
+      "metadata",
+      "name",
+      "source_case_name",
+      "span_id",
+      "trace_id"
+    ],
+    "has_error_type_field": false,
+    "error_messages": {
+      "raise-before-effect": "WorkerError: injected failure before effect for 'record'",
+      "effect-then-lost-response": "ResponseLost: result for 'record' was produced and committed but not delivered"
+    },
+    "report_distinguishes_effect_before_failure": false,
+    "ledger_effects_per_key_after_run": {
+      "k2": 1
+    },
+    "note": "Both cases are ReportCaseFailure with only a message and stacktrace; only the worker ledger shows that 'effect-then-lost-response' committed its effect while 'raise-before-effect' did not."
+  },
+  "evaluator_exception": {
+    "robust_assertion_pass_rate": 0.5,
+    "naive_assertion_pass_rate": 1.0,
+    "naive_case_still_in_cases": true,
+    "naive_case_assertions": {},
+    "naive_case_evaluator_failures": [
+      {
+        "name": "NaiveParsedOk",
+        "error_type": "JSONDecodeError",
+        "error_message": "JSONDecodeError: Expecting value: line 1 column 8 (char 7)"
+      }
+    ],
+    "evaluator_failure_visible_in_render": true,
+    "note": "A raising evaluator is excluded from the assertion pass rate rather than counted as a failure."
+  },
+  "retry_task": {
+    "tenacity_installed": false,
+    "evaluate_raised": false,
+    "task_ran": false,
+    "case_failures": [
+      "ImportError: Please install `httpx` to use the retries utilities, you can use the `retries` optional group \u2014 `pip install \"pydantic-ai-slim[retries]\"`"
+    ],
+    "import_error_when_importing_tenacity": "No module named 'tenacity'"
+  },
+  "repeatability": {
+    "two_runs_identical_after_dropping_durations_and_ids": true,
+    "two_runs_identical_raw": false,
+    "repeat3_case_names": [
+      "balance-truncated [1/3]",
+      "balance-truncated [2/3]",
+      "balance-truncated [3/3]",
+      "crash-after-effect-resume [1/3]"
+    ],
+    "repeat3_groups": [
+      {
+        "name": "lookup-hit",
+        "runs": 3,
+        "failures": 0
+      },
+      {
+        "name": "lost-response-then-retry",
+        "runs": 3,
+        "failures": 0
+      },
+      {
+        "name": "crash-after-effect-resume",
+        "runs": 3,
+        "failures": 0
+      },
+      {
+        "name": "balance-truncated",
+        "runs": 3,
+        "failures": 0
+      }
+    ],
+    "repeat3_outputs_identical_within_group": true
+  },
+  "serialization": {
+    "roundtrip_bytes_identical": true,
+    "loaded_case_type": "ReportCase",
+    "loaded_output": {
+      "n": 1,
+      "tuple": [
+        1,
+        2
+      ],
+      "when": "2026-01-01T00:00:00Z",
+      "raw": "ok"
+    },
+    "loaded_output_python_types": {
+      "n": "int",
+      "tuple": "list",
+      "when": "str",
+      "raw": "str"
+    },
+    "loaded_report_renders": true,
+    "schema_version_field": false,
+    "top_level_keys": [
+      "analyses",
+      "cases",
+      "dataset_name",
+      "experiment_metadata",
+      "failures",
+      "name",
+      "report_evaluator_failures",
+      "span_id",
+      "trace_id"
+    ],
+    "non_utf8_bytes_in_one_case": "whole report fails: PydanticSerializationError: Error serializing to JSON: invalid utf-8 sequence of 1 bytes from index 0",
+    "non_utf8_bytes_with_fallback_repr": "still fails: PydanticSerializationError: Error serializing to JSON: invalid utf-8 sequence of 1 bytes from index 0",
+    "custom_object_in_one_case": "whole report fails: PydanticSerializationError: Unable to serialize unknown type: <class '__main__.Unserializable'>",
+    "custom_object_with_fallback_repr": [
+      "fine",
+      "<Unserializable>"
+    ]
+  },
+  "teardown_exception": {
+    "raised": true,
+    "exception": "ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)",
+    "tasks_completed_before_abort": 4,
+    "report_returned": false,
+    "note": "One raising teardown aborts evaluate(); results of every other case are discarded."
+  },
+  "kill_mid_evaluation": {
+    "no_journal": {
+      "returncode": -9,
+      "finished": false,
+      "files_written_in_cwd": [],
+      "journaled_cases": 0
+    },
+    "lifecycle_journal": {
+      "returncode": -9,
+      "finished": false,
+      "files_written_in_cwd": [
+        "journal.jsonl"
+      ],
+      "journaled_cases": 3
+    }
+  },
+  "default_concurrency_and_progress": {
+    "peak_concurrent_sync_tasks_default": 20,
+    "thread_ids_distinct": true,
+    "stdout_chars_with_default_progress": 70,
+    "note": "Sync tasks run in worker threads; with the default max_concurrency=None all cases may run at once."
+  },
+  "span_tree_without_sdk": {
+    "error": "SpanTreeRecordingError: To make use of the `span_tree` in an evaluator, you must install `logfire` or `opentelemetry-sdk`,  configure appropriate instrumentations, and set a tracer provider (e.g. by c"
+  },
+  "dataset_file_side_effects": {
+    "files_written_by_to_file": [
+      "cases.yaml",
+      "cases_schema.json"
+    ],
+    "reloaded_cases": 1
+  },
+  "lost_response_uncertainty": {
+    "caller_status": "no_response",
+    "effect_known_from_response": false,
+    "ledger_effects": {
+      "k-1": 1
+    }
+  }
+}

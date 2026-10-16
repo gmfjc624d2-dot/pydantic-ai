@@ -1,0 +1,14 @@
+4217  execve("$WORK/venv-B/bin/python", ["$WORK/venv-B/bin/python", "$REPO/acquisition/pydantic_evals_offline/audit/probe_run.py", "/tmp/claude-0/-home-user-pydantic-ai/5bd35200-8e91-5339-8e57-b1eceb9719dd/scratchpad/
+4217  socket(AF_INET6, SOCK_STREAM|SOCK_CLOEXEC, IPPROTO_IP) = -1 EAFNOSUPPORT (Address family not supported by protocol)
+4220  execve("/usr/bin/git", ["git", "rev-parse", "HEAD"], 0x7ffd29afb810 /* 9 vars */ <unfinished ...>
+4220  <... execve resumed>)             = 0
+4217  socketpair(AF_UNIX, SOCK_STREAM|SOCK_CLOEXEC, 0, [4, 5]) = 0
+4225  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4226  sendto(5, "\0", 1, 0, NULL, 0 <unfinished ...>
+4226  sendto(5, "\0", 1, 0, NULL, 0 <unfinished ...>
+4226  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4225  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4222  socket(AF_INET, SOCK_STREAM|SOCK_CLOEXEC, IPPROTO_TCP) = 6
+4222  connect(6, {sa_family=AF_INET, sin_port=htons(4318), sin_addr=inet_addr("127.0.0.1")}, 16) = -1 EINPROGRESS (Operation now in progress)
+4222  sendto(6, "POST /v1/traces HTTP/1.1\r\nHost: 127.0.0.1:4318\r\nuser-agent: OTel-OTLP-Exporter-Python/1.45.1\r\nAccept-Encoding: gzip, deflate\r\nAccept: */*\r\nConnection: keep-alive\r\ncontent-type: application/x-protobuf\r\nContent-Length: 20216\r\n\r\n", 226, 0, NULL, 0) = 226
+4222  sendto(6, "\n\364\235\1\n\315\4\n!\n\24process.runtime.name\22\t\n\7cpython\n$\n\27process.runtime.version\22\t\n\0073.13.16\nS\n\33process.runtime.description\0224\n23.13.16 (main, Oct  1 2026, 15:40:24) [GCC 13.3.0]\n\21\n\thost.name\22\4\n\2vm\n\25\n\thost.arch\22\10\n\6x86_64\n-\n\7host.id\22\"\n 4c398f739c8447eb99d3fe100ad1b0fa\n\22"..., 20216, 0, NULL, 0) = 20216

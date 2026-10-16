@@ -1,0 +1,5 @@
+venv=$WORK/venv-A
+probe_flags=
+extra_env=OTEL_EXPORTER_OTLP_ENDPOINT=http://127.0.0.1:4318 OTEL_TRACES_EXPORTER=otlp OTEL_SERVICE_NAME=privacy-audit OTEL_RESOURCE_ATTRIBUTES=deployment.environment=audit
+local_sink=yes
+sandbox=/tmp/pe-audit-D-A-otel.uvwP1v

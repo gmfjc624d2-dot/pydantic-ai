@@ -1,0 +1,83 @@
+[
+  {
+    "file": "0001_v1_traces.bin",
+    "resource_attributes": {
+      "process.runtime.name": "cpython",
+      "process.runtime.version": "3.13.16",
+      "process.runtime.description": "3.13.16 (main, Oct  1 2026, 15:40:24) [GCC 13.3.0]",
+      "host.name": "vm",
+      "host.arch": "x86_64",
+      "host.id": "4c398f739c8447eb99d3fe100ad1b0fa",
+      "os.type": "linux",
+      "os.version": "6.18.44-fc-v139",
+      "service.instance.id": "e36a8182-19f0-4e8d-a4f4-8e06acfbff3d",
+      "telemetry.sdk.language": "python",
+      "telemetry.sdk.name": "opentelemetry",
+      "telemetry.sdk.version": "1.45.1",
+      "deployment.environment": "audit",
+      "service.name": "privacy-audit",
+      "logfire.version": "5.2.0",
+      "process.pid": "4217"
+    },
+    "span_attribute_keys_by_span_name": {
+      "execute {task}": [
+        "code.filepath",
+        "code.function",
+        "code.lineno",
+        "logfire.json_schema",
+        "logfire.msg",
+        "logfire.msg_template",
+        "logfire.span_type",
+        "task"
+      ],
+      "evaluator: {evaluator_name}": [
+        "code.filepath",
+        "code.function",
+        "code.lineno",
+        "evaluator_name",
+        "logfire.json_schema",
+        "logfire.msg",
+        "logfire.msg_template",
+        "logfire.span_type"
+      ],
+      "case: {case_name}": [
+        "assertions",
+        "attributes",
+        "case_name",
+        "code.filepath",
+        "code.function",
+        "code.lineno",
+        "expected_output",
+        "inputs",
+        "labels",
+        "logfire.json_schema",
+        "logfire.msg",
+        "logfire.msg_template",
+        "logfire.scrubbed",
+        "logfire.span_type",
+        "metadata",
+        "metrics",
+        "output",
+        "scores",
+        "task_duration",
+        "task_name"
+      ],
+      "evaluate {name}": [
+        "assertion_pass_rate",
+        "code.filepath",
+        "code.function",
+        "code.lineno",
+        "dataset_name",
+        "gen_ai.operation.name",
+        "logfire.experiment.metadata",
+        "logfire.json_schema",
+        "logfire.msg",
+        "logfire.msg_template",
+        "logfire.span_type",
+        "n_cases",
+        "name",
+        "task_name"
+      ]
+    }
+  }
+]

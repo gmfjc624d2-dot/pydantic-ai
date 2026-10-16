@@ -1,0 +1,1931 @@
+[
+  {
+    "id": "A",
+    "run": {
+      "venv": "$WORK/venv-A",
+      "probe_flags": "",
+      "extra_env": "",
+      "local_sink": "no",
+      "sandbox": "/tmp/pe-audit-A.jLCmnu"
+    },
+    "strace": {
+      "pids_seen": 3,
+      "sockets_by_family": {},
+      "inet_connect_attempts": [],
+      "unix_connects": [],
+      "inet_sendto": [],
+      "inet_binds": [],
+      "execve": [
+        "$WORK/venv-A/bin/python /home/user/py"
+      ],
+      "threads_created": 2,
+      "processes_created": 0,
+      "fs_mutations": {
+        "TMPDIR (other):openat": 1,
+        "TMPDIR (other):unlink": 1,
+        "dirfd-relative (shutil.rmtree of the worker temp dir):unlink": 3,
+        "dirfd-relative (shutil.rmtree of the worker temp dir):unlinkat": 6,
+        "harness-output:mkdir": 1,
+        "harness-output:openat": 2,
+        "worker-db (synthetic worker):mkdir": 4,
+        "worker-db (synthetic worker):openat": 46,
+        "worker-db (synthetic worker):unlink": 32
+      },
+      "fs_mutation_samples": {
+        "harness-output": [
+          "$WORK/audit-results/A/out",
+          "$WORK/audit-results/A/out/report.json",
+          "$WORK/audit-results/A/out/probe.json"
+        ],
+        "TMPDIR (other)": [
+          "/tmp/pe-audit-A.jLCmnu/tmp/d3cbei1m"
+        ],
+        "worker-db (synthetic worker)": [
+          "/tmp/pe-audit-A.jLCmnu/tmp/sw-lookup-hit-fucsjeem",
+          "/tmp/pe-audit-A.jLCmnu/tmp/sw-lost-response-then-retry-rluy7ge5",
+          "/tmp/pe-audit-A.jLCmnu/tmp/sw-lookup-hit-fucsjeem/worker.sqlite3",
+          "/tmp/pe-audit-A.jLCmnu/tmp/sw-lost-response-then-retry-rluy7ge5/worker.sqlite3",
+          "/tmp/pe-audit-A.jLCmnu/tmp/sw-lookup-hit-fucsjeem/worker.sqlite3-journal"
+        ],
+        "dirfd-relative (shutil.rmtree of the worker temp dir)": [
+          "?",
+          "worker.sqlite3"
+        ]
+      }
+    },
+    "probe": {
+      "report": {
+        "cases": 4,
+        "failures": 1,
+        "trace_id_present": false
+      },
+      "import_seconds": 1.014,
+      "eval_seconds": 0.117,
+      "peak_rss_mib": 63.1,
+      "modules_imported_by_pydantic_evals": 625,
+      "pydantic_ai_agent_imported": true,
+      "logfire_imported": false,
+      "otel_sdk_imported": false,
+      "env_keys_read_count": 12,
+      "env_keys_read_otel": [
+        "OTEL_PYTHON_CONTEXT"
+      ],
+      "env_keys_read_logfire": [],
+      "env_keys_read_other": [
+        "HOME",
+        "PYDANTIC_DISABLE_PLUGINS",
+        "PYTHONASYNCIODEBUG",
+        "PYTHONTZPATH",
+        "PYTHONUSERBASE",
+        "TEMP",
+        "TMP",
+        "TMPDIR",
+        "_PYTHON_PROJECT_BASE",
+        "_PYTHON_SYSCONFIGDATA_NAME",
+        "_PYTHON_SYSCONFIGDATA_PATH"
+      ],
+      "audit_events_by_origin": [
+        [
+          "sqlite3.connect <- ?",
+          14
+        ],
+        [
+          "sqlite3.connect/handle <- ?",
+          14
+        ],
+        [
+          "os.remove <- ?",
+          5
+        ],
+        [
+          "os.mkdir <- ?",
+          4
+        ],
+        [
+          "shutil.rmtree <- ?",
+          4
+        ],
+        [
+          "os.rmdir <- ?",
+          4
+        ],
+        [
+          "socket.__new__ <- pydantic_evals",
+          2
+        ],
+        [
+          "open-write <- ?",
+          1
+        ]
+      ],
+      "subprocesses": [],
+      "span_count": null,
+      "spans_with_canaries": []
+    },
+    "files_left_in_sandbox": [],
+    "sandbox_files_with_canaries": [],
+    "stdout_bytes": 0
+  },
+  {
+    "id": "B",
+    "run": {
+      "venv": "$WORK/venv-B",
+      "probe_flags": "",
+      "extra_env": "",
+      "local_sink": "no",
+      "sandbox": "/tmp/pe-audit-B.PkWuBE"
+    },
+    "strace": {
+      "pids_seen": 3,
+      "sockets_by_family": {
+        "AF_INET6": 1
+      },
+      "inet_connect_attempts": [],
+      "unix_connects": [],
+      "inet_sendto": [],
+      "inet_binds": [],
+      "execve": [
+        "$WORK/venv-B/bin/python /home/user/py"
+      ],
+      "threads_created": 4,
+      "processes_created": 0,
+      "fs_mutations": {
+        "TMPDIR (other):openat": 1,
+        "TMPDIR (other):unlink": 1,
+        "dirfd-relative (shutil.rmtree of the worker temp dir):unlink": 8,
+        "dirfd-relative (shutil.rmtree of the worker temp dir):unlinkat": 6,
+        "harness-output:mkdir": 1,
+        "harness-output:openat": 2,
+        "worker-db (synthetic worker):mkdir": 4,
+        "worker-db (synthetic worker):openat": 46,
+        "worker-db (synthetic worker):unlink": 32
+      },
+      "fs_mutation_samples": {
+        "harness-output": [
+          "$WORK/audit-results/B/out",
+          "$WORK/audit-results/B/out/report.json",
+          "$WORK/audit-results/B/out/probe.json"
+        ],
+        "TMPDIR (other)": [
+          "/tmp/pe-audit-B.PkWuBE/tmp/5cy5hu3e"
+        ],
+        "worker-db (synthetic worker)": [
+          "/tmp/pe-audit-B.PkWuBE/tmp/sw-lookup-hit-d_hm7cg9",
+          "/tmp/pe-audit-B.PkWuBE/tmp/sw-lost-response-then-retry-l0oee695",
+          "/tmp/pe-audit-B.PkWuBE/tmp/sw-lookup-hit-d_hm7cg9/worker.sqlite3",
+          "/tmp/pe-audit-B.PkWuBE/tmp/sw-lost-response-then-retry-l0oee695/worker.sqlite3",
+          "/tmp/pe-audit-B.PkWuBE/tmp/sw-lookup-hit-d_hm7cg9/worker.sqlite3-journal"
+        ],
+        "dirfd-relative (shutil.rmtree of the worker temp dir)": [
+          "?",
+          "worker.sqlite3"
+        ]
+      }
+    },
+    "probe": {
+      "report": {
+        "cases": 4,
+        "failures": 1,
+        "trace_id_present": true
+      },
+      "import_seconds": 1.523,
+      "eval_seconds": 0.13,
+      "peak_rss_mib": 79.3,
+      "modules_imported_by_pydantic_evals": 1015,
+      "pydantic_ai_agent_imported": true,
+      "logfire_imported": true,
+      "otel_sdk_imported": true,
+      "env_keys_read_count": 54,
+      "env_keys_read_otel": [
+        "OTEL_EXPERIMENTAL_RESOURCE_DETECTORS",
+        "OTEL_PROPAGATORS",
+        "OTEL_PYTHON_CONTEXT",
+        "OTEL_PYTHON_TRACER_PROVIDER",
+        "OTEL_RESOURCE_ATTRIBUTES",
+        "OTEL_SERVICE_NAME",
+        "OTEL_SERVICE_VERSION",
+        "OTEL_SPAN_ATTRIBUTE_COUNT_LIMIT",
+        "OTEL_TRACES_SAMPLER_ARG"
+      ],
+      "env_keys_read_logfire": [
+        "LOGFIRE_API_KEY",
+        "LOGFIRE_BASE_URL",
+        "LOGFIRE_COMPRESSION",
+        "LOGFIRE_CONFIG_DIR",
+        "LOGFIRE_CONSOLE",
+        "LOGFIRE_CONSOLE_COLORS",
+        "LOGFIRE_CONSOLE_INCLUDE_ATTRIBUTES",
+        "LOGFIRE_CONSOLE_INCLUDE_TAGS",
+        "LOGFIRE_CONSOLE_INCLUDE_TIMESTAMP",
+        "LOGFIRE_CONSOLE_MIN_LOG_LEVEL",
+        "LOGFIRE_CONSOLE_SHOW_PROJECT_LINK",
+        "LOGFIRE_CONSOLE_SPAN_STYLE",
+        "LOGFIRE_CONSOLE_VERBOSE",
+        "LOGFIRE_CREDENTIALS_DIR",
+        "LOGFIRE_DISTRIBUTED_TRACING",
+        "LOGFIRE_EMIT_CONFIGURATION_SPAN",
+        "LOGFIRE_ENVIRONMENT",
+        "LOGFIRE_IGNORE_NO_CONFIG",
+        "LOGFIRE_INSPECT_ARGUMENTS",
+        "LOGFIRE_MIN_LEVEL",
+        "LOGFIRE_PYDANTIC_PLUGIN_EXCLUDE",
+        "LOGFIRE_PYDANTIC_PLUGIN_INCLUDE",
+        "LOGFIRE_PYDANTIC_PLUGIN_RECORD",
+        "LOGFIRE_PYDANTIC_RECORD",
+        "LOGFIRE_RESOURCE_ATTRIBUTES",
+        "LOGFIRE_RESOURCE_DETECTORS",
+        "LOGFIRE_SEND_TO_LOGFIRE",
+        "LOGFIRE_SERVICE_NAME",
+        "LOGFIRE_SERVICE_VERSION",
+        "LOGFIRE_SHOW_SUMMARY",
+        "LOGFIRE_TOKEN",
+        "LOGFIRE_TRACE_SAMPLE_RATE"
+      ],
+      "env_keys_read_other": [
+        "HOME",
+        "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION",
+        "PYDANTIC_DISABLE_PLUGINS",
+        "PYTEST_VERSION",
+        "PYTHONASYNCIODEBUG",
+        "PYTHONTZPATH",
+        "PYTHONUSERBASE",
+        "TEMP",
+        "TMP",
+        "TMPDIR",
+        "_PYTHON_PROJECT_BASE",
+        "_PYTHON_SYSCONFIGDATA_NAME",
+        "_PYTHON_SYSCONFIGDATA_PATH"
+      ],
+      "audit_events_by_origin": [
+        [
+          "sqlite3.connect <- ?",
+          14
+        ],
+        [
+          "sqlite3.connect/handle <- ?",
+          14
+        ],
+        [
+          "os.remove <- ?",
+          5
+        ],
+        [
+          "os.mkdir <- ?",
+          4
+        ],
+        [
+          "shutil.rmtree <- ?",
+          4
+        ],
+        [
+          "os.rmdir <- ?",
+          4
+        ],
+        [
+          "socket.__new__ <- pydantic_evals",
+          2
+        ],
+        [
+          "socket.__new__ <- urllib3",
+          1
+        ],
+        [
+          "ctypes.dlopen <- opentelemetry",
+          1
+        ],
+        [
+          "open-write <- ?",
+          1
+        ]
+      ],
+      "subprocesses": [],
+      "span_count": null,
+      "spans_with_canaries": []
+    },
+    "files_left_in_sandbox": [],
+    "sandbox_files_with_canaries": [],
+    "stdout_bytes": 0
+  },
+  {
+    "id": "C",
+    "run": {
+      "venv": "$WORK/venv-B",
+      "probe_flags": "--configure-logfire",
+      "extra_env": "",
+      "local_sink": "no",
+      "sandbox": "/tmp/pe-audit-C.J0kM6g"
+    },
+    "strace": {
+      "pids_seen": 4,
+      "sockets_by_family": {
+        "AF_INET6": 1
+      },
+      "inet_connect_attempts": [],
+      "unix_connects": [],
+      "inet_sendto": [],
+      "inet_binds": [],
+      "execve": [
+        "$WORK/venv-B/bin/python /home/user/py",
+        "git rev-parse HEAD"
+      ],
+      "threads_created": 4,
+      "processes_created": 1,
+      "fs_mutations": {
+        "TMPDIR (other):openat": 1,
+        "TMPDIR (other):unlink": 1,
+        "device:openat": 1,
+        "dirfd-relative (shutil.rmtree of the worker temp dir):unlink": 3,
+        "dirfd-relative (shutil.rmtree of the worker temp dir):unlinkat": 5,
+        "harness-output:mkdir": 1,
+        "harness-output:openat": 2,
+        "worker-db (synthetic worker):mkdir": 4,
+        "worker-db (synthetic worker):openat": 46,
+        "worker-db (synthetic worker):unlink": 32
+      },
+      "fs_mutation_samples": {
+        "harness-output": [
+          "$WORK/audit-results/C/out",
+          "$WORK/audit-results/C/out/report.json",
+          "$WORK/audit-results/C/out/probe.json"
+        ],
+        "device": [
+          "/dev/null"
+        ],
+        "TMPDIR (other)": [
+          "/tmp/pe-audit-C.J0kM6g/tmp/qa_glycn"
+        ],
+        "worker-db (synthetic worker)": [
+          "/tmp/pe-audit-C.J0kM6g/tmp/sw-lookup-hit-kjz8le5g",
+          "/tmp/pe-audit-C.J0kM6g/tmp/sw-lost-response-then-retry-yh5qyenw",
+          "/tmp/pe-audit-C.J0kM6g/tmp/sw-lookup-hit-kjz8le5g/worker.sqlite3",
+          "/tmp/pe-audit-C.J0kM6g/tmp/sw-lost-response-then-retry-yh5qyenw/worker.sqlite3",
+          "/tmp/pe-audit-C.J0kM6g/tmp/sw-lookup-hit-kjz8le5g/worker.sqlite3-journal"
+        ],
+        "dirfd-relative (shutil.rmtree of the worker temp dir)": [
+          "worker.sqlite3",
+          "?"
+        ]
+      }
+    },
+    "probe": {
+      "report": {
+        "cases": 4,
+        "failures": 1,
+        "trace_id_present": true
+      },
+      "import_seconds": 1.382,
+      "eval_seconds": 0.154,
+      "peak_rss_mib": 79.3,
+      "modules_imported_by_pydantic_evals": 1015,
+      "pydantic_ai_agent_imported": true,
+      "logfire_imported": true,
+      "otel_sdk_imported": true,
+      "env_keys_read_count": 75,
+      "env_keys_read_otel": [
+        "OTEL_ATTRIBUTE_COUNT_LIMIT",
+        "OTEL_ATTRIBUTE_VALUE_LENGTH_LIMIT",
+        "OTEL_EVENT_ATTRIBUTE_COUNT_LIMIT",
+        "OTEL_EXPERIMENTAL_RESOURCE_DETECTORS",
+        "OTEL_EXPORTER_OTLP_ENDPOINT",
+        "OTEL_EXPORTER_OTLP_LOGS_ENDPOINT",
+        "OTEL_EXPORTER_OTLP_METRICS_ENDPOINT",
+        "OTEL_EXPORTER_OTLP_TRACES_ENDPOINT",
+        "OTEL_LINK_ATTRIBUTE_COUNT_LIMIT",
+        "OTEL_LOGRECORD_ATTRIBUTE_COUNT_LIMIT",
+        "OTEL_LOGRECORD_ATTRIBUTE_VALUE_LENGTH_LIMIT",
+        "OTEL_LOGS_EXPORTER",
+        "OTEL_METRICS_EXEMPLAR_FILTER",
+        "OTEL_METRICS_EXPORTER",
+        "OTEL_PROPAGATORS",
+        "OTEL_PYTHON_CONTEXT",
+        "OTEL_PYTHON_METER_PROVIDER",
+        "OTEL_PYTHON_SDK_INTERNAL_METRICS_ENABLED",
+        "OTEL_RESOURCE_ATTRIBUTES",
+        "OTEL_SDK_DISABLED",
+        "OTEL_SERVICE_NAME",
+        "OTEL_SERVICE_VERSION",
+        "OTEL_SPAN_ATTRIBUTE_COUNT_LIMIT",
+        "OTEL_SPAN_ATTRIBUTE_VALUE_LENGTH_LIMIT",
+        "OTEL_SPAN_EVENT_COUNT_LIMIT",
+        "OTEL_SPAN_LINK_COUNT_LIMIT",
+        "OTEL_TRACES_EXPORTER",
+        "OTEL_TRACES_SAMPLER",
+        "OTEL_TRACES_SAMPLER_ARG"
+      ],
+      "env_keys_read_logfire": [
+        "LOGFIRE_API_KEY",
+        "LOGFIRE_BASE_URL",
+        "LOGFIRE_COMPRESSION",
+        "LOGFIRE_CONFIG_DIR",
+        "LOGFIRE_CONSOLE",
+        "LOGFIRE_CONSOLE_COLORS",
+        "LOGFIRE_CONSOLE_INCLUDE_ATTRIBUTES",
+        "LOGFIRE_CONSOLE_INCLUDE_TAGS",
+        "LOGFIRE_CONSOLE_INCLUDE_TIMESTAMP",
+        "LOGFIRE_CONSOLE_MIN_LOG_LEVEL",
+        "LOGFIRE_CONSOLE_SHOW_PROJECT_LINK",
+        "LOGFIRE_CONSOLE_SPAN_STYLE",
+        "LOGFIRE_CONSOLE_VERBOSE",
+        "LOGFIRE_CREDENTIALS_DIR",
+        "LOGFIRE_DISTRIBUTED_TRACING",
+        "LOGFIRE_EMIT_CONFIGURATION_SPAN",
+        "LOGFIRE_ENVIRONMENT",
+        "LOGFIRE_IGNORE_NO_CONFIG",
+        "LOGFIRE_INSPECT_ARGUMENTS",
+        "LOGFIRE_MIN_LEVEL",
+        "LOGFIRE_PYDANTIC_PLUGIN_EXCLUDE",
+        "LOGFIRE_PYDANTIC_PLUGIN_INCLUDE",
+        "LOGFIRE_PYDANTIC_PLUGIN_RECORD",
+        "LOGFIRE_PYDANTIC_RECORD",
+        "LOGFIRE_RESOURCE_ATTRIBUTES",
+        "LOGFIRE_RESOURCE_DETECTORS",
+        "LOGFIRE_SEND_TO_LOGFIRE",
+        "LOGFIRE_SERVICE_NAME",
+        "LOGFIRE_SERVICE_VERSION",
+        "LOGFIRE_SHOW_SUMMARY",
+        "LOGFIRE_TOKEN",
+        "LOGFIRE_TRACE_SAMPLE_RATE"
+      ],
+      "env_keys_read_other": [
+        "HOME",
+        "PATH",
+        "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION",
+        "PYDANTIC_DISABLE_PLUGINS",
+        "PYTEST_VERSION",
+        "PYTHONASYNCIODEBUG",
+        "PYTHONTZPATH",
+        "PYTHONUSERBASE",
+        "TEMP",
+        "TMP",
+        "TMPDIR",
+        "_PYTHON_PROJECT_BASE",
+        "_PYTHON_SYSCONFIGDATA_NAME",
+        "_PYTHON_SYSCONFIGDATA_PATH"
+      ],
+      "audit_events_by_origin": [
+        [
+          "sqlite3.connect <- ?",
+          14
+        ],
+        [
+          "sqlite3.connect/handle <- ?",
+          14
+        ],
+        [
+          "os.remove <- ?",
+          5
+        ],
+        [
+          "os.mkdir <- ?",
+          4
+        ],
+        [
+          "shutil.rmtree <- ?",
+          4
+        ],
+        [
+          "os.rmdir <- ?",
+          4
+        ],
+        [
+          "socket.__new__ <- pydantic_evals",
+          2
+        ],
+        [
+          "socket.__new__ <- urllib3",
+          1
+        ],
+        [
+          "ctypes.dlopen <- opentelemetry",
+          1
+        ],
+        [
+          "socket.gethostname <- logfire",
+          1
+        ],
+        [
+          "subprocess.Popen <- logfire",
+          1
+        ],
+        [
+          "open-write <- ?",
+          1
+        ]
+      ],
+      "subprocesses": [
+        [
+          "'git'",
+          "['git', 'rev-parse', 'HEAD']"
+        ]
+      ],
+      "span_count": null,
+      "spans_with_canaries": []
+    },
+    "files_left_in_sandbox": [],
+    "sandbox_files_with_canaries": [],
+    "stdout_bytes": 0
+  },
+  {
+    "id": "D-A-otel",
+    "run": {
+      "venv": "$WORK/venv-A",
+      "probe_flags": "",
+      "extra_env": "OTEL_EXPORTER_OTLP_ENDPOINT=http://127.0.0.1:4318 OTEL_TRACES_EXPORTER=otlp OTEL_SERVICE_NAME=privacy-audit OTEL_RESOURCE_ATTRIBUTES=deployment.environment=audit",
+      "local_sink": "yes",
+      "sandbox": "/tmp/pe-audit-D-A-otel.uvwP1v"
+    },
+    "strace": {
+      "pids_seen": 3,
+      "sockets_by_family": {},
+      "inet_connect_attempts": [],
+      "unix_connects": [],
+      "inet_sendto": [],
+      "inet_binds": [],
+      "execve": [
+        "$WORK/venv-A/bin/python /home/user/py"
+      ],
+      "threads_created": 2,
+      "processes_created": 0,
+      "fs_mutations": {
+        "TMPDIR (other):openat": 1,
+        "TMPDIR (other):unlink": 1,
+        "dirfd-relative (shutil.rmtree of the worker temp dir):mkdir": 2,
+        "dirfd-relative (shutil.rmtree of the worker temp dir):unlink": 2,
+        "dirfd-relative (shutil.rmtree of the worker temp dir):unlinkat": 5,
+        "harness-output:mkdir": 1,
+        "harness-output:openat": 2,
+        "worker-db (synthetic worker):mkdir": 4,
+        "worker-db (synthetic worker):openat": 46,
+        "worker-db (synthetic worker):unlink": 32
+      },
+      "fs_mutation_samples": {
+        "harness-output": [
+          "$WORK/audit-results/D-A-otel/out",
+          "$WORK/audit-results/D-A-otel/out/report.json",
+          "$WORK/audit-results/D-A-otel/out/probe.json"
+        ],
+        "TMPDIR (other)": [
+          "/tmp/pe-audit-D-A-otel.uvwP1v/tmp/ywzq2r10"
+        ],
+        "worker-db (synthetic worker)": [
+          "/tmp/pe-audit-D-A-otel.uvwP1v/tmp/sw-lookup-hit-owfdb4xf",
+          "/tmp/pe-audit-D-A-otel.uvwP1v/tmp/sw-lost-response-then-retry-_nu1etyk",
+          "/tmp/pe-audit-D-A-otel.uvwP1v/tmp/sw-lost-response-then-retry-_nu1etyk/worker.sqlite3",
+          "/tmp/pe-audit-D-A-otel.uvwP1v/tmp/sw-lookup-hit-owfdb4xf/worker.sqlite3",
+          "/tmp/pe-audit-D-A-otel.uvwP1v/tmp/sw-lost-response-then-retry-_nu1etyk/worker.sqlite3-journal"
+        ],
+        "dirfd-relative (shutil.rmtree of the worker temp dir)": [
+          "?",
+          "worker.sqlite3"
+        ]
+      }
+    },
+    "probe": {
+      "report": {
+        "cases": 4,
+        "failures": 1,
+        "trace_id_present": false
+      },
+      "import_seconds": 1.015,
+      "eval_seconds": 0.11,
+      "peak_rss_mib": 63.0,
+      "modules_imported_by_pydantic_evals": 625,
+      "pydantic_ai_agent_imported": true,
+      "logfire_imported": false,
+      "otel_sdk_imported": false,
+      "env_keys_read_count": 12,
+      "env_keys_read_otel": [
+        "OTEL_PYTHON_CONTEXT"
+      ],
+      "env_keys_read_logfire": [],
+      "env_keys_read_other": [
+        "HOME",
+        "PYDANTIC_DISABLE_PLUGINS",
+        "PYTHONASYNCIODEBUG",
+        "PYTHONTZPATH",
+        "PYTHONUSERBASE",
+        "TEMP",
+        "TMP",
+        "TMPDIR",
+        "_PYTHON_PROJECT_BASE",
+        "_PYTHON_SYSCONFIGDATA_NAME",
+        "_PYTHON_SYSCONFIGDATA_PATH"
+      ],
+      "audit_events_by_origin": [
+        [
+          "sqlite3.connect <- ?",
+          14
+        ],
+        [
+          "sqlite3.connect/handle <- ?",
+          14
+        ],
+        [
+          "os.remove <- ?",
+          5
+        ],
+        [
+          "os.mkdir <- ?",
+          4
+        ],
+        [
+          "shutil.rmtree <- ?",
+          4
+        ],
+        [
+          "os.rmdir <- ?",
+          4
+        ],
+        [
+          "socket.__new__ <- pydantic_evals",
+          2
+        ],
+        [
+          "open-write <- ?",
+          1
+        ]
+      ],
+      "subprocesses": [],
+      "span_count": null,
+      "spans_with_canaries": []
+    },
+    "local_sink": {
+      "requests": 0,
+      "paths": [],
+      "bytes": 0,
+      "canary_hits": {},
+      "git_or_host_in_payload": false
+    },
+    "files_left_in_sandbox": [],
+    "sandbox_files_with_canaries": [],
+    "stdout_bytes": 0
+  },
+  {
+    "id": "D-B-otel",
+    "run": {
+      "venv": "$WORK/venv-B",
+      "probe_flags": "",
+      "extra_env": "OTEL_EXPORTER_OTLP_ENDPOINT=http://127.0.0.1:4318 OTEL_TRACES_EXPORTER=otlp OTEL_SERVICE_NAME=privacy-audit OTEL_RESOURCE_ATTRIBUTES=deployment.environment=audit",
+      "local_sink": "yes",
+      "sandbox": "/tmp/pe-audit-D-B-otel.XBqNwY"
+    },
+    "strace": {
+      "pids_seen": 3,
+      "sockets_by_family": {
+        "AF_INET6": 1
+      },
+      "inet_connect_attempts": [],
+      "unix_connects": [],
+      "inet_sendto": [],
+      "inet_binds": [],
+      "execve": [
+        "$WORK/venv-B/bin/python /home/user/py"
+      ],
+      "threads_created": 4,
+      "processes_created": 0,
+      "fs_mutations": {
+        "TMPDIR (other):openat": 1,
+        "TMPDIR (other):unlink": 1,
+        "dirfd-relative (shutil.rmtree of the worker temp dir):mkdir": 2,
+        "dirfd-relative (shutil.rmtree of the worker temp dir):unlink": 6,
+        "dirfd-relative (shutil.rmtree of the worker temp dir):unlinkat": 7,
+        "harness-output:mkdir": 1,
+        "harness-output:openat": 2,
+        "worker-db (synthetic worker):mkdir": 4,
+        "worker-db (synthetic worker):openat": 46,
+        "worker-db (synthetic worker):unlink": 32
+      },
+      "fs_mutation_samples": {
+        "harness-output": [
+          "$WORK/audit-results/D-B-otel/out",
+          "$WORK/audit-results/D-B-otel/out/report.json",
+          "$WORK/audit-results/D-B-otel/out/probe.json"
+        ],
+        "TMPDIR (other)": [
+          "/tmp/pe-audit-D-B-otel.XBqNwY/tmp/dn2f16dn"
+        ],
+        "worker-db (synthetic worker)": [
+          "/tmp/pe-audit-D-B-otel.XBqNwY/tmp/sw-lookup-hit-y97opofs",
+          "/tmp/pe-audit-D-B-otel.XBqNwY/tmp/sw-lost-response-then-retry-1fanc4mo",
+          "/tmp/pe-audit-D-B-otel.XBqNwY/tmp/sw-lost-response-then-retry-1fanc4mo/worker.sqlite3",
+          "/tmp/pe-audit-D-B-otel.XBqNwY/tmp/sw-lookup-hit-y97opofs/worker.sqlite3",
+          "/tmp/pe-audit-D-B-otel.XBqNwY/tmp/sw-lost-response-then-retry-1fanc4mo/worker.sqlite3-journal"
+        ],
+        "dirfd-relative (shutil.rmtree of the worker temp dir)": [
+          "?",
+          "worker.sqlite3"
+        ]
+      }
+    },
+    "probe": {
+      "report": {
+        "cases": 4,
+        "failures": 1,
+        "trace_id_present": true
+      },
+      "import_seconds": 1.438,
+      "eval_seconds": 0.123,
+      "peak_rss_mib": 79.0,
+      "modules_imported_by_pydantic_evals": 1015,
+      "pydantic_ai_agent_imported": true,
+      "logfire_imported": true,
+      "otel_sdk_imported": true,
+      "env_keys_read_count": 54,
+      "env_keys_read_otel": [
+        "OTEL_EXPERIMENTAL_RESOURCE_DETECTORS",
+        "OTEL_PROPAGATORS",
+        "OTEL_PYTHON_CONTEXT",
+        "OTEL_PYTHON_TRACER_PROVIDER",
+        "OTEL_RESOURCE_ATTRIBUTES",
+        "OTEL_SERVICE_NAME",
+        "OTEL_SERVICE_VERSION",
+        "OTEL_SPAN_ATTRIBUTE_COUNT_LIMIT",
+        "OTEL_TRACES_SAMPLER_ARG"
+      ],
+      "env_keys_read_logfire": [
+        "LOGFIRE_API_KEY",
+        "LOGFIRE_BASE_URL",
+        "LOGFIRE_COMPRESSION",
+        "LOGFIRE_CONFIG_DIR",
+        "LOGFIRE_CONSOLE",
+        "LOGFIRE_CONSOLE_COLORS",
+        "LOGFIRE_CONSOLE_INCLUDE_ATTRIBUTES",
+        "LOGFIRE_CONSOLE_INCLUDE_TAGS",
+        "LOGFIRE_CONSOLE_INCLUDE_TIMESTAMP",
+        "LOGFIRE_CONSOLE_MIN_LOG_LEVEL",
+        "LOGFIRE_CONSOLE_SHOW_PROJECT_LINK",
+        "LOGFIRE_CONSOLE_SPAN_STYLE",
+        "LOGFIRE_CONSOLE_VERBOSE",
+        "LOGFIRE_CREDENTIALS_DIR",
+        "LOGFIRE_DISTRIBUTED_TRACING",
+        "LOGFIRE_EMIT_CONFIGURATION_SPAN",
+        "LOGFIRE_ENVIRONMENT",
+        "LOGFIRE_IGNORE_NO_CONFIG",
+        "LOGFIRE_INSPECT_ARGUMENTS",
+        "LOGFIRE_MIN_LEVEL",
+        "LOGFIRE_PYDANTIC_PLUGIN_EXCLUDE",
+        "LOGFIRE_PYDANTIC_PLUGIN_INCLUDE",
+        "LOGFIRE_PYDANTIC_PLUGIN_RECORD",
+        "LOGFIRE_PYDANTIC_RECORD",
+        "LOGFIRE_RESOURCE_ATTRIBUTES",
+        "LOGFIRE_RESOURCE_DETECTORS",
+        "LOGFIRE_SEND_TO_LOGFIRE",
+        "LOGFIRE_SERVICE_NAME",
+        "LOGFIRE_SERVICE_VERSION",
+        "LOGFIRE_SHOW_SUMMARY",
+        "LOGFIRE_TOKEN",
+        "LOGFIRE_TRACE_SAMPLE_RATE"
+      ],
+      "env_keys_read_other": [
+        "HOME",
+        "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION",
+        "PYDANTIC_DISABLE_PLUGINS",
+        "PYTEST_VERSION",
+        "PYTHONASYNCIODEBUG",
+        "PYTHONTZPATH",
+        "PYTHONUSERBASE",
+        "TEMP",
+        "TMP",
+        "TMPDIR",
+        "_PYTHON_PROJECT_BASE",
+        "_PYTHON_SYSCONFIGDATA_NAME",
+        "_PYTHON_SYSCONFIGDATA_PATH"
+      ],
+      "audit_events_by_origin": [
+        [
+          "sqlite3.connect <- ?",
+          14
+        ],
+        [
+          "sqlite3.connect/handle <- ?",
+          14
+        ],
+        [
+          "os.remove <- ?",
+          5
+        ],
+        [
+          "os.mkdir <- ?",
+          4
+        ],
+        [
+          "shutil.rmtree <- ?",
+          4
+        ],
+        [
+          "os.rmdir <- ?",
+          4
+        ],
+        [
+          "socket.__new__ <- pydantic_evals",
+          2
+        ],
+        [
+          "socket.__new__ <- urllib3",
+          1
+        ],
+        [
+          "ctypes.dlopen <- opentelemetry",
+          1
+        ],
+        [
+          "open-write <- ?",
+          1
+        ]
+      ],
+      "subprocesses": [],
+      "span_count": null,
+      "spans_with_canaries": []
+    },
+    "local_sink": {
+      "requests": 0,
+      "paths": [],
+      "bytes": 0,
+      "canary_hits": {},
+      "git_or_host_in_payload": false
+    },
+    "files_left_in_sandbox": [],
+    "sandbox_files_with_canaries": [],
+    "stdout_bytes": 0
+  },
+  {
+    "id": "D-B-token",
+    "run": {
+      "venv": "$WORK/venv-B",
+      "probe_flags": "",
+      "extra_env": "LOGFIRE_TOKEN=pylf_v1_us_0000000000000000000000000000000000000000fake LOGFIRE_SEND_TO_LOGFIRE=true",
+      "local_sink": "no",
+      "sandbox": "/tmp/pe-audit-D-B-token.S5A31j"
+    },
+    "strace": {
+      "pids_seen": 3,
+      "sockets_by_family": {
+        "AF_INET6": 1
+      },
+      "inet_connect_attempts": [],
+      "unix_connects": [],
+      "inet_sendto": [],
+      "inet_binds": [],
+      "execve": [
+        "$WORK/venv-B/bin/python /home/user/py"
+      ],
+      "threads_created": 4,
+      "processes_created": 0,
+      "fs_mutations": {
+        "TMPDIR (other):openat": 1,
+        "TMPDIR (other):unlink": 1,
+        "dirfd-relative (shutil.rmtree of the worker temp dir):unlink": 2,
+        "dirfd-relative (shutil.rmtree of the worker temp dir):unlinkat": 6,
+        "harness-output:mkdir": 1,
+        "harness-output:openat": 2,
+        "worker-db (synthetic worker):mkdir": 4,
+        "worker-db (synthetic worker):openat": 46,
+        "worker-db (synthetic worker):unlink": 32
+      },
+      "fs_mutation_samples": {
+        "harness-output": [
+          "$WORK/audit-results/D-B-token/out",
+          "$WORK/audit-results/D-B-token/out/report.json",
+          "$WORK/audit-results/D-B-token/out/probe.json"
+        ],
+        "TMPDIR (other)": [
+          "/tmp/pe-audit-D-B-token.S5A31j/tmp/kebotqh1"
+        ],
+        "worker-db (synthetic worker)": [
+          "/tmp/pe-audit-D-B-token.S5A31j/tmp/sw-lookup-hit-tw6hxxk2",
+          "/tmp/pe-audit-D-B-token.S5A31j/tmp/sw-lost-response-then-retry-qvd1t48g",
+          "/tmp/pe-audit-D-B-token.S5A31j/tmp/sw-lookup-hit-tw6hxxk2/worker.sqlite3",
+          "/tmp/pe-audit-D-B-token.S5A31j/tmp/sw-lost-response-then-retry-qvd1t48g/worker.sqlite3",
+          "/tmp/pe-audit-D-B-token.S5A31j/tmp/sw-lookup-hit-tw6hxxk2/worker.sqlite3-journal"
+        ],
+        "dirfd-relative (shutil.rmtree of the worker temp dir)": [
+          "worker.sqlite3",
+          "?"
+        ]
+      }
+    },
+    "probe": {
+      "report": {
+        "cases": 4,
+        "failures": 1,
+        "trace_id_present": true
+      },
+      "import_seconds": 1.544,
+      "eval_seconds": 0.14,
+      "peak_rss_mib": 79.1,
+      "modules_imported_by_pydantic_evals": 1015,
+      "pydantic_ai_agent_imported": true,
+      "logfire_imported": true,
+      "otel_sdk_imported": true,
+      "env_keys_read_count": 53,
+      "env_keys_read_otel": [
+        "OTEL_EXPERIMENTAL_RESOURCE_DETECTORS",
+        "OTEL_PROPAGATORS",
+        "OTEL_PYTHON_CONTEXT",
+        "OTEL_PYTHON_TRACER_PROVIDER",
+        "OTEL_RESOURCE_ATTRIBUTES",
+        "OTEL_SERVICE_NAME",
+        "OTEL_SERVICE_VERSION",
+        "OTEL_SPAN_ATTRIBUTE_COUNT_LIMIT",
+        "OTEL_TRACES_SAMPLER_ARG"
+      ],
+      "env_keys_read_logfire": [
+        "LOGFIRE_API_KEY",
+        "LOGFIRE_BASE_URL",
+        "LOGFIRE_COMPRESSION",
+        "LOGFIRE_CONFIG_DIR",
+        "LOGFIRE_CONSOLE",
+        "LOGFIRE_CONSOLE_COLORS",
+        "LOGFIRE_CONSOLE_INCLUDE_ATTRIBUTES",
+        "LOGFIRE_CONSOLE_INCLUDE_TAGS",
+        "LOGFIRE_CONSOLE_INCLUDE_TIMESTAMP",
+        "LOGFIRE_CONSOLE_MIN_LOG_LEVEL",
+        "LOGFIRE_CONSOLE_SHOW_PROJECT_LINK",
+        "LOGFIRE_CONSOLE_SPAN_STYLE",
+        "LOGFIRE_CONSOLE_VERBOSE",
+        "LOGFIRE_CREDENTIALS_DIR",
+        "LOGFIRE_DISTRIBUTED_TRACING",
+        "LOGFIRE_EMIT_CONFIGURATION_SPAN",
+        "LOGFIRE_ENVIRONMENT",
+        "LOGFIRE_IGNORE_NO_CONFIG",
+        "LOGFIRE_INSPECT_ARGUMENTS",
+        "LOGFIRE_MIN_LEVEL",
+        "LOGFIRE_PYDANTIC_PLUGIN_EXCLUDE",
+        "LOGFIRE_PYDANTIC_PLUGIN_INCLUDE",
+        "LOGFIRE_PYDANTIC_PLUGIN_RECORD",
+        "LOGFIRE_PYDANTIC_RECORD",
+        "LOGFIRE_RESOURCE_ATTRIBUTES",
+        "LOGFIRE_RESOURCE_DETECTORS",
+        "LOGFIRE_SEND_TO_LOGFIRE",
+        "LOGFIRE_SERVICE_NAME",
+        "LOGFIRE_SERVICE_VERSION",
+        "LOGFIRE_SHOW_SUMMARY",
+        "LOGFIRE_TOKEN",
+        "LOGFIRE_TRACE_SAMPLE_RATE"
+      ],
+      "env_keys_read_other": [
+        "HOME",
+        "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION",
+        "PYDANTIC_DISABLE_PLUGINS",
+        "PYTHONASYNCIODEBUG",
+        "PYTHONTZPATH",
+        "PYTHONUSERBASE",
+        "TEMP",
+        "TMP",
+        "TMPDIR",
+        "_PYTHON_PROJECT_BASE",
+        "_PYTHON_SYSCONFIGDATA_NAME",
+        "_PYTHON_SYSCONFIGDATA_PATH"
+      ],
+      "audit_events_by_origin": [
+        [
+          "sqlite3.connect <- ?",
+          14
+        ],
+        [
+          "sqlite3.connect/handle <- ?",
+          14
+        ],
+        [
+          "os.remove <- ?",
+          5
+        ],
+        [
+          "os.mkdir <- ?",
+          4
+        ],
+        [
+          "shutil.rmtree <- ?",
+          4
+        ],
+        [
+          "os.rmdir <- ?",
+          4
+        ],
+        [
+          "socket.__new__ <- pydantic_evals",
+          2
+        ],
+        [
+          "socket.__new__ <- urllib3",
+          1
+        ],
+        [
+          "ctypes.dlopen <- opentelemetry",
+          1
+        ],
+        [
+          "open-write <- ?",
+          1
+        ]
+      ],
+      "subprocesses": [],
+      "span_count": null,
+      "spans_with_canaries": []
+    },
+    "files_left_in_sandbox": [],
+    "sandbox_files_with_canaries": [],
+    "stdout_bytes": 0
+  },
+  {
+    "id": "D-C-otel",
+    "run": {
+      "venv": "$WORK/venv-B",
+      "probe_flags": "--configure-logfire",
+      "extra_env": "OTEL_EXPORTER_OTLP_ENDPOINT=http://127.0.0.1:4318 OTEL_TRACES_EXPORTER=otlp OTEL_SERVICE_NAME=privacy-audit OTEL_RESOURCE_ATTRIBUTES=deployment.environment=audit",
+      "local_sink": "yes",
+      "sandbox": "/tmp/pe-audit-D-C-otel.hrsntD"
+    },
+    "strace": {
+      "pids_seen": 5,
+      "sockets_by_family": {
+        "AF_INET6": 1,
+        "AF_INET": 1
+      },
+      "inet_connect_attempts": [
+        {
+          "family": "AF_INET",
+          "target": "127.0.0.1:4318",
+          "result": "-1 EINPROGRESS (Operation now in progress)"
+        }
+      ],
+      "unix_connects": [],
+      "inet_sendto": [],
+      "inet_binds": [],
+      "execve": [
+        "$WORK/venv-B/bin/python /home/user/py",
+        "git rev-parse HEAD"
+      ],
+      "threads_created": 8,
+      "processes_created": 1,
+      "fs_mutations": {
+        "TMPDIR (other):openat": 1,
+        "TMPDIR (other):unlink": 1,
+        "device:openat": 1,
+        "dirfd-relative (shutil.rmtree of the worker temp dir):mkdir": 2,
+        "dirfd-relative (shutil.rmtree of the worker temp dir):unlinkat": 6,
+        "harness-output:mkdir": 1,
+        "harness-output:openat": 2,
+        "worker-db (synthetic worker):mkdir": 4,
+        "worker-db (synthetic worker):openat": 46,
+        "worker-db (synthetic worker):unlink": 32
+      },
+      "fs_mutation_samples": {
+        "harness-output": [
+          "$WORK/audit-results/D-C-otel/out",
+          "$WORK/audit-results/D-C-otel/out/report.json",
+          "$WORK/audit-results/D-C-otel/out/probe.json"
+        ],
+        "device": [
+          "/dev/null"
+        ],
+        "TMPDIR (other)": [
+          "/tmp/pe-audit-D-C-otel.hrsntD/tmp/hbu7gce7"
+        ],
+        "worker-db (synthetic worker)": [
+          "/tmp/pe-audit-D-C-otel.hrsntD/tmp/sw-lookup-hit-x7qbkb0p",
+          "/tmp/pe-audit-D-C-otel.hrsntD/tmp/sw-lost-response-then-retry-8brmtv3y",
+          "/tmp/pe-audit-D-C-otel.hrsntD/tmp/sw-lost-response-then-retry-8brmtv3y/worker.sqlite3",
+          "/tmp/pe-audit-D-C-otel.hrsntD/tmp/sw-lookup-hit-x7qbkb0p/worker.sqlite3",
+          "/tmp/pe-audit-D-C-otel.hrsntD/tmp/sw-lost-response-then-retry-8brmtv3y/worker.sqlite3-journal"
+        ],
+        "dirfd-relative (shutil.rmtree of the worker temp dir)": [
+          "?",
+          "worker.sqlite3"
+        ]
+      }
+    },
+    "probe": {
+      "report": {
+        "cases": 4,
+        "failures": 1,
+        "trace_id_present": true
+      },
+      "import_seconds": 1.489,
+      "eval_seconds": 0.12,
+      "peak_rss_mib": 79.4,
+      "modules_imported_by_pydantic_evals": 1015,
+      "pydantic_ai_agent_imported": true,
+      "logfire_imported": true,
+      "otel_sdk_imported": true,
+      "env_keys_read_count": 115,
+      "env_keys_read_otel": [
+        "OTEL_ATTRIBUTE_COUNT_LIMIT",
+        "OTEL_ATTRIBUTE_VALUE_LENGTH_LIMIT",
+        "OTEL_BLRP_EXPORT_TIMEOUT",
+        "OTEL_BLRP_MAX_EXPORT_BATCH_SIZE",
+        "OTEL_BLRP_MAX_QUEUE_SIZE",
+        "OTEL_BLRP_SCHEDULE_DELAY",
+        "OTEL_BSP_EXPORT_TIMEOUT",
+        "OTEL_BSP_MAX_EXPORT_BATCH_SIZE",
+        "OTEL_BSP_MAX_QUEUE_SIZE",
+        "OTEL_BSP_SCHEDULE_DELAY",
+        "OTEL_EVENT_ATTRIBUTE_COUNT_LIMIT",
+        "OTEL_EXPERIMENTAL_RESOURCE_DETECTORS",
+        "OTEL_EXPORTER_OTLP_CERTIFICATE",
+        "OTEL_EXPORTER_OTLP_CLIENT_CERTIFICATE",
+        "OTEL_EXPORTER_OTLP_CLIENT_KEY",
+        "OTEL_EXPORTER_OTLP_COMPRESSION",
+        "OTEL_EXPORTER_OTLP_ENDPOINT",
+        "OTEL_EXPORTER_OTLP_HEADERS",
+        "OTEL_EXPORTER_OTLP_LOGS_CERTIFICATE",
+        "OTEL_EXPORTER_OTLP_LOGS_CLIENT_CERTIFICATE",
+        "OTEL_EXPORTER_OTLP_LOGS_CLIENT_KEY",
+        "OTEL_EXPORTER_OTLP_LOGS_COMPRESSION",
+        "OTEL_EXPORTER_OTLP_LOGS_ENDPOINT",
+        "OTEL_EXPORTER_OTLP_LOGS_HEADERS",
+        "OTEL_EXPORTER_OTLP_LOGS_TIMEOUT",
+        "OTEL_EXPORTER_OTLP_METRICS_CERTIFICATE",
+        "OTEL_EXPORTER_OTLP_METRICS_CLIENT_CERTIFICATE",
+        "OTEL_EXPORTER_OTLP_METRICS_CLIENT_KEY",
+        "OTEL_EXPORTER_OTLP_METRICS_COMPRESSION",
+        "OTEL_EXPORTER_OTLP_METRICS_DEFAULT_HISTOGRAM_AGGREGATION",
+        "OTEL_EXPORTER_OTLP_METRICS_ENDPOINT",
+        "OTEL_EXPORTER_OTLP_METRICS_HEADERS",
+        "OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE",
+        "OTEL_EXPORTER_OTLP_METRICS_TIMEOUT",
+        "OTEL_EXPORTER_OTLP_TIMEOUT",
+        "OTEL_EXPORTER_OTLP_TRACES_CERTIFICATE",
+        "OTEL_EXPORTER_OTLP_TRACES_CLIENT_CERTIFICATE",
+        "OTEL_EXPORTER_OTLP_TRACES_CLIENT_KEY",
+        "OTEL_EXPORTER_OTLP_TRACES_COMPRESSION",
+        "OTEL_EXPORTER_OTLP_TRACES_ENDPOINT",
+        "OTEL_EXPORTER_OTLP_TRACES_HEADERS",
+        "OTEL_EXPORTER_OTLP_TRACES_TIMEOUT",
+        "OTEL_LINK_ATTRIBUTE_COUNT_LIMIT",
+        "OTEL_LOGRECORD_ATTRIBUTE_COUNT_LIMIT",
+        "OTEL_LOGRECORD_ATTRIBUTE_VALUE_LENGTH_LIMIT",
+        "OTEL_LOGS_EXPORTER",
+        "OTEL_METRICS_EXEMPLAR_FILTER",
+        "OTEL_METRICS_EXPORTER",
+        "OTEL_METRIC_EXPORT_INTERVAL",
+        "OTEL_METRIC_EXPORT_TIMEOUT",
+        "OTEL_PROPAGATORS",
+        "OTEL_PYTHON_CONTEXT",
+        "OTEL_PYTHON_EXPORTER_OTLP_HTTP_CREDENTIAL_PROVIDER",
+        "OTEL_PYTHON_EXPORTER_OTLP_HTTP_LOGS_CREDENTIAL_PROVIDER",
+        "OTEL_PYTHON_EXPORTER_OTLP_HTTP_METRICS_CREDENTIAL_PROVIDER",
+        "OTEL_PYTHON_EXPORTER_OTLP_HTTP_TRACES_CREDENTIAL_PROVIDER",
+        "OTEL_PYTHON_METER_PROVIDER",
+        "OTEL_PYTHON_SDK_INTERNAL_METRICS_ENABLED",
+        "OTEL_RESOURCE_ATTRIBUTES",
+        "OTEL_SDK_DISABLED",
+        "OTEL_SERVICE_NAME",
+        "OTEL_SERVICE_VERSION",
+        "OTEL_SPAN_ATTRIBUTE_COUNT_LIMIT",
+        "OTEL_SPAN_ATTRIBUTE_VALUE_LENGTH_LIMIT",
+        "OTEL_SPAN_EVENT_COUNT_LIMIT",
+        "OTEL_SPAN_LINK_COUNT_LIMIT",
+        "OTEL_TRACES_EXPORTER",
+        "OTEL_TRACES_SAMPLER",
+        "OTEL_TRACES_SAMPLER_ARG"
+      ],
+      "env_keys_read_logfire": [
+        "LOGFIRE_API_KEY",
+        "LOGFIRE_BASE_URL",
+        "LOGFIRE_COMPRESSION",
+        "LOGFIRE_CONFIG_DIR",
+        "LOGFIRE_CONSOLE",
+        "LOGFIRE_CONSOLE_COLORS",
+        "LOGFIRE_CONSOLE_INCLUDE_ATTRIBUTES",
+        "LOGFIRE_CONSOLE_INCLUDE_TAGS",
+        "LOGFIRE_CONSOLE_INCLUDE_TIMESTAMP",
+        "LOGFIRE_CONSOLE_MIN_LOG_LEVEL",
+        "LOGFIRE_CONSOLE_SHOW_PROJECT_LINK",
+        "LOGFIRE_CONSOLE_SPAN_STYLE",
+        "LOGFIRE_CONSOLE_VERBOSE",
+        "LOGFIRE_CREDENTIALS_DIR",
+        "LOGFIRE_DISTRIBUTED_TRACING",
+        "LOGFIRE_EMIT_CONFIGURATION_SPAN",
+        "LOGFIRE_ENVIRONMENT",
+        "LOGFIRE_IGNORE_NO_CONFIG",
+        "LOGFIRE_INSPECT_ARGUMENTS",
+        "LOGFIRE_MIN_LEVEL",
+        "LOGFIRE_PYDANTIC_PLUGIN_EXCLUDE",
+        "LOGFIRE_PYDANTIC_PLUGIN_INCLUDE",
+        "LOGFIRE_PYDANTIC_PLUGIN_RECORD",
+        "LOGFIRE_PYDANTIC_RECORD",
+        "LOGFIRE_RESOURCE_ATTRIBUTES",
+        "LOGFIRE_RESOURCE_DETECTORS",
+        "LOGFIRE_SEND_TO_LOGFIRE",
+        "LOGFIRE_SERVICE_NAME",
+        "LOGFIRE_SERVICE_VERSION",
+        "LOGFIRE_SHOW_SUMMARY",
+        "LOGFIRE_TOKEN",
+        "LOGFIRE_TRACE_SAMPLE_RATE"
+      ],
+      "env_keys_read_other": [
+        "HOME",
+        "PATH",
+        "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION",
+        "PYDANTIC_DISABLE_PLUGINS",
+        "PYTEST_VERSION",
+        "PYTHONASYNCIODEBUG",
+        "PYTHONTZPATH",
+        "PYTHONUSERBASE",
+        "TEMP",
+        "TMP",
+        "TMPDIR",
+        "_PYTHON_PROJECT_BASE",
+        "_PYTHON_SYSCONFIGDATA_NAME",
+        "_PYTHON_SYSCONFIGDATA_PATH"
+      ],
+      "audit_events_by_origin": [
+        [
+          "sqlite3.connect <- ?",
+          14
+        ],
+        [
+          "sqlite3.connect/handle <- ?",
+          14
+        ],
+        [
+          "os.remove <- ?",
+          5
+        ],
+        [
+          "os.mkdir <- ?",
+          4
+        ],
+        [
+          "shutil.rmtree <- ?",
+          4
+        ],
+        [
+          "os.rmdir <- ?",
+          4
+        ],
+        [
+          "socket.__new__ <- pydantic_evals",
+          2
+        ],
+        [
+          "socket.__new__ <- urllib3",
+          1
+        ],
+        [
+          "ctypes.dlopen <- opentelemetry",
+          1
+        ],
+        [
+          "socket.gethostname <- logfire",
+          1
+        ],
+        [
+          "subprocess.Popen <- logfire",
+          1
+        ],
+        [
+          "open-write <- ?",
+          1
+        ]
+      ],
+      "subprocesses": [
+        [
+          "'git'",
+          "['git', 'rev-parse', 'HEAD']"
+        ]
+      ],
+      "span_count": null,
+      "spans_with_canaries": []
+    },
+    "local_sink": {
+      "requests": 1,
+      "paths": [
+        "v1_traces.bin"
+      ],
+      "bytes": 20216,
+      "canary_hits": {
+        "INPUT": 5,
+        "META": 5,
+        "EXPECTED": 5,
+        "OUTPUT": 4,
+        "ERROR": 6
+      },
+      "git_or_host_in_payload": true
+    },
+    "files_left_in_sandbox": [],
+    "sandbox_files_with_canaries": [],
+    "stdout_bytes": 0
+  },
+  {
+    "id": "D-C-token",
+    "run": {
+      "venv": "$WORK/venv-B",
+      "probe_flags": "--configure-logfire",
+      "extra_env": "LOGFIRE_TOKEN=pylf_v1_us_0000000000000000000000000000000000000000fake LOGFIRE_SEND_TO_LOGFIRE=true",
+      "local_sink": "no",
+      "sandbox": "/tmp/pe-audit-D-C-token.hrv4td"
+    },
+    "strace": {
+      "pids_seen": 4,
+      "sockets_by_family": {
+        "AF_INET6": 1
+      },
+      "inet_connect_attempts": [],
+      "unix_connects": [],
+      "inet_sendto": [],
+      "inet_binds": [],
+      "execve": [
+        "$WORK/venv-B/bin/python /home/user/py",
+        "git rev-parse HEAD"
+      ],
+      "threads_created": 5,
+      "processes_created": 1,
+      "fs_mutations": {
+        "TMPDIR (other):openat": 1,
+        "TMPDIR (other):unlink": 1,
+        "device:openat": 1,
+        "dirfd-relative (shutil.rmtree of the worker temp dir):mkdir": 2,
+        "dirfd-relative (shutil.rmtree of the worker temp dir):unlink": 7,
+        "dirfd-relative (shutil.rmtree of the worker temp dir):unlinkat": 5,
+        "harness-output:mkdir": 1,
+        "harness-output:openat": 2,
+        "worker-db (synthetic worker):mkdir": 4,
+        "worker-db (synthetic worker):openat": 46,
+        "worker-db (synthetic worker):unlink": 32
+      },
+      "fs_mutation_samples": {
+        "harness-output": [
+          "$WORK/audit-results/D-C-token/out",
+          "$WORK/audit-results/D-C-token/out/report.json",
+          "$WORK/audit-results/D-C-token/out/probe.json"
+        ],
+        "device": [
+          "/dev/null"
+        ],
+        "TMPDIR (other)": [
+          "/tmp/pe-audit-D-C-token.hrv4td/tmp/bw5fo5zy"
+        ],
+        "worker-db (synthetic worker)": [
+          "/tmp/pe-audit-D-C-token.hrv4td/tmp/sw-lookup-hit-sgnsunnw",
+          "/tmp/pe-audit-D-C-token.hrv4td/tmp/sw-lost-response-then-retry-4n6owajq",
+          "/tmp/pe-audit-D-C-token.hrv4td/tmp/sw-lost-response-then-retry-4n6owajq/worker.sqlite3",
+          "/tmp/pe-audit-D-C-token.hrv4td/tmp/sw-lookup-hit-sgnsunnw/worker.sqlite3",
+          "/tmp/pe-audit-D-C-token.hrv4td/tmp/sw-lost-response-then-retry-4n6owajq/worker.sqlite3-journal"
+        ],
+        "dirfd-relative (shutil.rmtree of the worker temp dir)": [
+          "?",
+          "worker.sqlite3"
+        ]
+      }
+    },
+    "probe": {
+      "report": {
+        "cases": 4,
+        "failures": 1,
+        "trace_id_present": true
+      },
+      "import_seconds": 1.605,
+      "eval_seconds": 0.153,
+      "peak_rss_mib": 79.4,
+      "modules_imported_by_pydantic_evals": 1015,
+      "pydantic_ai_agent_imported": true,
+      "logfire_imported": true,
+      "otel_sdk_imported": true,
+      "env_keys_read_count": 74,
+      "env_keys_read_otel": [
+        "OTEL_ATTRIBUTE_COUNT_LIMIT",
+        "OTEL_ATTRIBUTE_VALUE_LENGTH_LIMIT",
+        "OTEL_EVENT_ATTRIBUTE_COUNT_LIMIT",
+        "OTEL_EXPERIMENTAL_RESOURCE_DETECTORS",
+        "OTEL_EXPORTER_OTLP_ENDPOINT",
+        "OTEL_EXPORTER_OTLP_LOGS_ENDPOINT",
+        "OTEL_EXPORTER_OTLP_METRICS_ENDPOINT",
+        "OTEL_EXPORTER_OTLP_TRACES_ENDPOINT",
+        "OTEL_LINK_ATTRIBUTE_COUNT_LIMIT",
+        "OTEL_LOGRECORD_ATTRIBUTE_COUNT_LIMIT",
+        "OTEL_LOGRECORD_ATTRIBUTE_VALUE_LENGTH_LIMIT",
+        "OTEL_LOGS_EXPORTER",
+        "OTEL_METRICS_EXEMPLAR_FILTER",
+        "OTEL_METRICS_EXPORTER",
+        "OTEL_PROPAGATORS",
+        "OTEL_PYTHON_CONTEXT",
+        "OTEL_PYTHON_METER_PROVIDER",
+        "OTEL_PYTHON_SDK_INTERNAL_METRICS_ENABLED",
+        "OTEL_RESOURCE_ATTRIBUTES",
+        "OTEL_SDK_DISABLED",
+        "OTEL_SERVICE_NAME",
+        "OTEL_SERVICE_VERSION",
+        "OTEL_SPAN_ATTRIBUTE_COUNT_LIMIT",
+        "OTEL_SPAN_ATTRIBUTE_VALUE_LENGTH_LIMIT",
+        "OTEL_SPAN_EVENT_COUNT_LIMIT",
+        "OTEL_SPAN_LINK_COUNT_LIMIT",
+        "OTEL_TRACES_EXPORTER",
+        "OTEL_TRACES_SAMPLER",
+        "OTEL_TRACES_SAMPLER_ARG"
+      ],
+      "env_keys_read_logfire": [
+        "LOGFIRE_API_KEY",
+        "LOGFIRE_BASE_URL",
+        "LOGFIRE_COMPRESSION",
+        "LOGFIRE_CONFIG_DIR",
+        "LOGFIRE_CONSOLE",
+        "LOGFIRE_CONSOLE_COLORS",
+        "LOGFIRE_CONSOLE_INCLUDE_ATTRIBUTES",
+        "LOGFIRE_CONSOLE_INCLUDE_TAGS",
+        "LOGFIRE_CONSOLE_INCLUDE_TIMESTAMP",
+        "LOGFIRE_CONSOLE_MIN_LOG_LEVEL",
+        "LOGFIRE_CONSOLE_SHOW_PROJECT_LINK",
+        "LOGFIRE_CONSOLE_SPAN_STYLE",
+        "LOGFIRE_CONSOLE_VERBOSE",
+        "LOGFIRE_CREDENTIALS_DIR",
+        "LOGFIRE_DISTRIBUTED_TRACING",
+        "LOGFIRE_EMIT_CONFIGURATION_SPAN",
+        "LOGFIRE_ENVIRONMENT",
+        "LOGFIRE_IGNORE_NO_CONFIG",
+        "LOGFIRE_INSPECT_ARGUMENTS",
+        "LOGFIRE_MIN_LEVEL",
+        "LOGFIRE_PYDANTIC_PLUGIN_EXCLUDE",
+        "LOGFIRE_PYDANTIC_PLUGIN_INCLUDE",
+        "LOGFIRE_PYDANTIC_PLUGIN_RECORD",
+        "LOGFIRE_PYDANTIC_RECORD",
+        "LOGFIRE_RESOURCE_ATTRIBUTES",
+        "LOGFIRE_RESOURCE_DETECTORS",
+        "LOGFIRE_SEND_TO_LOGFIRE",
+        "LOGFIRE_SERVICE_NAME",
+        "LOGFIRE_SERVICE_VERSION",
+        "LOGFIRE_SHOW_SUMMARY",
+        "LOGFIRE_TOKEN",
+        "LOGFIRE_TRACE_SAMPLE_RATE"
+      ],
+      "env_keys_read_other": [
+        "HOME",
+        "PATH",
+        "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION",
+        "PYDANTIC_DISABLE_PLUGINS",
+        "PYTHONASYNCIODEBUG",
+        "PYTHONTZPATH",
+        "PYTHONUSERBASE",
+        "TEMP",
+        "TMP",
+        "TMPDIR",
+        "_PYTHON_PROJECT_BASE",
+        "_PYTHON_SYSCONFIGDATA_NAME",
+        "_PYTHON_SYSCONFIGDATA_PATH"
+      ],
+      "audit_events_by_origin": [
+        [
+          "sqlite3.connect <- ?",
+          14
+        ],
+        [
+          "sqlite3.connect/handle <- ?",
+          14
+        ],
+        [
+          "os.remove <- ?",
+          5
+        ],
+        [
+          "os.mkdir <- ?",
+          4
+        ],
+        [
+          "shutil.rmtree <- ?",
+          4
+        ],
+        [
+          "os.rmdir <- ?",
+          4
+        ],
+        [
+          "socket.__new__ <- pydantic_evals",
+          2
+        ],
+        [
+          "socket.__new__ <- urllib3",
+          1
+        ],
+        [
+          "ctypes.dlopen <- opentelemetry",
+          1
+        ],
+        [
+          "socket.gethostname <- logfire",
+          1
+        ],
+        [
+          "subprocess.Popen <- logfire",
+          1
+        ],
+        [
+          "open-write <- ?",
+          1
+        ]
+      ],
+      "subprocesses": [
+        [
+          "'git'",
+          "['git', 'rev-parse', 'HEAD']"
+        ]
+      ],
+      "span_count": null,
+      "spans_with_canaries": []
+    },
+    "files_left_in_sandbox": [],
+    "sandbox_files_with_canaries": [],
+    "stdout_bytes": 0
+  },
+  {
+    "id": "E-memory",
+    "run": {
+      "venv": "$WORK/venv-B",
+      "probe_flags": "--configure-logfire --memory-exporter",
+      "extra_env": "",
+      "local_sink": "no",
+      "sandbox": "/tmp/pe-audit-E-memory.Q5m3Kc"
+    },
+    "strace": {
+      "pids_seen": 4,
+      "sockets_by_family": {
+        "AF_INET6": 1
+      },
+      "inet_connect_attempts": [],
+      "unix_connects": [],
+      "inet_sendto": [],
+      "inet_binds": [],
+      "execve": [
+        "$WORK/venv-B/bin/python /home/user/py",
+        "git rev-parse HEAD"
+      ],
+      "threads_created": 5,
+      "processes_created": 1,
+      "fs_mutations": {
+        "TMPDIR (other):openat": 1,
+        "TMPDIR (other):unlink": 1,
+        "device:openat": 1,
+        "dirfd-relative (shutil.rmtree of the worker temp dir):mkdir": 2,
+        "dirfd-relative (shutil.rmtree of the worker temp dir):unlink": 5,
+        "dirfd-relative (shutil.rmtree of the worker temp dir):unlinkat": 6,
+        "harness-output:mkdir": 1,
+        "harness-output:openat": 2,
+        "worker-db (synthetic worker):mkdir": 4,
+        "worker-db (synthetic worker):openat": 46,
+        "worker-db (synthetic worker):unlink": 32
+      },
+      "fs_mutation_samples": {
+        "harness-output": [
+          "$WORK/audit-results/E-memory/out",
+          "$WORK/audit-results/E-memory/out/report.json",
+          "$WORK/audit-results/E-memory/out/probe.json"
+        ],
+        "device": [
+          "/dev/null"
+        ],
+        "TMPDIR (other)": [
+          "/tmp/pe-audit-E-memory.Q5m3Kc/tmp/966vb4qj"
+        ],
+        "worker-db (synthetic worker)": [
+          "/tmp/pe-audit-E-memory.Q5m3Kc/tmp/sw-lookup-hit-p1mlirjw",
+          "/tmp/pe-audit-E-memory.Q5m3Kc/tmp/sw-lost-response-then-retry-dcz10d_d",
+          "/tmp/pe-audit-E-memory.Q5m3Kc/tmp/sw-lookup-hit-p1mlirjw/worker.sqlite3",
+          "/tmp/pe-audit-E-memory.Q5m3Kc/tmp/sw-lost-response-then-retry-dcz10d_d/worker.sqlite3",
+          "/tmp/pe-audit-E-memory.Q5m3Kc/tmp/sw-lookup-hit-p1mlirjw/worker.sqlite3-journal"
+        ],
+        "dirfd-relative (shutil.rmtree of the worker temp dir)": [
+          "?",
+          "worker.sqlite3"
+        ]
+      }
+    },
+    "probe": {
+      "report": {
+        "cases": 4,
+        "failures": 1,
+        "trace_id_present": true
+      },
+      "import_seconds": 1.746,
+      "eval_seconds": 0.138,
+      "peak_rss_mib": 79.3,
+      "modules_imported_by_pydantic_evals": 1015,
+      "pydantic_ai_agent_imported": true,
+      "logfire_imported": true,
+      "otel_sdk_imported": true,
+      "env_keys_read_count": 75,
+      "env_keys_read_otel": [
+        "OTEL_ATTRIBUTE_COUNT_LIMIT",
+        "OTEL_ATTRIBUTE_VALUE_LENGTH_LIMIT",
+        "OTEL_EVENT_ATTRIBUTE_COUNT_LIMIT",
+        "OTEL_EXPERIMENTAL_RESOURCE_DETECTORS",
+        "OTEL_EXPORTER_OTLP_ENDPOINT",
+        "OTEL_EXPORTER_OTLP_LOGS_ENDPOINT",
+        "OTEL_EXPORTER_OTLP_METRICS_ENDPOINT",
+        "OTEL_EXPORTER_OTLP_TRACES_ENDPOINT",
+        "OTEL_LINK_ATTRIBUTE_COUNT_LIMIT",
+        "OTEL_LOGRECORD_ATTRIBUTE_COUNT_LIMIT",
+        "OTEL_LOGRECORD_ATTRIBUTE_VALUE_LENGTH_LIMIT",
+        "OTEL_LOGS_EXPORTER",
+        "OTEL_METRICS_EXEMPLAR_FILTER",
+        "OTEL_METRICS_EXPORTER",
+        "OTEL_PROPAGATORS",
+        "OTEL_PYTHON_CONTEXT",
+        "OTEL_PYTHON_METER_PROVIDER",
+        "OTEL_PYTHON_SDK_INTERNAL_METRICS_ENABLED",
+        "OTEL_RESOURCE_ATTRIBUTES",
+        "OTEL_SDK_DISABLED",
+        "OTEL_SERVICE_NAME",
+        "OTEL_SERVICE_VERSION",
+        "OTEL_SPAN_ATTRIBUTE_COUNT_LIMIT",
+        "OTEL_SPAN_ATTRIBUTE_VALUE_LENGTH_LIMIT",
+        "OTEL_SPAN_EVENT_COUNT_LIMIT",
+        "OTEL_SPAN_LINK_COUNT_LIMIT",
+        "OTEL_TRACES_EXPORTER",
+        "OTEL_TRACES_SAMPLER",
+        "OTEL_TRACES_SAMPLER_ARG"
+      ],
+      "env_keys_read_logfire": [
+        "LOGFIRE_API_KEY",
+        "LOGFIRE_BASE_URL",
+        "LOGFIRE_COMPRESSION",
+        "LOGFIRE_CONFIG_DIR",
+        "LOGFIRE_CONSOLE",
+        "LOGFIRE_CONSOLE_COLORS",
+        "LOGFIRE_CONSOLE_INCLUDE_ATTRIBUTES",
+        "LOGFIRE_CONSOLE_INCLUDE_TAGS",
+        "LOGFIRE_CONSOLE_INCLUDE_TIMESTAMP",
+        "LOGFIRE_CONSOLE_MIN_LOG_LEVEL",
+        "LOGFIRE_CONSOLE_SHOW_PROJECT_LINK",
+        "LOGFIRE_CONSOLE_SPAN_STYLE",
+        "LOGFIRE_CONSOLE_VERBOSE",
+        "LOGFIRE_CREDENTIALS_DIR",
+        "LOGFIRE_DISTRIBUTED_TRACING",
+        "LOGFIRE_EMIT_CONFIGURATION_SPAN",
+        "LOGFIRE_ENVIRONMENT",
+        "LOGFIRE_IGNORE_NO_CONFIG",
+        "LOGFIRE_INSPECT_ARGUMENTS",
+        "LOGFIRE_MIN_LEVEL",
+        "LOGFIRE_PYDANTIC_PLUGIN_EXCLUDE",
+        "LOGFIRE_PYDANTIC_PLUGIN_INCLUDE",
+        "LOGFIRE_PYDANTIC_PLUGIN_RECORD",
+        "LOGFIRE_PYDANTIC_RECORD",
+        "LOGFIRE_RESOURCE_ATTRIBUTES",
+        "LOGFIRE_RESOURCE_DETECTORS",
+        "LOGFIRE_SEND_TO_LOGFIRE",
+        "LOGFIRE_SERVICE_NAME",
+        "LOGFIRE_SERVICE_VERSION",
+        "LOGFIRE_SHOW_SUMMARY",
+        "LOGFIRE_TOKEN",
+        "LOGFIRE_TRACE_SAMPLE_RATE"
+      ],
+      "env_keys_read_other": [
+        "HOME",
+        "PATH",
+        "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION",
+        "PYDANTIC_DISABLE_PLUGINS",
+        "PYTEST_VERSION",
+        "PYTHONASYNCIODEBUG",
+        "PYTHONTZPATH",
+        "PYTHONUSERBASE",
+        "TEMP",
+        "TMP",
+        "TMPDIR",
+        "_PYTHON_PROJECT_BASE",
+        "_PYTHON_SYSCONFIGDATA_NAME",
+        "_PYTHON_SYSCONFIGDATA_PATH"
+      ],
+      "audit_events_by_origin": [
+        [
+          "sqlite3.connect <- ?",
+          14
+        ],
+        [
+          "sqlite3.connect/handle <- ?",
+          14
+        ],
+        [
+          "os.remove <- ?",
+          5
+        ],
+        [
+          "os.mkdir <- ?",
+          4
+        ],
+        [
+          "shutil.rmtree <- ?",
+          4
+        ],
+        [
+          "os.rmdir <- ?",
+          4
+        ],
+        [
+          "socket.__new__ <- pydantic_evals",
+          2
+        ],
+        [
+          "socket.__new__ <- urllib3",
+          1
+        ],
+        [
+          "ctypes.dlopen <- opentelemetry",
+          1
+        ],
+        [
+          "socket.gethostname <- logfire",
+          1
+        ],
+        [
+          "subprocess.Popen <- logfire",
+          1
+        ],
+        [
+          "open-write <- ?",
+          1
+        ]
+      ],
+      "subprocesses": [
+        [
+          "'git'",
+          "['git', 'rev-parse', 'HEAD']"
+        ]
+      ],
+      "span_count": 15,
+      "spans_with_canaries": [
+        [
+          "case: {case_name} :: inputs :: input",
+          5
+        ],
+        [
+          "case: {case_name} :: metadata :: metadata",
+          5
+        ],
+        [
+          "case: {case_name} :: expected_output :: expected",
+          5
+        ],
+        [
+          "case: {case_name} :: output :: output",
+          4
+        ],
+        [
+          "execute {task} :: event:exception :: error",
+          1
+        ],
+        [
+          "case: {case_name} :: event:exception :: error",
+          1
+        ]
+      ]
+    },
+    "files_left_in_sandbox": [],
+    "sandbox_files_with_canaries": [],
+    "stdout_bytes": 0
+  },
+  {
+    "id": "offline-evals-experiment",
+    "run": {
+      "sandbox": "/tmp/pe-audit-offline-evals-experiment.3D2SDv",
+      "exit": "0"
+    },
+    "strace": {
+      "pids_seen": 62,
+      "sockets_by_family": {},
+      "inet_connect_attempts": [],
+      "unix_connects": [],
+      "inet_sendto": [],
+      "inet_binds": [],
+      "execve": [
+        "$WORK/venv-A/bin/python evals/evals_e",
+        "git -C /home/user/pydantic-ai rev-parse HEAD",
+        "$WORK/venv-A/bin/python /home/user/py",
+        "$WORK/venv-A/bin/python /home/user/py",
+        "$WORK/venv-A/bin/python /home/user/py",
+        "$WORK/venv-A/bin/python /home/user/py",
+        "$WORK/venv-A/bin/python /home/user/py",
+        "$WORK/venv-A/bin/python /home/user/py",
+        "$WORK/venv-A/bin/python /home/user/py",
+        "$WORK/venv-A/bin/python /home/user/py",
+        "$WORK/venv-A/bin/python /home/user/py",
+        "$WORK/venv-A/bin/python /home/user/py",
+        "$WORK/venv-A/bin/python /home/user/py",
+        "$WORK/venv-A/bin/python /home/user/py",
+        "$WORK/venv-A/bin/python /home/user/py",
+        "$WORK/venv-A/bin/python /home/user/py",
+        "$WORK/venv-A/bin/python /home/user/py",
+        "$WORK/venv-A/bin/python /home/user/py",
+        "$WORK/venv-A/bin/python /home/user/py",
+        "$WORK/venv-A/bin/python /home/user/py",
+        "$WORK/venv-A/bin/python /home/user/py",
+        "$WORK/venv-A/bin/python /home/user/py",
+        "$WORK/venv-A/bin/python /home/user/py",
+        "$WORK/venv-A/bin/python /home/user/py",
+        "$WORK/venv-A/bin/python /home/user/py",
+        "$WORK/venv-A/bin/python /home/user/py"
+      ],
+      "threads_created": 36,
+      "processes_created": 25,
+      "fs_mutations": {
+        "TMPDIR (other):openat": 1,
+        "TMPDIR (other):unlink": 1,
+        "device:openat": 1,
+        "dirfd-relative (shutil.rmtree of the worker temp dir):mkdir": 21,
+        "dirfd-relative (shutil.rmtree of the worker temp dir):unlink": 332,
+        "dirfd-relative (shutil.rmtree of the worker temp dir):unlinkat": 359,
+        "harness-output:mkdir": 79,
+        "harness-output:openat": 97,
+        "worker-db (synthetic worker):mkdir": 138,
+        "worker-db (synthetic worker):openat": 1776,
+        "worker-db (synthetic worker):unlink": 1050
+      },
+      "fs_mutation_samples": {
+        "harness-output": [
+          "$WORK/audit-results/offline-evals-experiment/out",
+          "$WORK/audit-results/offline-evals-experiment/out/environment.json",
+          "$WORK/audit-results/offline-evals-experiment/out/ledgers",
+          "$WORK/audit-results/offline-evals-experiment/out/ledgers/sum-mixed-sign--v1-correct.sqlite3",
+          "$WORK/audit-results/offline-evals-experiment/out/ledgers/sum-correct--v1-correct.sqlite3"
+        ],
+        "device": [
+          "/dev/null"
+        ],
+        "TMPDIR (other)": [
+          "/tmp/pe-audit-offline-evals-experiment.3D2SDv/tmp/f2gx7vm8"
+        ],
+        "worker-db (synthetic worker)": [
+          "/tmp/pe-audit-offline-evals-experiment.3D2SDv/tmp/sw-sum-correct-dbm4n034",
+          "/tmp/pe-audit-offline-evals-experiment.3D2SDv/tmp/sw-sum-mixed-sign-b4_b0x3f",
+          "/tmp/pe-audit-offline-evals-experiment.3D2SDv/tmp/sw-lookup-hit-zvmwpk1m",
+          "/tmp/pe-audit-offline-evals-experiment.3D2SDv/tmp/sw-lookup-miss-802nhzcx",
+          "/tmp/pe-audit-offline-evals-experiment.3D2SDv/tmp/sw-sum-correct-dbm4n034/worker.sqlite3"
+        ],
+        "dirfd-relative (shutil.rmtree of the worker temp dir)": [
+          "?",
+          "worker.sqlite3-wal",
+          "worker.sqlite3-shm",
+          "worker.sqlite3"
+        ]
+      }
+    },
+    "probe": null,
+    "stderr_tail": "",
+    "files_left_in_sandbox": [],
+    "sandbox_files_with_canaries": [],
+    "stdout_bytes": 2781
+  },
+  {
+    "id": "offline-pytest-baseline",
+    "run": {
+      "sandbox": "/tmp/pe-audit-offline-pytest-baseline.t6LnQZ",
+      "exit": "0"
+    },
+    "strace": {
+      "pids_seen": 5,
+      "sockets_by_family": {},
+      "inet_connect_attempts": [],
+      "unix_connects": [],
+      "inet_sendto": [],
+      "inet_binds": [],
+      "execve": [
+        "$WORK/venv-A/bin/python -m pytest -q ",
+        "$WORK/venv-A/bin/python /home/user/py",
+        "$WORK/venv-A/bin/python /home/user/py",
+        "$WORK/venv-A/bin/python /home/user/py",
+        "$WORK/venv-A/bin/python /home/user/py"
+      ],
+      "threads_created": 0,
+      "processes_created": 4,
+      "fs_mutations": {
+        "TMPDIR (other):openat": 3,
+        "TMPDIR (other):unlink": 1,
+        "device:openat": 1,
+        "dirfd-relative (shutil.rmtree of the worker temp dir):unlinkat": 236,
+        "other:mkdir": 1,
+        "other:openat": 2,
+        "other:rename": 1,
+        "worker-db (synthetic worker):mkdir": 236,
+        "worker-db (synthetic worker):openat": 88490,
+        "worker-db (synthetic worker):unlink": 59068
+      },
+      "fs_mutation_samples": {
+        "TMPDIR (other)": [
+          "/tmp/pe-audit-offline-pytest-baseline.t6LnQZ/tmp/25g63uat",
+          "/tmp/pe-audit-offline-pytest-baseline.t6LnQZ/tmp"
+        ],
+        "device": [
+          "/dev/null"
+        ],
+        "worker-db (synthetic worker)": [
+          "/tmp/pe-audit-offline-pytest-baseline.t6LnQZ/tmp/sw-lookup-hit-p6a_t2pn",
+          "/tmp/pe-audit-offline-pytest-baseline.t6LnQZ/tmp/sw-lookup-hit-p6a_t2pn/worker.sqlite3",
+          "/tmp/pe-audit-offline-pytest-baseline.t6LnQZ/tmp/sw-lookup-hit-p6a_t2pn/worker.sqlite3-journal",
+          "/tmp/pe-audit-offline-pytest-baseline.t6LnQZ/tmp/sw-lookup-hit-p6a_t2pn/worker.sqlite3-wal",
+          "/tmp/pe-audit-offline-pytest-baseline.t6LnQZ/tmp/sw-lookup-hit-p6a_t2pn/worker.sqlite3-shm"
+        ],
+        "dirfd-relative (shutil.rmtree of the worker temp dir)": [
+          "worker.sqlite3",
+          "w.sqlite3"
+        ],
+        "other": [
+          "$REPO/acquisition/pydantic_evals_offline/.hypothesis/tmp",
+          "$REPO/acquisition/pydantic_evals_offline/.hypothesis/tmp/tmp4iipu52e"
+        ]
+      }
+    },
+    "probe": null,
+    "stderr_tail": "",
+    "files_left_in_sandbox": [],
+    "sandbox_files_with_canaries": [],
+    "stdout_bytes": 191
+  }
+]

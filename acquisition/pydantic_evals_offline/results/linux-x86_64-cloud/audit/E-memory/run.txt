@@ -1,0 +1,5 @@
+venv=$WORK/venv-B
+probe_flags=--configure-logfire --memory-exporter
+extra_env=
+local_sink=no
+sandbox=/tmp/pe-audit-E-memory.Q5m3Kc

@@ -1,0 +1,9 @@
+4380  execve("$WORK/venv-A/bin/python", ["$WORK/venv-A/bin/python", "-m", "pytest", "-q", "-p", "no:randomly"], 0x7ffe944e9718 /* 5 vars */) = 0
+4384  execve("$WORK/venv-A/bin/python", ["$WORK/venv-A/bin/python", "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py", "run-pending", "--db", "/tmp/pe-audit-offline-pytest-baseline.t6LnQZ/tmp/sw-cr
+4384  <... execve resumed>)             = 0
+4385  execve("$WORK/venv-A/bin/python", ["$WORK/venv-A/bin/python", "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py", "run-pending", "--db", "/tmp/pe-audit-offline-pytest-baseline.t6LnQZ/tmp/sw-cr
+4385  <... execve resumed>)             = 0
+4386  execve("$WORK/venv-A/bin/python", ["$WORK/venv-A/bin/python", "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py", "run-pending", "--db", "/tmp/pe-audit-offline-pytest-baseline.t6LnQZ/tmp/sw-cr
+4386  <... execve resumed>)             = 0
+4387  execve("$WORK/venv-A/bin/python", ["$WORK/venv-A/bin/python", "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py", "run-pending", "--db", "/tmp/pe-audit-offline-pytest-baseline.t6LnQZ/tmp/sw-cr
+4387  <... execve resumed>)             = 0

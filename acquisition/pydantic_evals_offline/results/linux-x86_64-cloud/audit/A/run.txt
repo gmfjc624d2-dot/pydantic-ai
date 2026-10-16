@@ -1,0 +1,5 @@
+venv=$WORK/venv-A
+probe_flags=
+extra_env=
+local_sink=no
+sandbox=/tmp/pe-audit-A.jLCmnu

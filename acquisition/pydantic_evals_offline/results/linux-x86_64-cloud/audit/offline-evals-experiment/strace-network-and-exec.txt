@@ -1,0 +1,190 @@
+4302  execve("$WORK/venv-A/bin/python", ["$WORK/venv-A/bin/python", "evals/evals_experiment.py", "$WORK/audit-results/offline-evals-experiment/out", "-
+4303  execve("/usr/bin/git", ["git", "-C", "/home/user/pydantic-ai", "rev-parse", "HEAD"], 0x7ffe30331fc8 /* 5 vars */ <unfinished ...>
+4303  <... execve resumed>)             = 0
+4302  socketpair(AF_UNIX, SOCK_STREAM|SOCK_CLOEXEC, 0, [4, 5]) = 0
+4307  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4306  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4304  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4305  sendto(5, "\0", 1, 0, NULL, 0 <unfinished ...>
+4307  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4305  sendto(5, "\0", 1, 0, NULL, 0 <unfinished ...>
+4306  sendto(5, "\0", 1, 0, NULL, 0 <unfinished ...>
+4304  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4307  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4308  execve("$WORK/venv-A/bin/python", ["$WORK/venv-A/bin/python", "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py", "run-pending", "--db", "/tmp/pe-audit-offline-evals-experiment.3D2SDv/tmp/sw-c
+4308  <... execve resumed>)             = 0
+4306  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4309  execve("$WORK/venv-A/bin/python", ["$WORK/venv-A/bin/python", "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py", "run-pending", "--db", "/tmp/pe-audit-offline-evals-experiment.3D2SDv/tmp/sw-c
+4309  <... execve resumed>)             = 0
+4305  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4310  execve("$WORK/venv-A/bin/python", ["$WORK/venv-A/bin/python", "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py", "run-pending", "--db", "/tmp/pe-audit-offline-evals-experiment.3D2SDv/tmp/sw-c
+4310  <... execve resumed>)             = 0
+4311  execve("$WORK/venv-A/bin/python", ["$WORK/venv-A/bin/python", "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py", "run-pending", "--db", "/tmp/pe-audit-offline-evals-experiment.3D2SDv/tmp/sw-c
+4311  <... execve resumed>)             = 0
+4307  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4304  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4315  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4314  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4313  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4312  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4315  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4314  sendto(5, "\0", 1, 0, NULL, 0 <unfinished ...>
+4313  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4312  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4315  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4314  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4316  execve("$WORK/venv-A/bin/python", ["$WORK/venv-A/bin/python", "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py", "run-pending", "--db", "/tmp/pe-audit-offline-evals-experiment.3D2SDv/tmp/sw-c
+4316  <... execve resumed>)             = 0
+4313  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4317  execve("$WORK/venv-A/bin/python", ["$WORK/venv-A/bin/python", "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py", "run-pending", "--db", "/tmp/pe-audit-offline-evals-experiment.3D2SDv/tmp/sw-c
+4317  <... execve resumed>)             = 0
+4318  execve("$WORK/venv-A/bin/python", ["$WORK/venv-A/bin/python", "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py", "run-pending", "--db", "/tmp/pe-audit-offline-evals-experiment.3D2SDv/tmp/sw-c
+4318  <... execve resumed>)             = 0
+4319  execve("$WORK/venv-A/bin/python", ["$WORK/venv-A/bin/python", "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py", "run-pending", "--db", "/tmp/pe-audit-offline-evals-experiment.3D2SDv/tmp/sw-c
+4319  <... execve resumed>)             = 0
+4312  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4315  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4323  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4322  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4320  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4321  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4322  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4323  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4320  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4321  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4324  execve("$WORK/venv-A/bin/python", ["$WORK/venv-A/bin/python", "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py", "run-pending", "--db", "/tmp/pe-audit-offline-evals-experiment.3D2SDv/tmp/sw-c
+4324  <... execve resumed>)             = 0
+4322  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4323  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4320  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4325  execve("$WORK/venv-A/bin/python", ["$WORK/venv-A/bin/python", "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py", "run-pending", "--db", "/tmp/pe-audit-offline-evals-experiment.3D2SDv/tmp/sw-c
+4325  <... execve resumed>)             = 0
+4326  execve("$WORK/venv-A/bin/python", ["$WORK/venv-A/bin/python", "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py", "run-pending", "--db", "/tmp/pe-audit-offline-evals-experiment.3D2SDv/tmp/sw-c
+4326  <... execve resumed>)             = 0
+4327  execve("$WORK/venv-A/bin/python", ["$WORK/venv-A/bin/python", "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py", "run-pending", "--db", "/tmp/pe-audit-offline-evals-experiment.3D2SDv/tmp/sw-c
+4327  <... execve resumed>)             = 0
+4321  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4322  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4331  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4330  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4329  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4328  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4330  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4331  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4329  sendto(5, "\0", 1, 0, NULL, 0 <unfinished ...>
+4328  sendto(5, "\0", 1, 0, NULL, 0 <unfinished ...>
+4330  sendto(5, "\0", 1, 0, NULL, 0 <unfinished ...>
+4331  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4332  execve("$WORK/venv-A/bin/python", ["$WORK/venv-A/bin/python", "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py", "run-pending", "--db", "/tmp/pe-audit-offline-evals-experiment.3D2SDv/tmp/sw-c
+4332  <... execve resumed>)             = 0
+4329  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4333  execve("$WORK/venv-A/bin/python", ["$WORK/venv-A/bin/python", "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py", "run-pending", "--db", "/tmp/pe-audit-offline-evals-experiment.3D2SDv/tmp/sw-c
+4333  <... execve resumed>)             = 0
+4334  execve("$WORK/venv-A/bin/python", ["$WORK/venv-A/bin/python", "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py", "run-pending", "--db", "/tmp/pe-audit-offline-evals-experiment.3D2SDv/tmp/sw-c
+4334  <... execve resumed>)             = 0
+4335  execve("$WORK/venv-A/bin/python", ["$WORK/venv-A/bin/python", "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py", "run-pending", "--db", "/tmp/pe-audit-offline-evals-experiment.3D2SDv/tmp/sw-c
+4335  <... execve resumed>)             = 0
+4328  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4330  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4339  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4337  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4338  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4336  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4339  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4337  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4338  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4336  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4339  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4340  execve("$WORK/venv-A/bin/python", ["$WORK/venv-A/bin/python", "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py", "run-pending", "--db", "/tmp/pe-audit-offline-evals-experiment.3D2SDv/tmp/sw-c
+4340  <... execve resumed>)             = 0
+4337  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4341  execve("$WORK/venv-A/bin/python", ["$WORK/venv-A/bin/python", "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py", "run-pending", "--db", "/tmp/pe-audit-offline-evals-experiment.3D2SDv/tmp/sw-c
+4341  <... execve resumed>)             = 0
+4338  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4342  execve("$WORK/venv-A/bin/python", ["$WORK/venv-A/bin/python", "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py", "run-pending", "--db", "/tmp/pe-audit-offline-evals-experiment.3D2SDv/tmp/sw-c
+4342  <... execve resumed>)             = 0
+4343  execve("$WORK/venv-A/bin/python", ["$WORK/venv-A/bin/python", "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py", "run-pending", "--db", "/tmp/pe-audit-offline-evals-experiment.3D2SDv/tmp/sw-c
+4343  <... execve resumed>)             = 0
+4336  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4339  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4347  sendto(5, "\0", 1, 0, NULL, 0 <unfinished ...>
+4346  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4345  sendto(5, "\0", 1, 0, NULL, 0 <unfinished ...>
+4344  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4346  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4347  sendto(5, "\0", 1, 0, NULL, 0 <unfinished ...>
+4345  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4344  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4346  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4348  execve("$WORK/venv-A/bin/python", ["$WORK/venv-A/bin/python", "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py", "run-pending", "--db", "/tmp/pe-audit-offline-evals-experiment.3D2SDv/tmp/sw-c
+4348  <... execve resumed>)             = 0
+4345  sendto(5, "\0", 1, 0, NULL, 0 <unfinished ...>
+4347  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4349  execve("$WORK/venv-A/bin/python", ["$WORK/venv-A/bin/python", "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py", "run-pending", "--db", "/tmp/pe-audit-offline-evals-experiment.3D2SDv/tmp/sw-c
+4349  <... execve resumed>)             = 0
+4350  execve("$WORK/venv-A/bin/python", ["$WORK/venv-A/bin/python", "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py", "run-pending", "--db", "/tmp/pe-audit-offline-evals-experiment.3D2SDv/tmp/sw-c
+4350  <... execve resumed>)             = 0
+4351  execve("$WORK/venv-A/bin/python", ["$WORK/venv-A/bin/python", "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py", "run-pending", "--db", "/tmp/pe-audit-offline-evals-experiment.3D2SDv/tmp/sw-c
+4351  <... execve resumed>)             = 0
+4344  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4346  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4352  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4355  sendto(5, "\0", 1, 0, NULL, 0 <unfinished ...>
+4353  sendto(5, "\0", 1, 0, NULL, 0 <unfinished ...>
+4354  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4352  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4355  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4353  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4354  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4352  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4355  sendto(5, "\0", 1, 0, NULL, 0 <unfinished ...>
+4353  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4354  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4352  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4355  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4354  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4353  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4352  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4355  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4353  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4354  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4367  sendto(5, "\0", 1, 0, NULL, 0 <unfinished ...>
+4366  sendto(5, "\0", 1, 0, NULL, 0 <unfinished ...>
+4365  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4364  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4367  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4366  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4365  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4364  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4367  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4366  sendto(5, "\0", 1, 0, NULL, 0 <unfinished ...>
+4365  sendto(5, "\0", 1, 0, NULL, 0 <unfinished ...>
+4364  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4367  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4366  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4365  sendto(5, "\0", 1, 0, NULL, 0 <unfinished ...>
+4364  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4367  sendto(5, "\0", 1, 0, NULL, 0 <unfinished ...>
+4366  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4365  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4364  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4371  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4370  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4368  sendto(5, "\0", 1, 0, NULL, 0 <unfinished ...>
+4369  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4371  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4370  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4369  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4368  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4371  sendto(5, "\0", 1, 0, NULL, 0 <unfinished ...>
+4370  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4369  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4371  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4368  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4370  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4369  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4371  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4368  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4370  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4369  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4371  sendto(5, "\0", 1, 0, NULL, 0)    = 1

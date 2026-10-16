@@ -1,0 +1,10 @@
+4261  execve("$WORK/venv-B/bin/python", ["$WORK/venv-B/bin/python", "$REPO/acquisition/pydantic_evals_offline/audit/probe_run.py", "/tmp/claude-0/-home-user-pydantic-ai/5bd35200-8e91-5339-8e57-b1eceb9719dd/scratchpad/
+4261  socket(AF_INET6, SOCK_STREAM|SOCK_CLOEXEC, IPPROTO_IP) = -1 EAFNOSUPPORT (Address family not supported by protocol)
+4264  execve("/usr/bin/git", ["git", "rev-parse", "HEAD"], 0x7fff74d7b930 /* 7 vars */ <unfinished ...>
+4264  <... execve resumed>)             = 0
+4261  socketpair(AF_UNIX, SOCK_STREAM|SOCK_CLOEXEC, 0, [4, 5]) = 0
+4266  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4267  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4266  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4266  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4267  sendto(5, "\0", 1, 0, NULL, 0)    = 1

@@ -1,0 +1,2746 @@
+{
+  "name": "v4-nonatomic-resume",
+  "cases": [
+    {
+      "name": "lookup-hit",
+      "inputs": {
+        "id": "lookup-hit",
+        "steps": [
+          {
+            "kind": "call",
+            "request": {
+              "op": "lookup",
+              "key": "alpha"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "description": "Lookup of a seeded local value returns it.",
+        "catches": []
+      },
+      "expected_output": {
+        "statuses": [
+          "ok"
+        ],
+        "responses": {
+          "0": {
+            "ok": true,
+            "value": 42
+          }
+        }
+      },
+      "output": {
+        "scenario_id": "lookup-hit",
+        "worker_version": "v4-nonatomic-resume",
+        "steps": [
+          {
+            "kind": "call",
+            "request": {
+              "op": "lookup",
+              "key": "alpha"
+            },
+            "response_text": "{\"key\": \"alpha\", \"ok\": true, \"value\": 42}",
+            "parsed": {
+              "key": "alpha",
+              "ok": true,
+              "value": 42
+            },
+            "status": "ok",
+            "effect_known_from_response": true
+          }
+        ],
+        "ledger": {
+          "effects": [],
+          "jobs": [],
+          "results": {},
+          "balances": {}
+        },
+        "evidence": {
+          "ledger_db": "lookup-hit--v4-nonatomic-resume.sqlite3",
+          "ledger_db_sha256": "952426386391bf7dfad7a7ebf09a005d796d2d4c3bef46a3efb2f019bc6aa083"
+        }
+      },
+      "metrics": {},
+      "attributes": {},
+      "scores": {
+        "ledger_effects": {
+          "name": "ledger_effects",
+          "value": 0,
+          "reason": null,
+          "source": {
+            "name": "LedgerFacts",
+            "arguments": null
+          },
+          "evaluator_version": null
+        }
+      },
+      "labels": {
+        "last_step_status": {
+          "name": "last_step_status",
+          "value": "ok",
+          "reason": null,
+          "source": {
+            "name": "LedgerFacts",
+            "arguments": null
+          },
+          "evaluator_version": null
+        }
+      },
+      "assertions": {
+        "statuses": {
+          "name": "statuses",
+          "value": true,
+          "reason": "statuses=['ok'] expected=['ok']",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "statuses"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "responses": {
+          "name": "responses",
+          "value": true,
+          "reason": "responses match",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "responses"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "exactly_once": {
+          "name": "exactly_once",
+          "value": true,
+          "reason": "no effect expectation",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "exactly_once"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "balances": {
+          "name": "balances",
+          "value": true,
+          "reason": "no balance expectation",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "balances"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "receipts": {
+          "name": "receipts",
+          "value": true,
+          "reason": "receipts consistent",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "receipts"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "jobs": {
+          "name": "jobs",
+          "value": true,
+          "reason": "no job expectation",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "jobs"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "UncertaintyHonest": {
+          "name": "UncertaintyHonest",
+          "value": true,
+          "reason": "missing responses are not treated as proof of no effect",
+          "source": {
+            "name": "UncertaintyHonest",
+            "arguments": null
+          },
+          "evaluator_version": null
+        }
+      },
+      "task_duration": 0.017512423999960447,
+      "total_duration": 0.018422603607177734,
+      "source_case_name": null,
+      "trace_id": null,
+      "span_id": null,
+      "evaluator_failures": []
+    },
+    {
+      "name": "lookup-miss",
+      "inputs": {
+        "id": "lookup-miss",
+        "steps": [
+          {
+            "kind": "call",
+            "request": {
+              "op": "lookup",
+              "key": "gamma"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "description": "Lookup of a missing key is an explicit error, not a default value.",
+        "catches": [
+          "v5-default-on-miss"
+        ]
+      },
+      "expected_output": {
+        "statuses": [
+          "rejected"
+        ],
+        "responses": {
+          "0": {
+            "ok": false,
+            "error": "not_found"
+          }
+        }
+      },
+      "output": {
+        "scenario_id": "lookup-miss",
+        "worker_version": "v4-nonatomic-resume",
+        "steps": [
+          {
+            "kind": "call",
+            "request": {
+              "op": "lookup",
+              "key": "gamma"
+            },
+            "response_text": "{\"error\": \"not_found\", \"key\": \"gamma\", \"ok\": false}",
+            "parsed": {
+              "error": "not_found",
+              "key": "gamma",
+              "ok": false
+            },
+            "status": "rejected",
+            "effect_known_from_response": true
+          }
+        ],
+        "ledger": {
+          "effects": [],
+          "jobs": [],
+          "results": {},
+          "balances": {}
+        },
+        "evidence": {
+          "ledger_db": "lookup-miss--v4-nonatomic-resume.sqlite3",
+          "ledger_db_sha256": "952426386391bf7dfad7a7ebf09a005d796d2d4c3bef46a3efb2f019bc6aa083"
+        }
+      },
+      "metrics": {},
+      "attributes": {},
+      "scores": {
+        "ledger_effects": {
+          "name": "ledger_effects",
+          "value": 0,
+          "reason": null,
+          "source": {
+            "name": "LedgerFacts",
+            "arguments": null
+          },
+          "evaluator_version": null
+        }
+      },
+      "labels": {
+        "last_step_status": {
+          "name": "last_step_status",
+          "value": "rejected",
+          "reason": null,
+          "source": {
+            "name": "LedgerFacts",
+            "arguments": null
+          },
+          "evaluator_version": null
+        }
+      },
+      "assertions": {
+        "statuses": {
+          "name": "statuses",
+          "value": true,
+          "reason": "statuses=['rejected'] expected=['rejected']",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "statuses"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "responses": {
+          "name": "responses",
+          "value": true,
+          "reason": "responses match",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "responses"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "exactly_once": {
+          "name": "exactly_once",
+          "value": true,
+          "reason": "no effect expectation",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "exactly_once"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "balances": {
+          "name": "balances",
+          "value": true,
+          "reason": "no balance expectation",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "balances"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "receipts": {
+          "name": "receipts",
+          "value": true,
+          "reason": "receipts consistent",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "receipts"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "jobs": {
+          "name": "jobs",
+          "value": true,
+          "reason": "no job expectation",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "jobs"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "UncertaintyHonest": {
+          "name": "UncertaintyHonest",
+          "value": true,
+          "reason": "missing responses are not treated as proof of no effect",
+          "source": {
+            "name": "UncertaintyHonest",
+            "arguments": null
+          },
+          "evaluator_version": null
+        }
+      },
+      "task_duration": 0.01191778800011889,
+      "total_duration": 0.012590885162353516,
+      "source_case_name": null,
+      "trace_id": null,
+      "span_id": null,
+      "evaluator_failures": []
+    },
+    {
+      "name": "sum-correct",
+      "inputs": {
+        "id": "sum-correct",
+        "steps": [
+          {
+            "kind": "call",
+            "request": {
+              "op": "sum",
+              "values": [
+                1,
+                2,
+                3
+              ]
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "description": "Pure computation returns the correct result.",
+        "catches": []
+      },
+      "expected_output": {
+        "statuses": [
+          "ok"
+        ],
+        "responses": {
+          "0": {
+            "value": 6
+          }
+        }
+      },
+      "output": {
+        "scenario_id": "sum-correct",
+        "worker_version": "v4-nonatomic-resume",
+        "steps": [
+          {
+            "kind": "call",
+            "request": {
+              "op": "sum",
+              "values": [
+                1,
+                2,
+                3
+              ]
+            },
+            "response_text": "{\"ok\": true, \"value\": 6}",
+            "parsed": {
+              "ok": true,
+              "value": 6
+            },
+            "status": "ok",
+            "effect_known_from_response": true
+          }
+        ],
+        "ledger": {
+          "effects": [],
+          "jobs": [],
+          "results": {},
+          "balances": {}
+        },
+        "evidence": {
+          "ledger_db": "sum-correct--v4-nonatomic-resume.sqlite3",
+          "ledger_db_sha256": "952426386391bf7dfad7a7ebf09a005d796d2d4c3bef46a3efb2f019bc6aa083"
+        }
+      },
+      "metrics": {},
+      "attributes": {},
+      "scores": {
+        "ledger_effects": {
+          "name": "ledger_effects",
+          "value": 0,
+          "reason": null,
+          "source": {
+            "name": "LedgerFacts",
+            "arguments": null
+          },
+          "evaluator_version": null
+        }
+      },
+      "labels": {
+        "last_step_status": {
+          "name": "last_step_status",
+          "value": "ok",
+          "reason": null,
+          "source": {
+            "name": "LedgerFacts",
+            "arguments": null
+          },
+          "evaluator_version": null
+        }
+      },
+      "assertions": {
+        "statuses": {
+          "name": "statuses",
+          "value": true,
+          "reason": "statuses=['ok'] expected=['ok']",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "statuses"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "responses": {
+          "name": "responses",
+          "value": true,
+          "reason": "responses match",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "responses"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "exactly_once": {
+          "name": "exactly_once",
+          "value": true,
+          "reason": "no effect expectation",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "exactly_once"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "balances": {
+          "name": "balances",
+          "value": true,
+          "reason": "no balance expectation",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "balances"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "receipts": {
+          "name": "receipts",
+          "value": true,
+          "reason": "receipts consistent",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "receipts"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "jobs": {
+          "name": "jobs",
+          "value": true,
+          "reason": "no job expectation",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "jobs"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "UncertaintyHonest": {
+          "name": "UncertaintyHonest",
+          "value": true,
+          "reason": "missing responses are not treated as proof of no effect",
+          "source": {
+            "name": "UncertaintyHonest",
+            "arguments": null
+          },
+          "evaluator_version": null
+        }
+      },
+      "task_duration": 0.015940399000101024,
+      "total_duration": 0.0166013240814209,
+      "source_case_name": null,
+      "trace_id": null,
+      "span_id": null,
+      "evaluator_failures": []
+    },
+    {
+      "name": "sum-mixed-sign",
+      "inputs": {
+        "id": "sum-mixed-sign",
+        "steps": [
+          {
+            "kind": "call",
+            "request": {
+              "op": "sum",
+              "values": [
+                5,
+                -3
+              ]
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "description": "Pure computation with negative values.",
+        "catches": [
+          "v3-wrong-sum"
+        ]
+      },
+      "expected_output": {
+        "statuses": [
+          "ok"
+        ],
+        "responses": {
+          "0": {
+            "value": 2
+          }
+        }
+      },
+      "output": {
+        "scenario_id": "sum-mixed-sign",
+        "worker_version": "v4-nonatomic-resume",
+        "steps": [
+          {
+            "kind": "call",
+            "request": {
+              "op": "sum",
+              "values": [
+                5,
+                -3
+              ]
+            },
+            "response_text": "{\"ok\": true, \"value\": 2}",
+            "parsed": {
+              "ok": true,
+              "value": 2
+            },
+            "status": "ok",
+            "effect_known_from_response": true
+          }
+        ],
+        "ledger": {
+          "effects": [],
+          "jobs": [],
+          "results": {},
+          "balances": {}
+        },
+        "evidence": {
+          "ledger_db": "sum-mixed-sign--v4-nonatomic-resume.sqlite3",
+          "ledger_db_sha256": "952426386391bf7dfad7a7ebf09a005d796d2d4c3bef46a3efb2f019bc6aa083"
+        }
+      },
+      "metrics": {},
+      "attributes": {},
+      "scores": {
+        "ledger_effects": {
+          "name": "ledger_effects",
+          "value": 0,
+          "reason": null,
+          "source": {
+            "name": "LedgerFacts",
+            "arguments": null
+          },
+          "evaluator_version": null
+        }
+      },
+      "labels": {
+        "last_step_status": {
+          "name": "last_step_status",
+          "value": "ok",
+          "reason": null,
+          "source": {
+            "name": "LedgerFacts",
+            "arguments": null
+          },
+          "evaluator_version": null
+        }
+      },
+      "assertions": {
+        "statuses": {
+          "name": "statuses",
+          "value": true,
+          "reason": "statuses=['ok'] expected=['ok']",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "statuses"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "responses": {
+          "name": "responses",
+          "value": true,
+          "reason": "responses match",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "responses"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "exactly_once": {
+          "name": "exactly_once",
+          "value": true,
+          "reason": "no effect expectation",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "exactly_once"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "balances": {
+          "name": "balances",
+          "value": true,
+          "reason": "no balance expectation",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "balances"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "receipts": {
+          "name": "receipts",
+          "value": true,
+          "reason": "receipts consistent",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "receipts"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "jobs": {
+          "name": "jobs",
+          "value": true,
+          "reason": "no job expectation",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "jobs"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "UncertaintyHonest": {
+          "name": "UncertaintyHonest",
+          "value": true,
+          "reason": "missing responses are not treated as proof of no effect",
+          "source": {
+            "name": "UncertaintyHonest",
+            "arguments": null
+          },
+          "evaluator_version": null
+        }
+      },
+      "task_duration": 0.017533950000142795,
+      "total_duration": 0.018370866775512695,
+      "source_case_name": null,
+      "trace_id": null,
+      "span_id": null,
+      "evaluator_failures": []
+    },
+    {
+      "name": "balance-truncated",
+      "inputs": {
+        "id": "balance-truncated",
+        "steps": [
+          {
+            "kind": "call",
+            "request": {
+              "op": "record",
+              "account": "acct-1",
+              "amount": 100,
+              "idempotency_key": "k-1"
+            }
+          },
+          {
+            "kind": "call",
+            "request": {
+              "op": "balance",
+              "account": "acct-1",
+              "fault": "truncate_output"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "description": "Malformed (truncated) output must be classified as malformed, not as success.",
+        "catches": []
+      },
+      "expected_output": {
+        "statuses": [
+          "ok",
+          "malformed"
+        ],
+        "effects_per_key": {
+          "k-1": 1
+        }
+      },
+      "output": {
+        "scenario_id": "balance-truncated",
+        "worker_version": "v4-nonatomic-resume",
+        "steps": [
+          {
+            "kind": "call",
+            "request": {
+              "op": "record",
+              "account": "acct-1",
+              "amount": 100,
+              "idempotency_key": "k-1"
+            },
+            "response_text": "{\"account\": \"acct-1\", \"balance\": 100, \"ok\": true, \"receipt\": \"r-7c35c5a1785d\"}",
+            "parsed": {
+              "account": "acct-1",
+              "balance": 100,
+              "ok": true,
+              "receipt": "r-7c35c5a1785d"
+            },
+            "status": "ok",
+            "effect_known_from_response": true
+          },
+          {
+            "kind": "call",
+            "request": {
+              "op": "balance",
+              "account": "acct-1",
+              "fault": "truncate_output"
+            },
+            "response_text": "{\"account\": \"acct-1\", \"balance\": 100, \"history\": [{\"amount\": 100, \"",
+            "status": "malformed",
+            "error": "JSONDecodeError: Unterminated string starting at: line 1 column 67 (char 66)",
+            "parsed": null,
+            "effect_known_from_response": false
+          }
+        ],
+        "ledger": {
+          "effects": [
+            {
+              "seq": 1,
+              "idempotency_key": "k-1",
+              "account": "acct-1",
+              "amount": 100,
+              "receipt": "r-7c35c5a1785d",
+              "worker_version": "v4-nonatomic-resume"
+            }
+          ],
+          "jobs": [],
+          "results": {
+            "k-1": "{\"account\": \"acct-1\", \"balance\": 100, \"ok\": true, \"receipt\": \"r-7c35c5a1785d\"}"
+          },
+          "balances": {
+            "acct-1": 100
+          }
+        },
+        "evidence": {
+          "ledger_db": "balance-truncated--v4-nonatomic-resume.sqlite3",
+          "ledger_db_sha256": "565ef3b8f31689d53e8dc221e53dc5701c96b5ab9429a62dbe44b3b2b3734e64"
+        }
+      },
+      "metrics": {},
+      "attributes": {},
+      "scores": {
+        "ledger_effects": {
+          "name": "ledger_effects",
+          "value": 1,
+          "reason": null,
+          "source": {
+            "name": "LedgerFacts",
+            "arguments": null
+          },
+          "evaluator_version": null
+        }
+      },
+      "labels": {
+        "last_step_status": {
+          "name": "last_step_status",
+          "value": "malformed",
+          "reason": null,
+          "source": {
+            "name": "LedgerFacts",
+            "arguments": null
+          },
+          "evaluator_version": null
+        }
+      },
+      "assertions": {
+        "statuses": {
+          "name": "statuses",
+          "value": true,
+          "reason": "statuses=['ok', 'malformed'] expected=['ok', 'malformed']",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "statuses"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "responses": {
+          "name": "responses",
+          "value": true,
+          "reason": "responses match",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "responses"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "exactly_once": {
+          "name": "exactly_once",
+          "value": true,
+          "reason": "effects_per_key={'k-1': 1} expected={'k-1': 1}",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "exactly_once"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "balances": {
+          "name": "balances",
+          "value": true,
+          "reason": "no balance expectation",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "balances"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "receipts": {
+          "name": "receipts",
+          "value": true,
+          "reason": "receipts consistent",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "receipts"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "jobs": {
+          "name": "jobs",
+          "value": true,
+          "reason": "no job expectation",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "jobs"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "UncertaintyHonest": {
+          "name": "UncertaintyHonest",
+          "value": true,
+          "reason": "missing responses are not treated as proof of no effect",
+          "source": {
+            "name": "UncertaintyHonest",
+            "arguments": null
+          },
+          "evaluator_version": null
+        }
+      },
+      "task_duration": 0.031991252999887365,
+      "total_duration": 0.03271627426147461,
+      "source_case_name": null,
+      "trace_id": null,
+      "span_id": null,
+      "evaluator_failures": []
+    },
+    {
+      "name": "raise-before-effect-then-retry",
+      "inputs": {
+        "id": "raise-before-effect-then-retry",
+        "steps": [
+          {
+            "kind": "call",
+            "request": {
+              "op": "record",
+              "account": "acct-1",
+              "amount": 100,
+              "idempotency_key": "k-1",
+              "fault": "raise_before_effect"
+            }
+          },
+          {
+            "kind": "call",
+            "request": {
+              "op": "record",
+              "account": "acct-1",
+              "amount": 100,
+              "idempotency_key": "k-1"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "description": "A failure before the effect leaves no effect; the retry applies it exactly once.",
+        "catches": []
+      },
+      "expected_output": {
+        "statuses": [
+          "raised",
+          "ok"
+        ],
+        "effects_per_key": {
+          "k-1": 1
+        },
+        "balances": {
+          "acct-1": 100
+        }
+      },
+      "output": {
+        "scenario_id": "raise-before-effect-then-retry",
+        "worker_version": "v4-nonatomic-resume",
+        "steps": [
+          {
+            "kind": "call",
+            "request": {
+              "op": "record",
+              "account": "acct-1",
+              "amount": 100,
+              "idempotency_key": "k-1",
+              "fault": "raise_before_effect"
+            },
+            "status": "raised",
+            "error": "WorkerError: injected failure before effect for 'record'",
+            "response_text": null,
+            "effect_known_from_response": false
+          },
+          {
+            "kind": "call",
+            "request": {
+              "op": "record",
+              "account": "acct-1",
+              "amount": 100,
+              "idempotency_key": "k-1"
+            },
+            "response_text": "{\"account\": \"acct-1\", \"balance\": 100, \"ok\": true, \"receipt\": \"r-7c35c5a1785d\"}",
+            "parsed": {
+              "account": "acct-1",
+              "balance": 100,
+              "ok": true,
+              "receipt": "r-7c35c5a1785d"
+            },
+            "status": "ok",
+            "effect_known_from_response": true
+          }
+        ],
+        "ledger": {
+          "effects": [
+            {
+              "seq": 1,
+              "idempotency_key": "k-1",
+              "account": "acct-1",
+              "amount": 100,
+              "receipt": "r-7c35c5a1785d",
+              "worker_version": "v4-nonatomic-resume"
+            }
+          ],
+          "jobs": [],
+          "results": {
+            "k-1": "{\"account\": \"acct-1\", \"balance\": 100, \"ok\": true, \"receipt\": \"r-7c35c5a1785d\"}"
+          },
+          "balances": {
+            "acct-1": 100
+          }
+        },
+        "evidence": {
+          "ledger_db": "raise-before-effect-then-retry--v4-nonatomic-resume.sqlite3",
+          "ledger_db_sha256": "565ef3b8f31689d53e8dc221e53dc5701c96b5ab9429a62dbe44b3b2b3734e64"
+        }
+      },
+      "metrics": {},
+      "attributes": {},
+      "scores": {
+        "ledger_effects": {
+          "name": "ledger_effects",
+          "value": 1,
+          "reason": null,
+          "source": {
+            "name": "LedgerFacts",
+            "arguments": null
+          },
+          "evaluator_version": null
+        }
+      },
+      "labels": {
+        "last_step_status": {
+          "name": "last_step_status",
+          "value": "ok",
+          "reason": null,
+          "source": {
+            "name": "LedgerFacts",
+            "arguments": null
+          },
+          "evaluator_version": null
+        }
+      },
+      "assertions": {
+        "statuses": {
+          "name": "statuses",
+          "value": true,
+          "reason": "statuses=['raised', 'ok'] expected=['raised', 'ok']",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "statuses"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "responses": {
+          "name": "responses",
+          "value": true,
+          "reason": "responses match",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "responses"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "exactly_once": {
+          "name": "exactly_once",
+          "value": true,
+          "reason": "effects_per_key={'k-1': 1} expected={'k-1': 1}",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "exactly_once"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "balances": {
+          "name": "balances",
+          "value": true,
+          "reason": "balances={'acct-1': 100} expected={'acct-1': 100}",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "balances"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "receipts": {
+          "name": "receipts",
+          "value": true,
+          "reason": "receipts consistent",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "receipts"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "jobs": {
+          "name": "jobs",
+          "value": true,
+          "reason": "no job expectation",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "jobs"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "UncertaintyHonest": {
+          "name": "UncertaintyHonest",
+          "value": true,
+          "reason": "missing responses are not treated as proof of no effect",
+          "source": {
+            "name": "UncertaintyHonest",
+            "arguments": null
+          },
+          "evaluator_version": null
+        }
+      },
+      "task_duration": 0.03440837600010127,
+      "total_duration": 0.03510594367980957,
+      "source_case_name": null,
+      "trace_id": null,
+      "span_id": null,
+      "evaluator_failures": []
+    },
+    {
+      "name": "lost-response-no-retry",
+      "inputs": {
+        "id": "lost-response-no-retry",
+        "steps": [
+          {
+            "kind": "call",
+            "request": {
+              "op": "record",
+              "account": "acct-1",
+              "amount": 100,
+              "idempotency_key": "k-1",
+              "fault": "lose_response"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "description": "The effect is committed but the response is lost; the ledger, not the caller, knows.",
+        "catches": []
+      },
+      "expected_output": {
+        "statuses": [
+          "no_response"
+        ],
+        "effects_per_key": {
+          "k-1": 1
+        },
+        "balances": {
+          "acct-1": 100
+        }
+      },
+      "output": {
+        "scenario_id": "lost-response-no-retry",
+        "worker_version": "v4-nonatomic-resume",
+        "steps": [
+          {
+            "kind": "call",
+            "request": {
+              "op": "record",
+              "account": "acct-1",
+              "amount": 100,
+              "idempotency_key": "k-1",
+              "fault": "lose_response"
+            },
+            "status": "no_response",
+            "error": "ResponseLost: result for 'record' was produced and committed but not delivered",
+            "response_text": null,
+            "effect_known_from_response": false
+          }
+        ],
+        "ledger": {
+          "effects": [
+            {
+              "seq": 1,
+              "idempotency_key": "k-1",
+              "account": "acct-1",
+              "amount": 100,
+              "receipt": "r-7c35c5a1785d",
+              "worker_version": "v4-nonatomic-resume"
+            }
+          ],
+          "jobs": [],
+          "results": {
+            "k-1": "{\"account\": \"acct-1\", \"balance\": 100, \"ok\": true, \"receipt\": \"r-7c35c5a1785d\"}"
+          },
+          "balances": {
+            "acct-1": 100
+          }
+        },
+        "evidence": {
+          "ledger_db": "lost-response-no-retry--v4-nonatomic-resume.sqlite3",
+          "ledger_db_sha256": "565ef3b8f31689d53e8dc221e53dc5701c96b5ab9429a62dbe44b3b2b3734e64"
+        }
+      },
+      "metrics": {},
+      "attributes": {},
+      "scores": {
+        "ledger_effects": {
+          "name": "ledger_effects",
+          "value": 1,
+          "reason": null,
+          "source": {
+            "name": "LedgerFacts",
+            "arguments": null
+          },
+          "evaluator_version": null
+        }
+      },
+      "labels": {
+        "last_step_status": {
+          "name": "last_step_status",
+          "value": "no_response",
+          "reason": null,
+          "source": {
+            "name": "LedgerFacts",
+            "arguments": null
+          },
+          "evaluator_version": null
+        }
+      },
+      "assertions": {
+        "statuses": {
+          "name": "statuses",
+          "value": true,
+          "reason": "statuses=['no_response'] expected=['no_response']",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "statuses"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "responses": {
+          "name": "responses",
+          "value": true,
+          "reason": "responses match",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "responses"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "exactly_once": {
+          "name": "exactly_once",
+          "value": true,
+          "reason": "effects_per_key={'k-1': 1} expected={'k-1': 1}",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "exactly_once"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "balances": {
+          "name": "balances",
+          "value": true,
+          "reason": "balances={'acct-1': 100} expected={'acct-1': 100}",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "balances"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "receipts": {
+          "name": "receipts",
+          "value": true,
+          "reason": "receipts consistent",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "receipts"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "jobs": {
+          "name": "jobs",
+          "value": true,
+          "reason": "no job expectation",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "jobs"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "UncertaintyHonest": {
+          "name": "UncertaintyHonest",
+          "value": true,
+          "reason": "missing responses are not treated as proof of no effect",
+          "source": {
+            "name": "UncertaintyHonest",
+            "arguments": null
+          },
+          "evaluator_version": null
+        }
+      },
+      "task_duration": 0.03871172899971498,
+      "total_duration": 0.039301395416259766,
+      "source_case_name": null,
+      "trace_id": null,
+      "span_id": null,
+      "evaluator_failures": []
+    },
+    {
+      "name": "lost-response-then-retry",
+      "inputs": {
+        "id": "lost-response-then-retry",
+        "steps": [
+          {
+            "kind": "call",
+            "request": {
+              "op": "record",
+              "account": "acct-1",
+              "amount": 100,
+              "idempotency_key": "k-1",
+              "fault": "lose_response"
+            }
+          },
+          {
+            "kind": "call",
+            "request": {
+              "op": "record",
+              "account": "acct-1",
+              "amount": 100,
+              "idempotency_key": "k-1"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "description": "Retrying a lost response with the same key returns the original result, no new effect.",
+        "catches": [
+          "v2-dup-on-retry"
+        ]
+      },
+      "expected_output": {
+        "statuses": [
+          "no_response",
+          "ok"
+        ],
+        "effects_per_key": {
+          "k-1": 1
+        },
+        "balances": {
+          "acct-1": 100
+        },
+        "receipt_from_ledger_matches_step": 1
+      },
+      "output": {
+        "scenario_id": "lost-response-then-retry",
+        "worker_version": "v4-nonatomic-resume",
+        "steps": [
+          {
+            "kind": "call",
+            "request": {
+              "op": "record",
+              "account": "acct-1",
+              "amount": 100,
+              "idempotency_key": "k-1",
+              "fault": "lose_response"
+            },
+            "status": "no_response",
+            "error": "ResponseLost: result for 'record' was produced and committed but not delivered",
+            "response_text": null,
+            "effect_known_from_response": false
+          },
+          {
+            "kind": "call",
+            "request": {
+              "op": "record",
+              "account": "acct-1",
+              "amount": 100,
+              "idempotency_key": "k-1"
+            },
+            "response_text": "{\"account\": \"acct-1\", \"balance\": 100, \"ok\": true, \"receipt\": \"r-7c35c5a1785d\"}",
+            "parsed": {
+              "account": "acct-1",
+              "balance": 100,
+              "ok": true,
+              "receipt": "r-7c35c5a1785d"
+            },
+            "status": "ok",
+            "effect_known_from_response": true
+          }
+        ],
+        "ledger": {
+          "effects": [
+            {
+              "seq": 1,
+              "idempotency_key": "k-1",
+              "account": "acct-1",
+              "amount": 100,
+              "receipt": "r-7c35c5a1785d",
+              "worker_version": "v4-nonatomic-resume"
+            }
+          ],
+          "jobs": [],
+          "results": {
+            "k-1": "{\"account\": \"acct-1\", \"balance\": 100, \"ok\": true, \"receipt\": \"r-7c35c5a1785d\"}"
+          },
+          "balances": {
+            "acct-1": 100
+          }
+        },
+        "evidence": {
+          "ledger_db": "lost-response-then-retry--v4-nonatomic-resume.sqlite3",
+          "ledger_db_sha256": "565ef3b8f31689d53e8dc221e53dc5701c96b5ab9429a62dbe44b3b2b3734e64"
+        }
+      },
+      "metrics": {},
+      "attributes": {},
+      "scores": {
+        "ledger_effects": {
+          "name": "ledger_effects",
+          "value": 1,
+          "reason": null,
+          "source": {
+            "name": "LedgerFacts",
+            "arguments": null
+          },
+          "evaluator_version": null
+        }
+      },
+      "labels": {
+        "last_step_status": {
+          "name": "last_step_status",
+          "value": "ok",
+          "reason": null,
+          "source": {
+            "name": "LedgerFacts",
+            "arguments": null
+          },
+          "evaluator_version": null
+        }
+      },
+      "assertions": {
+        "statuses": {
+          "name": "statuses",
+          "value": true,
+          "reason": "statuses=['no_response', 'ok'] expected=['no_response', 'ok']",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "statuses"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "responses": {
+          "name": "responses",
+          "value": true,
+          "reason": "responses match",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "responses"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "exactly_once": {
+          "name": "exactly_once",
+          "value": true,
+          "reason": "effects_per_key={'k-1': 1} expected={'k-1': 1}",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "exactly_once"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "balances": {
+          "name": "balances",
+          "value": true,
+          "reason": "balances={'acct-1': 100} expected={'acct-1': 100}",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "balances"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "receipts": {
+          "name": "receipts",
+          "value": true,
+          "reason": "receipts consistent",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "receipts"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "jobs": {
+          "name": "jobs",
+          "value": true,
+          "reason": "no job expectation",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "jobs"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "UncertaintyHonest": {
+          "name": "UncertaintyHonest",
+          "value": true,
+          "reason": "missing responses are not treated as proof of no effect",
+          "source": {
+            "name": "UncertaintyHonest",
+            "arguments": null
+          },
+          "evaluator_version": null
+        }
+      },
+      "task_duration": 0.03706498299970917,
+      "total_duration": 0.038002729415893555,
+      "source_case_name": null,
+      "trace_id": null,
+      "span_id": null,
+      "evaluator_failures": []
+    },
+    {
+      "name": "duplicate-after-success",
+      "inputs": {
+        "id": "duplicate-after-success",
+        "steps": [
+          {
+            "kind": "call",
+            "request": {
+              "op": "record",
+              "account": "acct-1",
+              "amount": 100,
+              "idempotency_key": "k-1"
+            }
+          },
+          {
+            "kind": "call",
+            "request": {
+              "op": "record",
+              "account": "acct-1",
+              "amount": 100,
+              "idempotency_key": "k-1"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "description": "A duplicate of a successful request returns the same receipt and applies nothing.",
+        "catches": [
+          "v2-dup-on-retry"
+        ]
+      },
+      "expected_output": {
+        "statuses": [
+          "ok",
+          "ok"
+        ],
+        "effects_per_key": {
+          "k-1": 1
+        },
+        "balances": {
+          "acct-1": 100
+        },
+        "same_receipt_steps": [
+          0,
+          1
+        ]
+      },
+      "output": {
+        "scenario_id": "duplicate-after-success",
+        "worker_version": "v4-nonatomic-resume",
+        "steps": [
+          {
+            "kind": "call",
+            "request": {
+              "op": "record",
+              "account": "acct-1",
+              "amount": 100,
+              "idempotency_key": "k-1"
+            },
+            "response_text": "{\"account\": \"acct-1\", \"balance\": 100, \"ok\": true, \"receipt\": \"r-7c35c5a1785d\"}",
+            "parsed": {
+              "account": "acct-1",
+              "balance": 100,
+              "ok": true,
+              "receipt": "r-7c35c5a1785d"
+            },
+            "status": "ok",
+            "effect_known_from_response": true
+          },
+          {
+            "kind": "call",
+            "request": {
+              "op": "record",
+              "account": "acct-1",
+              "amount": 100,
+              "idempotency_key": "k-1"
+            },
+            "response_text": "{\"account\": \"acct-1\", \"balance\": 100, \"ok\": true, \"receipt\": \"r-7c35c5a1785d\"}",
+            "parsed": {
+              "account": "acct-1",
+              "balance": 100,
+              "ok": true,
+              "receipt": "r-7c35c5a1785d"
+            },
+            "status": "ok",
+            "effect_known_from_response": true
+          }
+        ],
+        "ledger": {
+          "effects": [
+            {
+              "seq": 1,
+              "idempotency_key": "k-1",
+              "account": "acct-1",
+              "amount": 100,
+              "receipt": "r-7c35c5a1785d",
+              "worker_version": "v4-nonatomic-resume"
+            }
+          ],
+          "jobs": [],
+          "results": {
+            "k-1": "{\"account\": \"acct-1\", \"balance\": 100, \"ok\": true, \"receipt\": \"r-7c35c5a1785d\"}"
+          },
+          "balances": {
+            "acct-1": 100
+          }
+        },
+        "evidence": {
+          "ledger_db": "duplicate-after-success--v4-nonatomic-resume.sqlite3",
+          "ledger_db_sha256": "565ef3b8f31689d53e8dc221e53dc5701c96b5ab9429a62dbe44b3b2b3734e64"
+        }
+      },
+      "metrics": {},
+      "attributes": {},
+      "scores": {
+        "ledger_effects": {
+          "name": "ledger_effects",
+          "value": 1,
+          "reason": null,
+          "source": {
+            "name": "LedgerFacts",
+            "arguments": null
+          },
+          "evaluator_version": null
+        }
+      },
+      "labels": {
+        "last_step_status": {
+          "name": "last_step_status",
+          "value": "ok",
+          "reason": null,
+          "source": {
+            "name": "LedgerFacts",
+            "arguments": null
+          },
+          "evaluator_version": null
+        }
+      },
+      "assertions": {
+        "statuses": {
+          "name": "statuses",
+          "value": true,
+          "reason": "statuses=['ok', 'ok'] expected=['ok', 'ok']",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "statuses"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "responses": {
+          "name": "responses",
+          "value": true,
+          "reason": "responses match",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "responses"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "exactly_once": {
+          "name": "exactly_once",
+          "value": true,
+          "reason": "effects_per_key={'k-1': 1} expected={'k-1': 1}",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "exactly_once"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "balances": {
+          "name": "balances",
+          "value": true,
+          "reason": "balances={'acct-1': 100} expected={'acct-1': 100}",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "balances"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "receipts": {
+          "name": "receipts",
+          "value": true,
+          "reason": "receipts consistent",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "receipts"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "jobs": {
+          "name": "jobs",
+          "value": true,
+          "reason": "no job expectation",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "jobs"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "UncertaintyHonest": {
+          "name": "UncertaintyHonest",
+          "value": true,
+          "reason": "missing responses are not treated as proof of no effect",
+          "source": {
+            "name": "UncertaintyHonest",
+            "arguments": null
+          },
+          "evaluator_version": null
+        }
+      },
+      "task_duration": 0.014003032999880816,
+      "total_duration": 0.014884233474731445,
+      "source_case_name": null,
+      "trace_id": null,
+      "span_id": null,
+      "evaluator_failures": []
+    },
+    {
+      "name": "key-reuse-different-payload",
+      "inputs": {
+        "id": "key-reuse-different-payload",
+        "steps": [
+          {
+            "kind": "call",
+            "request": {
+              "op": "record",
+              "account": "acct-1",
+              "amount": 100,
+              "idempotency_key": "k-1"
+            }
+          },
+          {
+            "kind": "call",
+            "request": {
+              "op": "record",
+              "account": "acct-1",
+              "amount": 999,
+              "idempotency_key": "k-1"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "description": "Reusing an idempotency key with a different payload is rejected without effect.",
+        "catches": [
+          "v2-dup-on-retry"
+        ]
+      },
+      "expected_output": {
+        "statuses": [
+          "ok",
+          "rejected"
+        ],
+        "responses": {
+          "1": {
+            "ok": false,
+            "error": "idempotency_conflict"
+          }
+        },
+        "effects_per_key": {
+          "k-1": 1
+        },
+        "balances": {
+          "acct-1": 100
+        }
+      },
+      "output": {
+        "scenario_id": "key-reuse-different-payload",
+        "worker_version": "v4-nonatomic-resume",
+        "steps": [
+          {
+            "kind": "call",
+            "request": {
+              "op": "record",
+              "account": "acct-1",
+              "amount": 100,
+              "idempotency_key": "k-1"
+            },
+            "response_text": "{\"account\": \"acct-1\", \"balance\": 100, \"ok\": true, \"receipt\": \"r-7c35c5a1785d\"}",
+            "parsed": {
+              "account": "acct-1",
+              "balance": 100,
+              "ok": true,
+              "receipt": "r-7c35c5a1785d"
+            },
+            "status": "ok",
+            "effect_known_from_response": true
+          },
+          {
+            "kind": "call",
+            "request": {
+              "op": "record",
+              "account": "acct-1",
+              "amount": 999,
+              "idempotency_key": "k-1"
+            },
+            "response_text": "{\"ok\": false, \"error\": \"idempotency_conflict\", \"idempotency_key\": \"k-1\"}",
+            "parsed": {
+              "ok": false,
+              "error": "idempotency_conflict",
+              "idempotency_key": "k-1"
+            },
+            "status": "rejected",
+            "effect_known_from_response": true
+          }
+        ],
+        "ledger": {
+          "effects": [
+            {
+              "seq": 1,
+              "idempotency_key": "k-1",
+              "account": "acct-1",
+              "amount": 100,
+              "receipt": "r-7c35c5a1785d",
+              "worker_version": "v4-nonatomic-resume"
+            }
+          ],
+          "jobs": [],
+          "results": {
+            "k-1": "{\"account\": \"acct-1\", \"balance\": 100, \"ok\": true, \"receipt\": \"r-7c35c5a1785d\"}"
+          },
+          "balances": {
+            "acct-1": 100
+          }
+        },
+        "evidence": {
+          "ledger_db": "key-reuse-different-payload--v4-nonatomic-resume.sqlite3",
+          "ledger_db_sha256": "565ef3b8f31689d53e8dc221e53dc5701c96b5ab9429a62dbe44b3b2b3734e64"
+        }
+      },
+      "metrics": {},
+      "attributes": {},
+      "scores": {
+        "ledger_effects": {
+          "name": "ledger_effects",
+          "value": 1,
+          "reason": null,
+          "source": {
+            "name": "LedgerFacts",
+            "arguments": null
+          },
+          "evaluator_version": null
+        }
+      },
+      "labels": {
+        "last_step_status": {
+          "name": "last_step_status",
+          "value": "rejected",
+          "reason": null,
+          "source": {
+            "name": "LedgerFacts",
+            "arguments": null
+          },
+          "evaluator_version": null
+        }
+      },
+      "assertions": {
+        "statuses": {
+          "name": "statuses",
+          "value": true,
+          "reason": "statuses=['ok', 'rejected'] expected=['ok', 'rejected']",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "statuses"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "responses": {
+          "name": "responses",
+          "value": true,
+          "reason": "responses match",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "responses"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "exactly_once": {
+          "name": "exactly_once",
+          "value": true,
+          "reason": "effects_per_key={'k-1': 1} expected={'k-1': 1}",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "exactly_once"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "balances": {
+          "name": "balances",
+          "value": true,
+          "reason": "balances={'acct-1': 100} expected={'acct-1': 100}",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "balances"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "receipts": {
+          "name": "receipts",
+          "value": true,
+          "reason": "receipts consistent",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "receipts"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "jobs": {
+          "name": "jobs",
+          "value": true,
+          "reason": "no job expectation",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "jobs"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "UncertaintyHonest": {
+          "name": "UncertaintyHonest",
+          "value": true,
+          "reason": "missing responses are not treated as proof of no effect",
+          "source": {
+            "name": "UncertaintyHonest",
+            "arguments": null
+          },
+          "evaluator_version": null
+        }
+      },
+      "task_duration": 0.014072028000100545,
+      "total_duration": 0.01470327377319336,
+      "source_case_name": null,
+      "trace_id": null,
+      "span_id": null,
+      "evaluator_failures": []
+    },
+    {
+      "name": "distinct-keys",
+      "inputs": {
+        "id": "distinct-keys",
+        "steps": [
+          {
+            "kind": "call",
+            "request": {
+              "op": "record",
+              "account": "acct-1",
+              "amount": 100,
+              "idempotency_key": "k-1"
+            }
+          },
+          {
+            "kind": "call",
+            "request": {
+              "op": "record",
+              "account": "acct-1",
+              "amount": 100,
+              "idempotency_key": "k-2"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "description": "Distinct idempotency keys are distinct effects (guards against over-deduplication).",
+        "catches": []
+      },
+      "expected_output": {
+        "statuses": [
+          "ok",
+          "ok"
+        ],
+        "effects_per_key": {
+          "k-1": 1,
+          "k-2": 1
+        },
+        "balances": {
+          "acct-1": 200
+        }
+      },
+      "output": {
+        "scenario_id": "distinct-keys",
+        "worker_version": "v4-nonatomic-resume",
+        "steps": [
+          {
+            "kind": "call",
+            "request": {
+              "op": "record",
+              "account": "acct-1",
+              "amount": 100,
+              "idempotency_key": "k-1"
+            },
+            "response_text": "{\"account\": \"acct-1\", \"balance\": 100, \"ok\": true, \"receipt\": \"r-7c35c5a1785d\"}",
+            "parsed": {
+              "account": "acct-1",
+              "balance": 100,
+              "ok": true,
+              "receipt": "r-7c35c5a1785d"
+            },
+            "status": "ok",
+            "effect_known_from_response": true
+          },
+          {
+            "kind": "call",
+            "request": {
+              "op": "record",
+              "account": "acct-1",
+              "amount": 100,
+              "idempotency_key": "k-2"
+            },
+            "response_text": "{\"account\": \"acct-1\", \"balance\": 200, \"ok\": true, \"receipt\": \"r-ab8460920d12\"}",
+            "parsed": {
+              "account": "acct-1",
+              "balance": 200,
+              "ok": true,
+              "receipt": "r-ab8460920d12"
+            },
+            "status": "ok",
+            "effect_known_from_response": true
+          }
+        ],
+        "ledger": {
+          "effects": [
+            {
+              "seq": 1,
+              "idempotency_key": "k-1",
+              "account": "acct-1",
+              "amount": 100,
+              "receipt": "r-7c35c5a1785d",
+              "worker_version": "v4-nonatomic-resume"
+            },
+            {
+              "seq": 2,
+              "idempotency_key": "k-2",
+              "account": "acct-1",
+              "amount": 100,
+              "receipt": "r-ab8460920d12",
+              "worker_version": "v4-nonatomic-resume"
+            }
+          ],
+          "jobs": [],
+          "results": {
+            "k-1": "{\"account\": \"acct-1\", \"balance\": 100, \"ok\": true, \"receipt\": \"r-7c35c5a1785d\"}",
+            "k-2": "{\"account\": \"acct-1\", \"balance\": 200, \"ok\": true, \"receipt\": \"r-ab8460920d12\"}"
+          },
+          "balances": {
+            "acct-1": 200
+          }
+        },
+        "evidence": {
+          "ledger_db": "distinct-keys--v4-nonatomic-resume.sqlite3",
+          "ledger_db_sha256": "434edf6cff3dafe319c8ee3543c8536eb2a02b136fddbc55bf62d6185482a576"
+        }
+      },
+      "metrics": {},
+      "attributes": {},
+      "scores": {
+        "ledger_effects": {
+          "name": "ledger_effects",
+          "value": 2,
+          "reason": null,
+          "source": {
+            "name": "LedgerFacts",
+            "arguments": null
+          },
+          "evaluator_version": null
+        }
+      },
+      "labels": {
+        "last_step_status": {
+          "name": "last_step_status",
+          "value": "ok",
+          "reason": null,
+          "source": {
+            "name": "LedgerFacts",
+            "arguments": null
+          },
+          "evaluator_version": null
+        }
+      },
+      "assertions": {
+        "statuses": {
+          "name": "statuses",
+          "value": true,
+          "reason": "statuses=['ok', 'ok'] expected=['ok', 'ok']",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "statuses"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "responses": {
+          "name": "responses",
+          "value": true,
+          "reason": "responses match",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "responses"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "exactly_once": {
+          "name": "exactly_once",
+          "value": true,
+          "reason": "effects_per_key={'k-1': 1, 'k-2': 1} expected={'k-1': 1, 'k-2': 1}",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "exactly_once"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "balances": {
+          "name": "balances",
+          "value": true,
+          "reason": "balances={'acct-1': 200} expected={'acct-1': 200}",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "balances"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "receipts": {
+          "name": "receipts",
+          "value": true,
+          "reason": "receipts consistent",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "receipts"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "jobs": {
+          "name": "jobs",
+          "value": true,
+          "reason": "no job expectation",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "jobs"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "UncertaintyHonest": {
+          "name": "UncertaintyHonest",
+          "value": true,
+          "reason": "missing responses are not treated as proof of no effect",
+          "source": {
+            "name": "UncertaintyHonest",
+            "arguments": null
+          },
+          "evaluator_version": null
+        }
+      },
+      "task_duration": 0.015779709000071307,
+      "total_duration": 0.01632094383239746,
+      "source_case_name": null,
+      "trace_id": null,
+      "span_id": null,
+      "evaluator_failures": []
+    },
+    {
+      "name": "crash-before-effect-resume",
+      "inputs": {
+        "id": "crash-before-effect-resume",
+        "steps": [
+          {
+            "kind": "submit",
+            "job_id": "job-1",
+            "request": {
+              "op": "record",
+              "account": "acct-1",
+              "amount": 100,
+              "idempotency_key": "k-1"
+            }
+          },
+          {
+            "kind": "run_process",
+            "crash_at": "before_effect"
+          },
+          {
+            "kind": "run_process",
+            "crash_at": null
+          }
+        ]
+      },
+      "metadata": {
+        "description": "SIGKILL before the effect; restart resumes the job and applies it exactly once.",
+        "catches": []
+      },
+      "expected_output": {
+        "statuses": [
+          "submitted",
+          "terminated",
+          "ok"
+        ],
+        "effects_per_key": {
+          "k-1": 1
+        },
+        "jobs_done": [
+          "job-1"
+        ]
+      },
+      "output": {
+        "scenario_id": "crash-before-effect-resume",
+        "worker_version": "v4-nonatomic-resume",
+        "steps": [
+          {
+            "kind": "submit",
+            "status": "submitted",
+            "job_id": "job-1"
+          },
+          {
+            "kind": "run_process",
+            "crash_at": "before_effect",
+            "returncode": -9,
+            "status": "terminated",
+            "effect_known_from_response": false
+          },
+          {
+            "kind": "run_process",
+            "crash_at": null,
+            "returncode": 0,
+            "status": "ok",
+            "parsed": {
+              "completed": [
+                "job-1"
+              ]
+            },
+            "effect_known_from_response": true
+          }
+        ],
+        "ledger": {
+          "effects": [
+            {
+              "seq": 1,
+              "idempotency_key": "k-1",
+              "account": "acct-1",
+              "amount": 100,
+              "receipt": "r-7c35c5a1785d",
+              "worker_version": "v4-nonatomic-resume"
+            }
+          ],
+          "jobs": [
+            {
+              "job_id": "job-1",
+              "status": "done",
+              "response": "{\"account\": \"acct-1\", \"balance\": 100, \"ok\": true, \"receipt\": \"r-7c35c5a1785d\"}"
+            }
+          ],
+          "results": {},
+          "balances": {
+            "acct-1": 100
+          }
+        },
+        "evidence": {
+          "ledger_db": "crash-before-effect-resume--v4-nonatomic-resume.sqlite3",
+          "ledger_db_sha256": "5404abde4f9cb112ce80f9f4203409fd2a612bfe32dfa1d3d0789fb39ebfde41"
+        }
+      },
+      "metrics": {},
+      "attributes": {},
+      "scores": {
+        "ledger_effects": {
+          "name": "ledger_effects",
+          "value": 1,
+          "reason": null,
+          "source": {
+            "name": "LedgerFacts",
+            "arguments": null
+          },
+          "evaluator_version": null
+        }
+      },
+      "labels": {
+        "last_step_status": {
+          "name": "last_step_status",
+          "value": "ok",
+          "reason": null,
+          "source": {
+            "name": "LedgerFacts",
+            "arguments": null
+          },
+          "evaluator_version": null
+        }
+      },
+      "assertions": {
+        "statuses": {
+          "name": "statuses",
+          "value": true,
+          "reason": "statuses=['submitted', 'terminated', 'ok'] expected=['submitted', 'terminated', 'ok']",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "statuses"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "responses": {
+          "name": "responses",
+          "value": true,
+          "reason": "responses match",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "responses"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "exactly_once": {
+          "name": "exactly_once",
+          "value": true,
+          "reason": "effects_per_key={'k-1': 1} expected={'k-1': 1}",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "exactly_once"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "balances": {
+          "name": "balances",
+          "value": true,
+          "reason": "no balance expectation",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "balances"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "receipts": {
+          "name": "receipts",
+          "value": true,
+          "reason": "receipts consistent",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "receipts"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "jobs": {
+          "name": "jobs",
+          "value": true,
+          "reason": "jobs_done=['job-1'] expected=['job-1']",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "jobs"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "UncertaintyHonest": {
+          "name": "UncertaintyHonest",
+          "value": true,
+          "reason": "missing responses are not treated as proof of no effect",
+          "source": {
+            "name": "UncertaintyHonest",
+            "arguments": null
+          },
+          "evaluator_version": null
+        }
+      },
+      "task_duration": 0.08921145400017849,
+      "total_duration": 0.08994102478027344,
+      "source_case_name": null,
+      "trace_id": null,
+      "span_id": null,
+      "evaluator_failures": []
+    },
+    {
+      "name": "crash-after-effect-resume",
+      "inputs": {
+        "id": "crash-after-effect-resume",
+        "steps": [
+          {
+            "kind": "submit",
+            "job_id": "job-1",
+            "request": {
+              "op": "record",
+              "account": "acct-1",
+              "amount": 100,
+              "idempotency_key": "k-1"
+            }
+          },
+          {
+            "kind": "run_process",
+            "crash_at": "after_effect"
+          },
+          {
+            "kind": "run_process",
+            "crash_at": null
+          }
+        ]
+      },
+      "metadata": {
+        "description": "SIGKILL after the effect commit; restart must not apply the effect again.",
+        "catches": [
+          "v4-nonatomic-resume"
+        ]
+      },
+      "expected_output": {
+        "statuses": [
+          "submitted",
+          "terminated",
+          "ok"
+        ],
+        "effects_per_key": {
+          "k-1": 1
+        },
+        "jobs_done": [
+          "job-1"
+        ],
+        "balances": {
+          "acct-1": 100
+        }
+      },
+      "output": {
+        "scenario_id": "crash-after-effect-resume",
+        "worker_version": "v4-nonatomic-resume",
+        "steps": [
+          {
+            "kind": "submit",
+            "status": "submitted",
+            "job_id": "job-1"
+          },
+          {
+            "kind": "run_process",
+            "crash_at": "after_effect",
+            "returncode": -9,
+            "status": "terminated",
+            "effect_known_from_response": false
+          },
+          {
+            "kind": "run_process",
+            "crash_at": null,
+            "returncode": 0,
+            "status": "ok",
+            "parsed": {
+              "completed": [
+                "job-1"
+              ]
+            },
+            "effect_known_from_response": true
+          }
+        ],
+        "ledger": {
+          "effects": [
+            {
+              "seq": 1,
+              "idempotency_key": "k-1",
+              "account": "acct-1",
+              "amount": 100,
+              "receipt": "r-7c35c5a1785d",
+              "worker_version": "v4-nonatomic-resume"
+            },
+            {
+              "seq": 2,
+              "idempotency_key": "k-1",
+              "account": "acct-1",
+              "amount": 100,
+              "receipt": "r-7c35c5a1785d",
+              "worker_version": "v4-nonatomic-resume"
+            }
+          ],
+          "jobs": [
+            {
+              "job_id": "job-1",
+              "status": "done",
+              "response": "{\"account\": \"acct-1\", \"balance\": 200, \"ok\": true, \"receipt\": \"r-7c35c5a1785d\"}"
+            }
+          ],
+          "results": {},
+          "balances": {
+            "acct-1": 200
+          }
+        },
+        "evidence": {
+          "ledger_db": "crash-after-effect-resume--v4-nonatomic-resume.sqlite3",
+          "ledger_db_sha256": "83382d0dcd05ecd94754f4ea83c727b85079a56e7e8111702a591599f98dd36b"
+        }
+      },
+      "metrics": {},
+      "attributes": {},
+      "scores": {
+        "ledger_effects": {
+          "name": "ledger_effects",
+          "value": 2,
+          "reason": null,
+          "source": {
+            "name": "LedgerFacts",
+            "arguments": null
+          },
+          "evaluator_version": null
+        }
+      },
+      "labels": {
+        "last_step_status": {
+          "name": "last_step_status",
+          "value": "ok",
+          "reason": null,
+          "source": {
+            "name": "LedgerFacts",
+            "arguments": null
+          },
+          "evaluator_version": null
+        }
+      },
+      "assertions": {
+        "statuses": {
+          "name": "statuses",
+          "value": true,
+          "reason": "statuses=['submitted', 'terminated', 'ok'] expected=['submitted', 'terminated', 'ok']",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "statuses"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "responses": {
+          "name": "responses",
+          "value": true,
+          "reason": "responses match",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "responses"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "exactly_once": {
+          "name": "exactly_once",
+          "value": false,
+          "reason": "effects_per_key={'k-1': 2} expected={'k-1': 1}",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "exactly_once"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "balances": {
+          "name": "balances",
+          "value": false,
+          "reason": "balances={'acct-1': 200} expected={'acct-1': 100}",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "balances"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "receipts": {
+          "name": "receipts",
+          "value": true,
+          "reason": "receipts consistent",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "receipts"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "jobs": {
+          "name": "jobs",
+          "value": true,
+          "reason": "jobs_done=['job-1'] expected=['job-1']",
+          "source": {
+            "name": "ScenarioCheck",
+            "arguments": [
+              "jobs"
+            ]
+          },
+          "evaluator_version": "v1"
+        },
+        "UncertaintyHonest": {
+          "name": "UncertaintyHonest",
+          "value": true,
+          "reason": "missing responses are not treated as proof of no effect",
+          "source": {
+            "name": "UncertaintyHonest",
+            "arguments": null
+          },
+          "evaluator_version": null
+        }
+      },
+      "task_duration": 0.08995890100004544,
+      "total_duration": 0.09047150611877441,
+      "source_case_name": null,
+      "trace_id": null,
+      "span_id": null,
+      "evaluator_failures": []
+    }
+  ],
+  "failures": [],
+  "analyses": [],
+  "report_evaluator_failures": [],
+  "experiment_metadata": {
+    "worker_version": "v4-nonatomic-resume",
+    "dataset_digest": "sha256:48bf4a1792c48e9dcd1a4003dfa19ebe32313a47a8ad2f5104f2dc9e6cb45773",
+    "environment": {
+      "os": "Linux",
+      "os_release": "6.18.44-fc-v139",
+      "machine": "x86_64",
+      "python": "3.13.16",
+      "python_implementation": "CPython",
+      "executable_is_venv": true,
+      "packages": {
+        "pydantic-evals": "2.57.1.dev17+a3251fb",
+        "pydantic-ai-slim": "2.57.1.dev17+a3251fb",
+        "pydantic-graph": "2.57.1.dev17+a3251fb",
+        "pydantic": "2.14.1",
+        "logfire": null,
+        "logfire-api": "5.2.0",
+        "opentelemetry-api": "1.45.1",
+        "opentelemetry-sdk": null,
+        "hypothesis": "6.170.0",
+        "pytest": "9.1.1"
+      },
+      "source_commit": "0dbcd43dcb41c464bd61018d2f20d4b08ca77b84",
+      "qualification": "linux-cloud-only; NOT a macOS result",
+      "cpu_count": 4
+    }
+  },
+  "trace_id": null,
+  "span_id": null,
+  "dataset_name": "synthetic-worker"
+}

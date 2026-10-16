@@ -1,0 +1,3 @@
+import time:       193 |     596453 | pydantic_evals
+import time:       237 |     555684 | pydantic_evals
+import time:       145 |     705886 | pydantic_evals

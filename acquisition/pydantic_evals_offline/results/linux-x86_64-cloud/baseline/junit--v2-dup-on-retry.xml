@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="9" skipped="0" tests="81" time="1.819" timestamp="2026-10-16T06:38:31.275509+00:00" hostname="vm"><properties><property name="hypothesis-statistics-baseline/test_worker_baseline.py::test_sum_matches_reference" value="YmFzZWxpbmUvdGVzdF93b3JrZXJfYmFzZWxpbmUucHk6OnRlc3Rfc3VtX21hdGNoZXNfcmVmZXJlbmNlOgoKICAtIGR1cmluZyBnZW5lcmF0ZSBwaGFzZSAoMC4zNyBzZWNvbmRzKToKICAgIC0gVHlwaWNhbCBydW50aW1lczogfiAwLTEgbXMsIG9mIHdoaWNoIDwgMW1zIGluIGRhdGEgZ2VuZXJhdGlvbgogICAgLSAyMDAgcGFzc2luZywgMCBmYWlsaW5nLCBhbmQgMzQgaW52YWxpZCB0ZXN0IGNhc2VzCgogIC0gU3RvcHBlZCBiZWNhdXNlIHNldHRpbmdzLm1heF9leGFtcGxlcz0yMDA=" /><property name="hypothesis-statistics-baseline/test_worker_baseline.py::test_lookup_missing_is_explicit" value="YmFzZWxpbmUvdGVzdF93b3JrZXJfYmFzZWxpbmUucHk6OnRlc3RfbG9va3VwX21pc3NpbmdfaXNfZXhwbGljaXQ6CgogIC0gZHVyaW5nIGdlbmVyYXRlIHBoYXNlICgwLjI1IHNlY29uZHMpOgogICAgLSBUeXBpY2FsIHJ1bnRpbWVzOiB+IDAtMSBtcywgb2Ygd2hpY2ggPCAxbXMgaW4gZGF0YSBnZW5lcmF0aW9uCiAgICAtIDIwMCBwYXNzaW5nLCAwIGZhaWxpbmcsIGFuZCAwIGludmFsaWQgdGVzdCBjYXNlcwoKICAtIFN0b3BwZWQgYmVjYXVzZSBzZXR0aW5ncy5tYXhfZXhhbXBsZXM9MjAw" /><property name="hypothesis-statistics-baseline/test_worker_baseline.py::TestLedgerMachine::runTest" value="YmFzZWxpbmUvdGVzdF93b3JrZXJfYmFzZWxpbmUucHk6OlRlc3RMZWRnZXJNYWNoaW5lOjpydW5UZXN0OgoKICAtIGR1cmluZyBnZW5lcmF0ZSBwaGFzZSAoMC4xNyBzZWNvbmRzKToKICAgIC0gVHlwaWNhbCBydW50aW1lczogfiA5LTI3IG1zLCBvZiB3aGljaCB+IDAtMiBtcyBpbiBkYXRhIGdlbmVyYXRpb24KICAgIC0gMCBwYXNzaW5nLCA2IGZhaWxpbmcsIGFuZCA0IGludmFsaWQgdGVzdCBjYXNlcwogICAgLSBGb3VuZCAxIGRpc3RpbmN0IGVycm9yIGluIHRoaXMgcGhhc2UKICAgIC0gRXZlbnRzOgogICAgICAqIDkwLjAwJSwgUmV0cmllZCBkcmF3IGZyb20gc2FtcGxlZF9mcm9tKFtSdWxlKGZ1bmN0aW9uPXJldHJ5X2V2ZXJ5dGhpbmcsIHByZWNvbmRpdGlvbnM9KDxmdW5jdGlvbiBMZWRnZXJNYWNoaW5lLjxsYW1iZGE+IGF0IDB4N2YzYzg5NTQ5ZDAwPiwpLCBfY2FjaGVkX2hhc2g9LTE4Njc0MTYxNzQzMjI5MTY0MDYpLCBSdWxlKGZ1bmN0aW9uPWpvYl93aXRoX2NyYXNoX2FuZF9yZXN0YXJ0LCBhcmd1bWVudHM9eydrZXknOiBzYW1wbGVkX2Zyb20oWydrMCcsICdrMScsICdrMicsICdrMyddKSwgJ2NyYXNoX2F0Jzogc2FtcGxlZF9mcm9tKFtOb25lLCAnYmVmb3JlX2VmZmVjdCcsICdhZnRlcl9lZmZlY3QnLCAnYWZ0ZXJfZG9uZSddKX0sIF9jYWNoZWRfaGFzaD0tMTA1MjY2NDE5NDc3MTk0NTU4MiwgYXJndW1lbnRzX3N0cmF0ZWdpZXM9eydjcmFzaF9hdCc6IHNhbXBsZWRfZnJvbShbTm9uZSwgJ2JlZm9yZV9lZmZlY3QnLCAnYWZ0ZXJfZWZmZWN0JywgJ2FmdGVyX2RvbmUnXSksICdrZXknOiBzYW1wbGVkX2Zyb20oWydrMCcsICdrMScsICdrMicsICdrMyddKX0pLCBSdWxlKGZ1bmN0aW9uPXJlY29yZCwgYXJndW1lbnRzPXsna2V5Jzogc2FtcGxlZF9mcm9tKFsnazAnLCAnazEnLCAnazInXSksICdhbW91bnQnOiBpbnRlZ2VycyhtaW5fdmFsdWU9MSwgbWF4X3ZhbHVlPTEwMDApLCAnZmF1bHQnOiBzYW1wbGVkX2Zyb20oW05vbmUsICdyYWlzZV9iZWZvcmVfZWZmZWN0JywgJ2xvc2VfcmVzcG9uc2UnLCAndHJ1bmNhdGVfb3V0cHV0J10pfSwgX2NhY2hlZF9oYXNoPTEzNjQ5NjU5NjA3MzY0MTc4NCwgYXJndW1lbnRzX3N0cmF0ZWdpZXM9eydhbW91bnQnOiBpbnRlZ2VycyhtaW5fdmFsdWU9MSwgbWF4X3ZhbHVlPTEwMDApLCAnZmF1bHQnOiBzYW1wbGVkX2Zyb20oW05vbmUsICdyYWlzZV9iZWZvcmVfZWZmZWN0JywgJ2xvc2VfcmVzcG9uc2UnLCAndHJ1bmNhdGVfb3V0cHV0J10pLCAna2V5Jzogc2FtcGxlZF9mcm9tKFsnazAnLCAnazEnLCAnazInXSl9KV0pLmZpbHRlcihSdWxlU3RyYXRlZ3kobWFjaGluZT1MZWRnZXJNYWNoaW5lKHsuLi59KSkuX3J1bGVfaXNfZW5hYmxlZCkgdG8gc2F0aXNmeSBmaWx0ZXIKICAgICAgKiAxMC4wMCUsIGdhdmUgdXAgYmVjYXVzZTogQWJvcnRlZCB0ZXN0IGJlY2F1c2UgdW5hYmxlIHRvIHNhdGlzZnkgc2FtcGxlZF9mcm9tKFtSdWxlKGZ1bmN0aW9uPXJldHJ5X2V2ZXJ5dGhpbmcsIHByZWNvbmRpdGlvbnM9KDxmdW5jdGlvbiBMZWRnZXJNYWNoaW5lLjxsYW1iZGE+IGF0IDB4N2YzYzg5NTQ5ZDAwPiwpLCBfY2FjaGVkX2hhc2g9LTE4Njc0MTYxNzQzMjI5MTY0MDYpLCBSdWxlKGZ1bmN0aW9uPWpvYl93aXRoX2NyYXNoX2FuZF9yZXN0YXJ0LCBhcmd1bWVudHM9eydrZXknOiBzYW1wbGVkX2Zyb20oWydrMCcsICdrMScsICdrMicsICdrMyddKSwgJ2NyYXNoX2F0Jzogc2FtcGxlZF9mcm9tKFtOb25lLCAnYmVmb3JlX2VmZmVjdCcsICdhZnRlcl9lZmZlY3QnLCAnYWZ0ZXJfZG9uZSddKX0sIF9jYWNoZWRfaGFzaD0tMTA1MjY2NDE5NDc3MTk0NTU4MiwgYXJndW1lbnRzX3N0cmF0ZWdpZXM9eydjcmFzaF9hdCc6IHNhbXBsZWRfZnJvbShbTm9uZSwgJ2JlZm9yZV9lZmZlY3QnLCAnYWZ0ZXJfZWZmZWN0JywgJ2FmdGVyX2RvbmUnXSksICdrZXknOiBzYW1wbGVkX2Zyb20oWydrMCcsICdrMScsICdrMicsICdrMyddKX0pLCBSdWxlKGZ1bmN0aW9uPXJlY29yZCwgYXJndW1lbnRzPXsna2V5Jzogc2FtcGxlZF9mcm9tKFsnazAnLCAnazEnLCAnazInXSksICdhbW91bnQnOiBpbnRlZ2VycyhtaW5fdmFsdWU9MSwgbWF4X3ZhbHVlPTEwMDApLCAnZmF1bHQnOiBzYW1wbGVkX2Zyb20oW05vbmUsICdyYWlzZV9iZWZvcmVfZWZmZWN0JywgJ2xvc2VfcmVzcG9uc2UnLCAndHJ1bmNhdGVfb3V0cHV0J10pfSwgX2NhY2hlZF9oYXNoPTEzNjQ5NjU5NjA3MzY0MTc4NCwgYXJndW1lbnRzX3N0cmF0ZWdpZXM9eydhbW91bnQnOiBpbnRlZ2VycyhtaW5fdmFsdWU9MSwgbWF4X3ZhbHVlPTEwMDApLCAnZmF1bHQnOiBzYW1wbGVkX2Zyb20oW05vbmUsICdyYWlzZV9iZWZvcmVfZWZmZWN0JywgJ2xvc2VfcmVzcG9uc2UnLCAndHJ1bmNhdGVfb3V0cHV0J10pLCAna2V5Jzogc2FtcGxlZF9mcm9tKFsnazAnLCAnazEnLCAnazInXSl9KV0pLmZpbHRlcihSdWxlU3RyYXRlZ3kobWFjaGluZT1MZWRnZXJNYWNoaW5lKHsuLi59KSkuX3J1bGVfaXNfZW5hYmxlZCkKCiAgLSBkdXJpbmcgc2hyaW5rIHBoYXNlICgwLjUwIHNlY29uZHMpOgogICAgLSBUeXBpY2FsIHJ1bnRpbWVzOiB+IDYtMjAgbXMsIG9mIHdoaWNoIDwgMW1zIGluIGRhdGEgZ2VuZXJhdGlvbgogICAgLSAwIHBhc3NpbmcsIDEyIGZhaWxpbmcsIGFuZCAyNCBpbnZhbGlkIHRlc3QgY2FzZXMKICAgIC0gVHJpZWQgMzYgc2hyaW5rcyBvZiB3aGljaCA4IHdlcmUgc3VjY2Vzc2Z1bAoKICAtIFN0b3BwZWQgYmVjYXVzZSBub3RoaW5nIGxlZnQgdG8gZG8=" /></properties><testcase classname="baseline.test_worker_baseline" name="test_scenario[lookup-hit-statuses]" time="0.009" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[lookup-hit-responses]" time="0.001" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[lookup-hit-exactly_once]" time="0.001" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[lookup-hit-balances]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[lookup-hit-receipts]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[lookup-hit-jobs]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[lookup-miss-statuses]" time="0.007" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[lookup-miss-responses]" time="0.001" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[lookup-miss-exactly_once]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[lookup-miss-balances]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[lookup-miss-receipts]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[lookup-miss-jobs]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[sum-correct-statuses]" time="0.006" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[sum-correct-responses]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[sum-correct-exactly_once]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[sum-correct-balances]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[sum-correct-receipts]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[sum-correct-jobs]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[sum-mixed-sign-statuses]" time="0.006" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[sum-mixed-sign-responses]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[sum-mixed-sign-exactly_once]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[sum-mixed-sign-balances]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[sum-mixed-sign-receipts]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[sum-mixed-sign-jobs]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[balance-truncated-statuses]" time="0.009" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[balance-truncated-responses]" time="0.001" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[balance-truncated-exactly_once]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[balance-truncated-balances]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[balance-truncated-receipts]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[balance-truncated-jobs]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[raise-before-effect-then-retry-statuses]" time="0.008" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[raise-before-effect-then-retry-responses]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[raise-before-effect-then-retry-exactly_once]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[raise-before-effect-then-retry-balances]" time="0.001" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[raise-before-effect-then-retry-receipts]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[raise-before-effect-then-retry-jobs]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[lost-response-no-retry-statuses]" time="0.008" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[lost-response-no-retry-responses]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[lost-response-no-retry-exactly_once]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[lost-response-no-retry-balances]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[lost-response-no-retry-receipts]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[lost-response-no-retry-jobs]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[lost-response-then-retry-statuses]" time="0.009" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[lost-response-then-retry-responses]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[lost-response-then-retry-exactly_once]" time="0.001"><failure message="AssertionError: effects_per_key={'k-1': 2} expected={'k-1': 1}&#10;assert False">scenario = Scenario(id='lost-response-then-retry', description='Retrying a lost response with the same key returns the original r...per_key': {'k-1': 1}, 'balances': {'acct-1': 100}, 'receipt_from_ledger_matches_step': 1}, catches=['v2-dup-on-retry'])
+check = 'exactly_once', impl = 'v2-dup-on-retry'
+
+    @pytest.mark.parametrize('check', list(ALL_CHECKS), ids=list(ALL_CHECKS))
+    @pytest.mark.parametrize('scenario', SCENARIOS, ids=[s.id for s in SCENARIOS])
+    def test_scenario(scenario: Any, check: str, impl: str) -&gt; None:
+        observation = _observe(impl, scenario)
+        passed, reason = ALL_CHECKS[check](observation, scenario.expected)
+&gt;       assert passed, reason
+E       AssertionError: effects_per_key={'k-1': 2} expected={'k-1': 1}
+E       assert False
+
+baseline/test_worker_baseline.py:52: AssertionError</failure></testcase><testcase classname="baseline.test_worker_baseline" name="test_scenario[lost-response-then-retry-balances]" time="0.001"><failure message="AssertionError: balances={'acct-1': 200} expected={'acct-1': 100}&#10;assert False">scenario = Scenario(id='lost-response-then-retry', description='Retrying a lost response with the same key returns the original r...per_key': {'k-1': 1}, 'balances': {'acct-1': 100}, 'receipt_from_ledger_matches_step': 1}, catches=['v2-dup-on-retry'])
+check = 'balances', impl = 'v2-dup-on-retry'
+
+    @pytest.mark.parametrize('check', list(ALL_CHECKS), ids=list(ALL_CHECKS))
+    @pytest.mark.parametrize('scenario', SCENARIOS, ids=[s.id for s in SCENARIOS])
+    def test_scenario(scenario: Any, check: str, impl: str) -&gt; None:
+        observation = _observe(impl, scenario)
+        passed, reason = ALL_CHECKS[check](observation, scenario.expected)
+&gt;       assert passed, reason
+E       AssertionError: balances={'acct-1': 200} expected={'acct-1': 100}
+E       assert False
+
+baseline/test_worker_baseline.py:52: AssertionError</failure></testcase><testcase classname="baseline.test_worker_baseline" name="test_scenario[lost-response-then-retry-receipts]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[lost-response-then-retry-jobs]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[duplicate-after-success-statuses]" time="0.008" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[duplicate-after-success-responses]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[duplicate-after-success-exactly_once]" time="0.000"><failure message="AssertionError: effects_per_key={'k-1': 2} expected={'k-1': 1}&#10;assert False">scenario = Scenario(id='duplicate-after-success', description='A duplicate of a successful request returns the same receipt and a...'effects_per_key': {'k-1': 1}, 'balances': {'acct-1': 100}, 'same_receipt_steps': [0, 1]}, catches=['v2-dup-on-retry'])
+check = 'exactly_once', impl = 'v2-dup-on-retry'
+
+    @pytest.mark.parametrize('check', list(ALL_CHECKS), ids=list(ALL_CHECKS))
+    @pytest.mark.parametrize('scenario', SCENARIOS, ids=[s.id for s in SCENARIOS])
+    def test_scenario(scenario: Any, check: str, impl: str) -&gt; None:
+        observation = _observe(impl, scenario)
+        passed, reason = ALL_CHECKS[check](observation, scenario.expected)
+&gt;       assert passed, reason
+E       AssertionError: effects_per_key={'k-1': 2} expected={'k-1': 1}
+E       assert False
+
+baseline/test_worker_baseline.py:52: AssertionError</failure></testcase><testcase classname="baseline.test_worker_baseline" name="test_scenario[duplicate-after-success-balances]" time="0.001"><failure message="AssertionError: balances={'acct-1': 200} expected={'acct-1': 100}&#10;assert False">scenario = Scenario(id='duplicate-after-success', description='A duplicate of a successful request returns the same receipt and a...'effects_per_key': {'k-1': 1}, 'balances': {'acct-1': 100}, 'same_receipt_steps': [0, 1]}, catches=['v2-dup-on-retry'])
+check = 'balances', impl = 'v2-dup-on-retry'
+
+    @pytest.mark.parametrize('check', list(ALL_CHECKS), ids=list(ALL_CHECKS))
+    @pytest.mark.parametrize('scenario', SCENARIOS, ids=[s.id for s in SCENARIOS])
+    def test_scenario(scenario: Any, check: str, impl: str) -&gt; None:
+        observation = _observe(impl, scenario)
+        passed, reason = ALL_CHECKS[check](observation, scenario.expected)
+&gt;       assert passed, reason
+E       AssertionError: balances={'acct-1': 200} expected={'acct-1': 100}
+E       assert False
+
+baseline/test_worker_baseline.py:52: AssertionError</failure></testcase><testcase classname="baseline.test_worker_baseline" name="test_scenario[duplicate-after-success-receipts]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[duplicate-after-success-jobs]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[key-reuse-different-payload-statuses]" time="0.009"><failure message="AssertionError: statuses=['ok', 'ok'] expected=['ok', 'rejected']&#10;assert False">scenario = Scenario(id='key-reuse-different-payload', description='Reusing an idempotency key with a different payload is rejecte...r': 'idempotency_conflict'}}, 'effects_per_key': {'k-1': 1}, 'balances': {'acct-1': 100}}, catches=['v2-dup-on-retry'])
+check = 'statuses', impl = 'v2-dup-on-retry'
+
+    @pytest.mark.parametrize('check', list(ALL_CHECKS), ids=list(ALL_CHECKS))
+    @pytest.mark.parametrize('scenario', SCENARIOS, ids=[s.id for s in SCENARIOS])
+    def test_scenario(scenario: Any, check: str, impl: str) -&gt; None:
+        observation = _observe(impl, scenario)
+        passed, reason = ALL_CHECKS[check](observation, scenario.expected)
+&gt;       assert passed, reason
+E       AssertionError: statuses=['ok', 'ok'] expected=['ok', 'rejected']
+E       assert False
+
+baseline/test_worker_baseline.py:52: AssertionError</failure></testcase><testcase classname="baseline.test_worker_baseline" name="test_scenario[key-reuse-different-payload-responses]" time="0.001"><failure message="AssertionError: step 1: expected {'ok': False, 'error': 'idempotency_conflict'}, got {'ok': True, 'error': None}&#10;assert False">scenario = Scenario(id='key-reuse-different-payload', description='Reusing an idempotency key with a different payload is rejecte...r': 'idempotency_conflict'}}, 'effects_per_key': {'k-1': 1}, 'balances': {'acct-1': 100}}, catches=['v2-dup-on-retry'])
+check = 'responses', impl = 'v2-dup-on-retry'
+
+    @pytest.mark.parametrize('check', list(ALL_CHECKS), ids=list(ALL_CHECKS))
+    @pytest.mark.parametrize('scenario', SCENARIOS, ids=[s.id for s in SCENARIOS])
+    def test_scenario(scenario: Any, check: str, impl: str) -&gt; None:
+        observation = _observe(impl, scenario)
+        passed, reason = ALL_CHECKS[check](observation, scenario.expected)
+&gt;       assert passed, reason
+E       AssertionError: step 1: expected {'ok': False, 'error': 'idempotency_conflict'}, got {'ok': True, 'error': None}
+E       assert False
+
+baseline/test_worker_baseline.py:52: AssertionError</failure></testcase><testcase classname="baseline.test_worker_baseline" name="test_scenario[key-reuse-different-payload-exactly_once]" time="0.001"><failure message="AssertionError: effects_per_key={'k-1': 2} expected={'k-1': 1}&#10;assert False">scenario = Scenario(id='key-reuse-different-payload', description='Reusing an idempotency key with a different payload is rejecte...r': 'idempotency_conflict'}}, 'effects_per_key': {'k-1': 1}, 'balances': {'acct-1': 100}}, catches=['v2-dup-on-retry'])
+check = 'exactly_once', impl = 'v2-dup-on-retry'
+
+    @pytest.mark.parametrize('check', list(ALL_CHECKS), ids=list(ALL_CHECKS))
+    @pytest.mark.parametrize('scenario', SCENARIOS, ids=[s.id for s in SCENARIOS])
+    def test_scenario(scenario: Any, check: str, impl: str) -&gt; None:
+        observation = _observe(impl, scenario)
+        passed, reason = ALL_CHECKS[check](observation, scenario.expected)
+&gt;       assert passed, reason
+E       AssertionError: effects_per_key={'k-1': 2} expected={'k-1': 1}
+E       assert False
+
+baseline/test_worker_baseline.py:52: AssertionError</failure></testcase><testcase classname="baseline.test_worker_baseline" name="test_scenario[key-reuse-different-payload-balances]" time="0.001"><failure message="AssertionError: balances={'acct-1': 1099} expected={'acct-1': 100}&#10;assert False">scenario = Scenario(id='key-reuse-different-payload', description='Reusing an idempotency key with a different payload is rejecte...r': 'idempotency_conflict'}}, 'effects_per_key': {'k-1': 1}, 'balances': {'acct-1': 100}}, catches=['v2-dup-on-retry'])
+check = 'balances', impl = 'v2-dup-on-retry'
+
+    @pytest.mark.parametrize('check', list(ALL_CHECKS), ids=list(ALL_CHECKS))
+    @pytest.mark.parametrize('scenario', SCENARIOS, ids=[s.id for s in SCENARIOS])
+    def test_scenario(scenario: Any, check: str, impl: str) -&gt; None:
+        observation = _observe(impl, scenario)
+        passed, reason = ALL_CHECKS[check](observation, scenario.expected)
+&gt;       assert passed, reason
+E       AssertionError: balances={'acct-1': 1099} expected={'acct-1': 100}
+E       assert False
+
+baseline/test_worker_baseline.py:52: AssertionError</failure></testcase><testcase classname="baseline.test_worker_baseline" name="test_scenario[key-reuse-different-payload-receipts]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[key-reuse-different-payload-jobs]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[distinct-keys-statuses]" time="0.009" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[distinct-keys-responses]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[distinct-keys-exactly_once]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[distinct-keys-balances]" time="0.001" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[distinct-keys-receipts]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[distinct-keys-jobs]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[crash-before-effect-resume-statuses]" time="0.112" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[crash-before-effect-resume-responses]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[crash-before-effect-resume-exactly_once]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[crash-before-effect-resume-balances]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[crash-before-effect-resume-receipts]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[crash-before-effect-resume-jobs]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[crash-after-effect-resume-statuses]" time="0.092" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[crash-after-effect-resume-responses]" time="0.001" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[crash-after-effect-resume-exactly_once]" time="0.001" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[crash-after-effect-resume-balances]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[crash-after-effect-resume-receipts]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_scenario[crash-after-effect-resume-jobs]" time="0.000" /><testcase classname="baseline.test_worker_baseline" name="test_sum_matches_reference" time="0.377" /><testcase classname="baseline.test_worker_baseline" name="test_lookup_missing_is_explicit" time="0.269" /><testcase classname="baseline.test_worker_baseline.TestLedgerMachine" name="runTest" time="0.708"><failure message="AssertionError: duplicate effects: {'k0': 2}&#10;assert False&#10; +  where False = all(&lt;generator object LedgerMachine.exactly_once.&lt;locals&gt;.&lt;genexpr&gt; at 0x7f3c88f0eb50&gt;)&#10;Failing test case: &lt;state machine&gt;&#10;state = LedgerMachine()&#10;state.exactly_once()&#10;state.job_with_crash_and_restart(crash_at=None, key='k0')&#10;state.exactly_once()&#10;state.retry_everything()&#10;state.exactly_once()&#10;state.teardown()">self = &lt;hypothesis.stateful.LedgerMachine.TestCase testMethod=runTest&gt;
+
+    def runTest(self):
+&gt;       run_state_machine_as_test(cls, settings=self.settings)
+
+$WORK/venv-A/lib/python3.13/site-packages/hypothesis/stateful.py:507:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+$WORK/venv-A/lib/python3.13/site-packages/hypothesis/stateful.py:271: in run_state_machine_as_test
+    state_machine_test()
+$WORK/venv-A/lib/python3.13/site-packages/hypothesis/stateful.py:122: in run_state_machine
+    @given(st.data())
+               ^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = LedgerMachine({})
+
+    @invariant()
+    def exactly_once(self) -&gt; None:
+        snapshot = ledger_snapshot(self.db)
+        counts = effects_per_key({'ledger': snapshot})
+&gt;       assert all(n == 1 for n in counts.values()), f'duplicate effects: {counts}'
+E       AssertionError: duplicate effects: {'k0': 2}
+E       assert False
+E        +  where False = all(&lt;generator object LedgerMachine.exactly_once.&lt;locals&gt;.&lt;genexpr&gt; at 0x7f3c88f0eb50&gt;)
+E       Failing test case: &lt;state machine&gt;
+E       state = LedgerMachine()
+E       state.exactly_once()
+E       state.job_with_crash_and_restart(crash_at=None, key='k0')
+E       state.exactly_once()
+E       state.retry_everything()
+E       state.exactly_once()
+E       state.teardown()
+
+baseline/test_worker_baseline.py:147: AssertionError</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,709 @@
+{
+  "$defs": {
+    "Attempt": {
+      "additionalProperties": false,
+      "properties": {
+        "index": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Index"
+        },
+        "count": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Count"
+        },
+        "repetition_index": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "From `repeat=N`; a repetition is not a retry.",
+          "title": "Repetition Index"
+        },
+        "repetition_of": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Repetition Of"
+        }
+      },
+      "required": [
+        "index",
+        "count",
+        "repetition_index",
+        "repetition_of"
+      ],
+      "title": "Attempt",
+      "type": "object"
+    },
+    "CaseIdentity": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "source_case_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Case name before repetition indexing (`repeat > 1`).",
+          "title": "Source Case Id"
+        },
+        "dataset": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Dataset"
+        },
+        "dataset_digest": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Supplied by the harness via experiment metadata.",
+          "title": "Dataset Digest"
+        }
+      },
+      "required": [
+        "id",
+        "source_case_id",
+        "dataset",
+        "dataset_digest"
+      ],
+      "title": "CaseIdentity",
+      "type": "object"
+    },
+    "ContentRef": {
+      "additionalProperties": false,
+      "properties": {
+        "sha256": {
+          "title": "Sha256",
+          "type": "string"
+        },
+        "inline": {
+          "default": null,
+          "title": "Inline"
+        }
+      },
+      "required": [
+        "sha256"
+      ],
+      "title": "ContentRef",
+      "type": "object"
+    },
+    "Effect": {
+      "additionalProperties": false,
+      "properties": {
+        "seq": {
+          "title": "Seq",
+          "type": "integer"
+        },
+        "idempotency_key": {
+          "title": "Idempotency Key",
+          "type": "string"
+        },
+        "account": {
+          "title": "Account",
+          "type": "string"
+        },
+        "amount": {
+          "title": "Amount",
+          "type": "integer"
+        },
+        "receipt": {
+          "title": "Receipt",
+          "type": "string"
+        },
+        "worker_version": {
+          "title": "Worker Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "seq",
+        "idempotency_key",
+        "account",
+        "amount",
+        "receipt",
+        "worker_version"
+      ],
+      "title": "Effect",
+      "type": "object"
+    },
+    "EffectsNotObserved": {
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "const": "not_observed",
+          "title": "Status",
+          "type": "string"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "status",
+        "reason"
+      ],
+      "title": "EffectsNotObserved",
+      "type": "object"
+    },
+    "EffectsObserved": {
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "const": "observed",
+          "title": "Status",
+          "type": "string"
+        },
+        "source": {
+          "const": "worker_ledger",
+          "title": "Source",
+          "type": "string"
+        },
+        "ledger_file": {
+          "title": "Ledger File",
+          "type": "string"
+        },
+        "ledger_sha256": {
+          "title": "Ledger Sha256",
+          "type": "string"
+        },
+        "integrity": {
+          "enum": [
+            "ledger_matches_report_snapshot",
+            "ledger_differs_from_report_snapshot",
+            "no_report_snapshot"
+          ],
+          "title": "Integrity",
+          "type": "string"
+        },
+        "effects": {
+          "items": {
+            "$ref": "#/$defs/Effect"
+          },
+          "title": "Effects",
+          "type": "array"
+        },
+        "effects_per_idempotency_key": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "title": "Effects Per Idempotency Key",
+          "type": "object"
+        }
+      },
+      "required": [
+        "status",
+        "source",
+        "ledger_file",
+        "ledger_sha256",
+        "integrity",
+        "effects",
+        "effects_per_idempotency_key"
+      ],
+      "title": "EffectsObserved",
+      "type": "object"
+    },
+    "ErrorInfo": {
+      "additionalProperties": false,
+      "properties": {
+        "message": {
+          "title": "Message",
+          "type": "string"
+        },
+        "type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Type"
+        },
+        "type_derived_from_message": {
+          "title": "Type Derived From Message",
+          "type": "boolean"
+        },
+        "stacktrace_sha256": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Stacktrace Sha256"
+        }
+      },
+      "required": [
+        "message",
+        "type",
+        "type_derived_from_message",
+        "stacktrace_sha256"
+      ],
+      "title": "ErrorInfo",
+      "type": "object"
+    },
+    "Evaluation": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "assertion",
+            "score",
+            "label",
+            "evaluator_error"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "gen_ai.evaluation.name": {
+          "title": "Gen Ai.Evaluation.Name",
+          "type": "string"
+        },
+        "gen_ai.evaluation.score.value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Gen Ai.Evaluation.Score.Value"
+        },
+        "gen_ai.evaluation.score.label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Gen Ai.Evaluation.Score.Label"
+        },
+        "gen_ai.evaluation.explanation": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Gen Ai.Evaluation.Explanation"
+        },
+        "error.type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error.Type"
+        },
+        "gen_ai.evaluation.evaluator.source": {
+          "title": "Gen Ai.Evaluation.Evaluator.Source",
+          "type": "string"
+        },
+        "gen_ai.evaluation.evaluator.version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Gen Ai.Evaluation.Evaluator.Version"
+        }
+      },
+      "required": [
+        "kind",
+        "gen_ai.evaluation.name",
+        "gen_ai.evaluation.evaluator.source"
+      ],
+      "title": "Evaluation",
+      "type": "object"
+    },
+    "Output": {
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "enum": [
+            "returned",
+            "task_raised"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ContentRef"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ErrorInfo"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "status",
+        "ref",
+        "error"
+      ],
+      "title": "Output",
+      "type": "object"
+    },
+    "RunIdentity": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "framework": {
+          "const": "pydantic-evals",
+          "title": "Framework",
+          "type": "string"
+        },
+        "framework_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Framework Version"
+        },
+        "trace_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Only present when an OpenTelemetry tracer provider was configured.",
+          "title": "Trace Id"
+        },
+        "span_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Span Id"
+        },
+        "started_at": {
+          "default": null,
+          "description": "Not recorded by pydantic-evals reports.",
+          "title": "Started At",
+          "type": "null"
+        }
+      },
+      "required": [
+        "name",
+        "framework",
+        "framework_version",
+        "trace_id",
+        "span_id"
+      ],
+      "title": "RunIdentity",
+      "type": "object"
+    },
+    "StepUncertainty": {
+      "additionalProperties": false,
+      "properties": {
+        "step": {
+          "title": "Step",
+          "type": "integer"
+        },
+        "caller_status": {
+          "title": "Caller Status",
+          "type": "string"
+        },
+        "effect_known_from_response": {
+          "title": "Effect Known From Response",
+          "type": "boolean"
+        },
+        "idempotency_key": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Idempotency Key"
+        },
+        "ledger_effects_for_key_at_scenario_end": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "From the ledger after the whole scenario, not at the time of the step; null if no ledger.",
+          "title": "Ledger Effects For Key At Scenario End"
+        }
+      },
+      "required": [
+        "step",
+        "caller_status",
+        "effect_known_from_response",
+        "idempotency_key",
+        "ledger_effects_for_key_at_scenario_end"
+      ],
+      "title": "StepUncertainty",
+      "type": "object"
+    },
+    "Timing": {
+      "additionalProperties": false,
+      "properties": {
+        "task_duration_s": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Task Duration S"
+        },
+        "total_duration_s": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Total Duration S"
+        }
+      },
+      "required": [
+        "task_duration_s",
+        "total_duration_s"
+      ],
+      "title": "Timing",
+      "type": "object"
+    },
+    "WorkerIdentity": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Version"
+        }
+      },
+      "required": [
+        "version"
+      ],
+      "title": "WorkerIdentity",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "evidence-record/v0",
+      "title": "Schema",
+      "type": "string"
+    },
+    "record_id": {
+      "title": "Record Id",
+      "type": "string"
+    },
+    "case": {
+      "$ref": "#/$defs/CaseIdentity"
+    },
+    "run": {
+      "$ref": "#/$defs/RunIdentity"
+    },
+    "attempt": {
+      "$ref": "#/$defs/Attempt"
+    },
+    "worker": {
+      "$ref": "#/$defs/WorkerIdentity"
+    },
+    "environment": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Environment"
+    },
+    "input": {
+      "$ref": "#/$defs/ContentRef"
+    },
+    "output": {
+      "$ref": "#/$defs/Output"
+    },
+    "evaluations": {
+      "items": {
+        "$ref": "#/$defs/Evaluation"
+      },
+      "title": "Evaluations",
+      "type": "array"
+    },
+    "effects": {
+      "discriminator": {
+        "mapping": {
+          "not_observed": "#/$defs/EffectsNotObserved",
+          "observed": "#/$defs/EffectsObserved"
+        },
+        "propertyName": "status"
+      },
+      "oneOf": [
+        {
+          "$ref": "#/$defs/EffectsObserved"
+        },
+        {
+          "$ref": "#/$defs/EffectsNotObserved"
+        }
+      ],
+      "title": "Effects"
+    },
+    "uncertainty": {
+      "items": {
+        "$ref": "#/$defs/StepUncertainty"
+      },
+      "title": "Uncertainty",
+      "type": "array"
+    },
+    "retry_identity": {
+      "description": "Idempotency keys used by the case, from its inputs.",
+      "items": {
+        "type": "string"
+      },
+      "title": "Retry Identity",
+      "type": "array"
+    },
+    "timing": {
+      "$ref": "#/$defs/Timing"
+    },
+    "provenance": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Provenance",
+      "type": "object"
+    },
+    "converted_at": {
+      "title": "Converted At",
+      "type": "string"
+    },
+    "converter": {
+      "title": "Converter",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "record_id",
+    "case",
+    "run",
+    "attempt",
+    "worker",
+    "environment",
+    "input",
+    "output",
+    "evaluations",
+    "effects",
+    "uncertainty",
+    "retry_identity",
+    "timing",
+    "provenance",
+    "converted_at",
+    "converter"
+  ],
+  "title": "EvidenceRecord",
+  "type": "object",
+  "$id": "evidence-record/v0"
+}

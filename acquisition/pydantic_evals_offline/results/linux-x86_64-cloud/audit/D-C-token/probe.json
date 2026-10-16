@@ -1,0 +1,606 @@
+{
+  "argv": [
+    "--configure-logfire"
+  ],
+  "python": "3.13.16",
+  "import_seconds": 1.605,
+  "eval_seconds": 0.153,
+  "peak_rss_mib": 79.4,
+  "modules_imported_by_pydantic_evals": 1015,
+  "top_level_packages_imported": [
+    "__mp_main__",
+    "_asyncio",
+    "_codecs_cn",
+    "_codecs_hk",
+    "_codecs_iso2022",
+    "_codecs_jp",
+    "_codecs_kr",
+    "_codecs_tw",
+    "_colorize",
+    "_compat_pickle",
+    "_contextvars",
+    "_ctypes",
+    "_cython_3_1_4",
+    "_cython_3_3_0",
+    "_decimal",
+    "_elementtree",
+    "_heapq",
+    "_multibytecodec",
+    "_multiprocessing",
+    "_pickle",
+    "_queue",
+    "_socket",
+    "_ssl",
+    "_string",
+    "_struct",
+    "_sysconfigdata__x86_64-linux-gnu",
+    "_uuid",
+    "_zoneinfo",
+    "annotated_types",
+    "anyio",
+    "array",
+    "asyncio",
+    "atexit",
+    "base64",
+    "binascii",
+    "calendar",
+    "certifi",
+    "charset_normalizer",
+    "colorsys",
+    "concurrent",
+    "contextvars",
+    "ctypes",
+    "cython_runtime",
+    "decimal",
+    "difflib",
+    "email",
+    "encodings",
+    "executing",
+    "fractions",
+    "genai_prices",
+    "google",
+    "graphlib",
+    "griffe",
+    "gzip",
+    "h11",
+    "heapq",
+    "hmac",
+    "html",
+    "http",
+    "httpcore2",
+    "httpx2",
+    "idna",
+    "importlib",
+    "ipaddress",
+    "logfire",
+    "logfire_api",
+    "logging",
+    "mimetypes",
+    "mmap",
+    "multiprocessing",
+    "numbers",
+    "opentelemetry",
+    "packaging",
+    "pickle",
+    "pkgutil",
+    "platform",
+    "pprint",
+    "pydantic",
+    "pydantic_ai",
+    "pydantic_core",
+    "pydantic_evals",
+    "pydantic_graph",
+    "pyexpat",
+    "pygments",
+    "queue",
+    "quopri",
+    "requests",
+    "rich",
+    "runpy",
+    "secrets",
+    "shlex",
+    "socket",
+    "ssl",
+    "string",
+    "stringprep",
+    "struct",
+    "sysconfig",
+    "textwrap",
+    "traceback",
+    "truststore",
+    "typing_extensions",
+    "typing_inspection",
+    "unicodedata",
+    "unittest",
+    "urllib",
+    "urllib3",
+    "uuid",
+    "webbrowser",
+    "xml",
+    "yaml",
+    "zipfile",
+    "zoneinfo"
+  ],
+  "pydantic_ai_agent_imported": true,
+  "logfire_imported": true,
+  "otel_sdk_imported": true,
+  "report": {
+    "cases": 4,
+    "failures": 1,
+    "trace_id_present": true
+  },
+  "audit_events": [
+    {
+      "event": "socket.__new__",
+      "args": [
+        "<socket.socket fd=-1, family=0, type=0, proto=0>",
+        "10",
+        "1",
+        "0"
+      ],
+      "origin": "urllib3/util/connection.py"
+    },
+    {
+      "event": "ctypes.dlopen",
+      "args": [
+        "None"
+      ],
+      "origin": "opentelemetry/sdk/metrics/_internal/exponential_histogram/mapping/ieee_754.py"
+    },
+    {
+      "event": "socket.gethostname",
+      "args": [],
+      "origin": "logfire/_internal/config.py"
+    },
+    {
+      "event": "subprocess.Popen",
+      "args": [
+        "'git'",
+        "['git', 'rev-parse', 'HEAD']",
+        "None",
+        "None"
+      ],
+      "origin": "logfire/_internal/config.py"
+    },
+    {
+      "event": "socket.__new__",
+      "args": [
+        "<socket.socket fd=-1, family=0, type=0, proto=0>",
+        "1",
+        "1",
+        "0"
+      ],
+      "origin": "pydantic_evals/_utils.py"
+    },
+    {
+      "event": "socket.__new__",
+      "args": [
+        "<socket.socket fd=-1, family=0, type=0, proto=0>",
+        "1",
+        "1",
+        "0"
+      ],
+      "origin": "pydantic_evals/_utils.py"
+    },
+    {
+      "event": "open-write",
+      "path": "/tmp/pe-audit-D-C-token.hrv4td/tmp/bw5fo5zy",
+      "mode": null,
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/scenarios.py"
+    },
+    {
+      "event": "os.remove",
+      "args": [
+        "'/tmp/pe-audit-D-C-token.hrv4td/tmp/bw5fo5zy'",
+        "-1"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/scenarios.py"
+    },
+    {
+      "event": "os.mkdir",
+      "args": [
+        "'/tmp/pe-audit-D-C-token.hrv4td/tmp/sw-lookup-hit-sgnsunnw'",
+        "448",
+        "-1"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/scenarios.py"
+    },
+    {
+      "event": "os.mkdir",
+      "args": [
+        "'/tmp/pe-audit-D-C-token.hrv4td/tmp/sw-lost-response-then-retry-4n6owajq'",
+        "448",
+        "-1"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/scenarios.py"
+    },
+    {
+      "event": "sqlite3.connect",
+      "args": [
+        "PosixPath('/tmp/pe-audit-D-C-token.hrv4td/tmp/sw-lookup-hit-sgnsunnw/worker.sqlite3')"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py"
+    },
+    {
+      "event": "sqlite3.connect",
+      "args": [
+        "PosixPath('/tmp/pe-audit-D-C-token.hrv4td/tmp/sw-lost-response-then-retry-4n6owajq/worker.sqlite3')"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py"
+    },
+    {
+      "event": "sqlite3.connect/handle",
+      "args": [
+        "<sqlite3.Connection object at 0x7fdc06276c50>"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py"
+    },
+    {
+      "event": "sqlite3.connect/handle",
+      "args": [
+        "<sqlite3.Connection object at 0x7fdc06276b60>"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py"
+    },
+    {
+      "event": "sqlite3.connect",
+      "args": [
+        "PosixPath('/tmp/pe-audit-D-C-token.hrv4td/tmp/sw-lookup-hit-sgnsunnw/worker.sqlite3')"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py"
+    },
+    {
+      "event": "sqlite3.connect/handle",
+      "args": [
+        "<sqlite3.Connection object at 0x7fdc06276b60>"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py"
+    },
+    {
+      "event": "sqlite3.connect",
+      "args": [
+        "PosixPath('/tmp/pe-audit-D-C-token.hrv4td/tmp/sw-lookup-hit-sgnsunnw/worker.sqlite3')"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py"
+    },
+    {
+      "event": "sqlite3.connect",
+      "args": [
+        "PosixPath('/tmp/pe-audit-D-C-token.hrv4td/tmp/sw-lost-response-then-retry-4n6owajq/worker.sqlite3')"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py"
+    },
+    {
+      "event": "sqlite3.connect/handle",
+      "args": [
+        "<sqlite3.Connection object at 0x7fdc06276b60>"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py"
+    },
+    {
+      "event": "sqlite3.connect/handle",
+      "args": [
+        "<sqlite3.Connection object at 0x7fdc06276c50>"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py"
+    },
+    {
+      "event": "shutil.rmtree",
+      "args": [
+        "PosixPath('/tmp/pe-audit-D-C-token.hrv4td/tmp/sw-lookup-hit-sgnsunnw')",
+        "None"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/scenarios.py"
+    },
+    {
+      "event": "os.remove",
+      "args": [
+        "'worker.sqlite3'",
+        "6"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/scenarios.py"
+    },
+    {
+      "event": "os.rmdir",
+      "args": [
+        "'/tmp/pe-audit-D-C-token.hrv4td/tmp/sw-lookup-hit-sgnsunnw'",
+        "-1"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/scenarios.py"
+    },
+    {
+      "event": "os.mkdir",
+      "args": [
+        "'/tmp/pe-audit-D-C-token.hrv4td/tmp/sw-balance-truncated-lz8u3bsf'",
+        "448",
+        "-1"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/scenarios.py"
+    },
+    {
+      "event": "sqlite3.connect",
+      "args": [
+        "PosixPath('/tmp/pe-audit-D-C-token.hrv4td/tmp/sw-balance-truncated-lz8u3bsf/worker.sqlite3')"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py"
+    },
+    {
+      "event": "sqlite3.connect/handle",
+      "args": [
+        "<sqlite3.Connection object at 0x7fdc063a73d0>"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py"
+    },
+    {
+      "event": "sqlite3.connect",
+      "args": [
+        "PosixPath('/tmp/pe-audit-D-C-token.hrv4td/tmp/sw-lost-response-then-retry-4n6owajq/worker.sqlite3')"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py"
+    },
+    {
+      "event": "sqlite3.connect/handle",
+      "args": [
+        "<sqlite3.Connection object at 0x7fdc06276c50>"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py"
+    },
+    {
+      "event": "sqlite3.connect",
+      "args": [
+        "PosixPath('/tmp/pe-audit-D-C-token.hrv4td/tmp/sw-lost-response-then-retry-4n6owajq/worker.sqlite3')"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py"
+    },
+    {
+      "event": "sqlite3.connect/handle",
+      "args": [
+        "<sqlite3.Connection object at 0x7fdc06276c50>"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py"
+    },
+    {
+      "event": "shutil.rmtree",
+      "args": [
+        "PosixPath('/tmp/pe-audit-D-C-token.hrv4td/tmp/sw-lost-response-then-retry-4n6owajq')",
+        "None"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/scenarios.py"
+    },
+    {
+      "event": "os.remove",
+      "args": [
+        "'worker.sqlite3'",
+        "8"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/scenarios.py"
+    },
+    {
+      "event": "os.rmdir",
+      "args": [
+        "'/tmp/pe-audit-D-C-token.hrv4td/tmp/sw-lost-response-then-retry-4n6owajq'",
+        "-1"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/scenarios.py"
+    },
+    {
+      "event": "os.mkdir",
+      "args": [
+        "'/tmp/pe-audit-D-C-token.hrv4td/tmp/sw-raise-before-effect-then-retry-sxtbkd4i'",
+        "448",
+        "-1"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/scenarios.py"
+    },
+    {
+      "event": "sqlite3.connect",
+      "args": [
+        "PosixPath('/tmp/pe-audit-D-C-token.hrv4td/tmp/sw-raise-before-effect-then-retry-sxtbkd4i/worker.sqlite3')"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py"
+    },
+    {
+      "event": "sqlite3.connect/handle",
+      "args": [
+        "<sqlite3.Connection object at 0x7fdc062745e0>"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py"
+    },
+    {
+      "event": "sqlite3.connect",
+      "args": [
+        "PosixPath('/tmp/pe-audit-D-C-token.hrv4td/tmp/sw-balance-truncated-lz8u3bsf/worker.sqlite3')"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py"
+    },
+    {
+      "event": "sqlite3.connect/handle",
+      "args": [
+        "<sqlite3.Connection object at 0x7fdc063a73d0>"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py"
+    },
+    {
+      "event": "sqlite3.connect",
+      "args": [
+        "PosixPath('/tmp/pe-audit-D-C-token.hrv4td/tmp/sw-balance-truncated-lz8u3bsf/worker.sqlite3')"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py"
+    },
+    {
+      "event": "sqlite3.connect/handle",
+      "args": [
+        "<sqlite3.Connection object at 0x7fdc063a73d0>"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py"
+    },
+    {
+      "event": "sqlite3.connect",
+      "args": [
+        "PosixPath('/tmp/pe-audit-D-C-token.hrv4td/tmp/sw-balance-truncated-lz8u3bsf/worker.sqlite3')"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py"
+    },
+    {
+      "event": "sqlite3.connect/handle",
+      "args": [
+        "<sqlite3.Connection object at 0x7fdc063a73d0>"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py"
+    },
+    {
+      "event": "sqlite3.connect",
+      "args": [
+        "PosixPath('/tmp/pe-audit-D-C-token.hrv4td/tmp/sw-raise-before-effect-then-retry-sxtbkd4i/worker.sqlite3')"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py"
+    },
+    {
+      "event": "sqlite3.connect/handle",
+      "args": [
+        "<sqlite3.Connection object at 0x7fdc062745e0>"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py"
+    },
+    {
+      "event": "shutil.rmtree",
+      "args": [
+        "PosixPath('/tmp/pe-audit-D-C-token.hrv4td/tmp/sw-balance-truncated-lz8u3bsf')",
+        "None"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/scenarios.py"
+    },
+    {
+      "event": "os.remove",
+      "args": [
+        "'worker.sqlite3'",
+        "6"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/scenarios.py"
+    },
+    {
+      "event": "os.rmdir",
+      "args": [
+        "'/tmp/pe-audit-D-C-token.hrv4td/tmp/sw-balance-truncated-lz8u3bsf'",
+        "-1"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/scenarios.py"
+    },
+    {
+      "event": "sqlite3.connect",
+      "args": [
+        "PosixPath('/tmp/pe-audit-D-C-token.hrv4td/tmp/sw-raise-before-effect-then-retry-sxtbkd4i/worker.sqlite3')"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py"
+    },
+    {
+      "event": "sqlite3.connect/handle",
+      "args": [
+        "<sqlite3.Connection object at 0x7fdc062745e0>"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/synthetic_worker.py"
+    },
+    {
+      "event": "shutil.rmtree",
+      "args": [
+        "PosixPath('/tmp/pe-audit-D-C-token.hrv4td/tmp/sw-raise-before-effect-then-retry-sxtbkd4i')",
+        "None"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/scenarios.py"
+    },
+    {
+      "event": "os.remove",
+      "args": [
+        "'worker.sqlite3'",
+        "6"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/scenarios.py"
+    },
+    {
+      "event": "os.rmdir",
+      "args": [
+        "'/tmp/pe-audit-D-C-token.hrv4td/tmp/sw-raise-before-effect-then-retry-sxtbkd4i'",
+        "-1"
+      ],
+      "origin": "$REPO/acquisition/pydantic_evals_offline/worker/scenarios.py"
+    }
+  ],
+  "env_keys_read": {
+    "HOME": 6,
+    "LOGFIRE_API_KEY": 2,
+    "LOGFIRE_BASE_URL": 2,
+    "LOGFIRE_COMPRESSION": 2,
+    "LOGFIRE_CONFIG_DIR": 2,
+    "LOGFIRE_CONSOLE": 1,
+    "LOGFIRE_CONSOLE_COLORS": 1,
+    "LOGFIRE_CONSOLE_INCLUDE_ATTRIBUTES": 1,
+    "LOGFIRE_CONSOLE_INCLUDE_TAGS": 1,
+    "LOGFIRE_CONSOLE_INCLUDE_TIMESTAMP": 1,
+    "LOGFIRE_CONSOLE_MIN_LOG_LEVEL": 1,
+    "LOGFIRE_CONSOLE_SHOW_PROJECT_LINK": 1,
+    "LOGFIRE_CONSOLE_SPAN_STYLE": 1,
+    "LOGFIRE_CONSOLE_VERBOSE": 1,
+    "LOGFIRE_CREDENTIALS_DIR": 2,
+    "LOGFIRE_DISTRIBUTED_TRACING": 2,
+    "LOGFIRE_EMIT_CONFIGURATION_SPAN": 2,
+    "LOGFIRE_ENVIRONMENT": 2,
+    "LOGFIRE_IGNORE_NO_CONFIG": 3,
+    "LOGFIRE_INSPECT_ARGUMENTS": 2,
+    "LOGFIRE_MIN_LEVEL": 2,
+    "LOGFIRE_PYDANTIC_PLUGIN_EXCLUDE": 1,
+    "LOGFIRE_PYDANTIC_PLUGIN_INCLUDE": 1,
+    "LOGFIRE_PYDANTIC_PLUGIN_RECORD": 1,
+    "LOGFIRE_PYDANTIC_RECORD": 1,
+    "LOGFIRE_RESOURCE_ATTRIBUTES": 2,
+    "LOGFIRE_RESOURCE_DETECTORS": 2,
+    "LOGFIRE_SEND_TO_LOGFIRE": 1,
+    "LOGFIRE_SERVICE_NAME": 2,
+    "LOGFIRE_SERVICE_VERSION": 2,
+    "LOGFIRE_SHOW_SUMMARY": 1,
+    "LOGFIRE_TOKEN": 2,
+    "LOGFIRE_TRACE_SAMPLE_RATE": 2,
+    "OTEL_ATTRIBUTE_COUNT_LIMIT": 2,
+    "OTEL_ATTRIBUTE_VALUE_LENGTH_LIMIT": 2,
+    "OTEL_EVENT_ATTRIBUTE_COUNT_LIMIT": 1,
+    "OTEL_EXPERIMENTAL_RESOURCE_DETECTORS": 2,
+    "OTEL_EXPORTER_OTLP_ENDPOINT": 1,
+    "OTEL_EXPORTER_OTLP_LOGS_ENDPOINT": 1,
+    "OTEL_EXPORTER_OTLP_METRICS_ENDPOINT": 1,
+    "OTEL_EXPORTER_OTLP_TRACES_ENDPOINT": 1,
+    "OTEL_LINK_ATTRIBUTE_COUNT_LIMIT": 1,
+    "OTEL_LOGRECORD_ATTRIBUTE_COUNT_LIMIT": 1,
+    "OTEL_LOGRECORD_ATTRIBUTE_VALUE_LENGTH_LIMIT": 1,
+    "OTEL_LOGS_EXPORTER": 1,
+    "OTEL_METRICS_EXEMPLAR_FILTER": 1,
+    "OTEL_METRICS_EXPORTER": 1,
+    "OTEL_PROPAGATORS": 2,
+    "OTEL_PYTHON_CONTEXT": 1,
+    "OTEL_PYTHON_METER_PROVIDER": 1,
+    "OTEL_PYTHON_SDK_INTERNAL_METRICS_ENABLED": 3,
+    "OTEL_RESOURCE_ATTRIBUTES": 2,
+    "OTEL_SDK_DISABLED": 3,
+    "OTEL_SERVICE_NAME": 4,
+    "OTEL_SERVICE_VERSION": 2,
+    "OTEL_SPAN_ATTRIBUTE_COUNT_LIMIT": 2,
+    "OTEL_SPAN_ATTRIBUTE_VALUE_LENGTH_LIMIT": 1,
+    "OTEL_SPAN_EVENT_COUNT_LIMIT": 1,
+    "OTEL_SPAN_LINK_COUNT_LIMIT": 1,
+    "OTEL_TRACES_EXPORTER": 1,
+    "OTEL_TRACES_SAMPLER": 1,
+    "OTEL_TRACES_SAMPLER_ARG": 2,
+    "PATH": 2,
+    "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": 1,
+    "PYDANTIC_DISABLE_PLUGINS": 51,
+    "PYTHONASYNCIODEBUG": 1,
+    "PYTHONTZPATH": 1,
+    "PYTHONUSERBASE": 2,
+    "TEMP": 1,
+    "TMP": 1,
+    "TMPDIR": 1,
+    "_PYTHON_PROJECT_BASE": 1,
+    "_PYTHON_SYSCONFIGDATA_NAME": 1,
+    "_PYTHON_SYSCONFIGDATA_PATH": 1
+  },
+  "spans_with_canaries": [],
+  "span_count": null
+}

@@ -1,0 +1,41 @@
+{
+  "retry_task": {
+    "tenacity_installed": true,
+    "v1-correct": {
+      "attempts_actually_made": 2,
+      "report_cases": 1,
+      "report_failures": 0,
+      "metrics_in_report": {
+        "attempts_seen_by_task": 1
+      },
+      "attempt_count_field_in_report": false,
+      "output": {
+        "account": "a",
+        "balance": 10,
+        "ok": true,
+        "receipt": "r-6ab9f1eb8f7d"
+      },
+      "ledger_effects_per_key": {
+        "k1": 1
+      }
+    },
+    "v2-dup-on-retry": {
+      "attempts_actually_made": 2,
+      "report_cases": 1,
+      "report_failures": 0,
+      "metrics_in_report": {
+        "attempts_seen_by_task": 1
+      },
+      "attempt_count_field_in_report": false,
+      "output": {
+        "account": "a",
+        "balance": 20,
+        "ok": true,
+        "receipt": "r-6ab9f1eb8f7d"
+      },
+      "ledger_effects_per_key": {
+        "k1": 2
+      }
+    }
+  }
+}

@@ -1,0 +1,40 @@
+pydantic-evals v2.57.1.dev17+a3251fb
+├── anyio v4.15.1
+│   ├── idna v3.20
+│   └── typing-extensions v4.16.0
+├── logfire-api v5.2.0
+├── pydantic v2.14.1
+│   ├── annotated-types v0.8.0
+│   ├── pydantic-core v2.50.1
+│   │   └── typing-extensions v4.16.0
+│   ├── typing-extensions v4.16.0
+│   └── typing-inspection v0.4.4
+│       └── typing-extensions v4.16.0
+├── pydantic-ai-slim v2.57.1.dev17+a3251fb
+│   ├── anyio v4.15.1 (*)
+│   ├── genai-prices v0.1.13
+│   │   ├── httpx2 v2.13.1
+│   │   │   ├── anyio v4.15.1 (*)
+│   │   │   ├── httpcore2 v2.13.1
+│   │   │   │   ├── h11 v0.16.0
+│   │   │   │   └── truststore v0.10.5
+│   │   │   ├── idna v3.20
+│   │   │   └── truststore v0.10.5
+│   │   └── pydantic v2.14.1 (*)
+│   ├── griffelib v2.3.2
+│   ├── httpx2 v2.13.1 (*)
+│   ├── opentelemetry-api v1.45.1
+│   │   └── typing-extensions v4.16.0
+│   ├── pydantic v2.14.1 (*)
+│   ├── pydantic-graph v2.57.1.dev17+a3251fb
+│   │   ├── anyio v4.15.1 (*)
+│   │   ├── logfire-api v5.2.0
+│   │   ├── pydantic v2.14.1 (*)
+│   │   └── typing-inspection v0.4.4 (*)
+│   └── typing-inspection v0.4.4 (*)
+├── pyyaml v6.0.3
+└── rich v15.0.0
+    ├── markdown-it-py v4.2.0
+    │   └── mdurl v0.1.2
+    └── pygments v2.21.0
+(*) Package tree already displayed

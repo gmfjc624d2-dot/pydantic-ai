@@ -1,0 +1,7 @@
+4116  execve("$WORK/venv-A/bin/python", ["$WORK/venv-A/bin/python", "$REPO/acquisition/pydantic_evals_offline/audit/probe_run.py", "/tmp/claude-0/-home-user-pydantic-ai/5bd35200-8e91-5339-8e57-b1eceb9719dd/scratchpad/
+4116  socketpair(AF_UNIX, SOCK_STREAM|SOCK_CLOEXEC, 0, [4, 5]) = 0
+4117  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4118  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4117  sendto(5, "\0", 1, 0, NULL, 0 <unfinished ...>
+4117  sendto(5, "\0", 1, 0, NULL, 0)    = 1
+4118  sendto(5, "\0", 1, 0, NULL, 0)    = 1

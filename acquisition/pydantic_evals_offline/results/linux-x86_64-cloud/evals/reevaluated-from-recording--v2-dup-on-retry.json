@@ -1,0 +1,12 @@
+{
+  "source_report": "report--v2-dup-on-retry.json",
+  "worker_executed": false,
+  "cases_replayed": 13,
+  "original_assertions_reproduced_exactly": true,
+  "new_evaluator": "OneReceiptPerKey v1",
+  "new_evaluator_failing_cases": [
+    "duplicate-after-success",
+    "key-reuse-different-payload",
+    "lost-response-then-retry"
+  ]
+}

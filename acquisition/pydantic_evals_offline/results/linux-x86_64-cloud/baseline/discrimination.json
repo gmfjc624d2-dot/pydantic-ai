@@ -1,0 +1,129 @@
+{
+  "v1-correct": {
+    "exit_code": 0,
+    "tests": 81,
+    "failures": 0,
+    "seconds": 24.173,
+    "rejected": false,
+    "failing_tests": [],
+    "failing_scenarios": [],
+    "designed_to_be_caught_by_scenarios": [],
+    "hypothesis_counterexample_lines": []
+  },
+  "v2-dup-on-retry": {
+    "exit_code": 1,
+    "tests": 81,
+    "failures": 9,
+    "seconds": 1.819,
+    "rejected": true,
+    "failing_tests": [
+      "test_scenario[lost-response-then-retry-exactly_once]",
+      "test_scenario[lost-response-then-retry-balances]",
+      "test_scenario[duplicate-after-success-exactly_once]",
+      "test_scenario[duplicate-after-success-balances]",
+      "test_scenario[key-reuse-different-payload-statuses]",
+      "test_scenario[key-reuse-different-payload-responses]",
+      "test_scenario[key-reuse-different-payload-exactly_once]",
+      "test_scenario[key-reuse-different-payload-balances]",
+      "runTest"
+    ],
+    "failing_scenarios": [
+      "duplicate-after-success",
+      "key-reuse-different-payload",
+      "lost-response-then-retry"
+    ],
+    "designed_to_be_caught_by_scenarios": [
+      "duplicate-after-success",
+      "key-reuse-different-payload",
+      "lost-response-then-retry"
+    ],
+    "hypothesis_counterexample_lines": [
+      "state.exactly_once()",
+      "state.job_with_crash_and_restart(crash_at=None, key='k0')",
+      "state.exactly_once()",
+      "state.retry_everything()",
+      "state.exactly_once()",
+      "state.teardown()"
+    ]
+  },
+  "v3-wrong-sum": {
+    "exit_code": 1,
+    "tests": 81,
+    "failures": 2,
+    "seconds": 24.39,
+    "rejected": true,
+    "failing_tests": [
+      "test_scenario[sum-mixed-sign-responses]",
+      "test_sum_matches_reference"
+    ],
+    "failing_scenarios": [
+      "sum-mixed-sign"
+    ],
+    "designed_to_be_caught_by_scenarios": [
+      "sum-mixed-sign"
+    ],
+    "hypothesis_counterexample_lines": [
+      "values=[-1],"
+    ]
+  },
+  "v4-nonatomic-resume": {
+    "exit_code": 1,
+    "tests": 81,
+    "failures": 3,
+    "seconds": 1.848,
+    "rejected": true,
+    "failing_tests": [
+      "test_scenario[crash-after-effect-resume-exactly_once]",
+      "test_scenario[crash-after-effect-resume-balances]",
+      "runTest"
+    ],
+    "failing_scenarios": [
+      "crash-after-effect-resume"
+    ],
+    "designed_to_be_caught_by_scenarios": [
+      "crash-after-effect-resume"
+    ],
+    "hypothesis_counterexample_lines": [
+      "state.exactly_once()",
+      "state.job_with_crash_and_restart(crash_at='after_effect', key='k0')",
+      "state.exactly_once()",
+      "state.teardown()"
+    ]
+  },
+  "v5-default-on-miss": {
+    "exit_code": 1,
+    "tests": 81,
+    "failures": 3,
+    "seconds": 24.518,
+    "rejected": true,
+    "failing_tests": [
+      "test_scenario[lookup-miss-statuses]",
+      "test_scenario[lookup-miss-responses]",
+      "test_lookup_missing_is_explicit"
+    ],
+    "failing_scenarios": [
+      "lookup-miss"
+    ],
+    "designed_to_be_caught_by_scenarios": [
+      "lookup-miss"
+    ],
+    "hypothesis_counterexample_lines": [
+      "key='0',  # or any other generated value"
+    ]
+  },
+  "v6-int32-sum": {
+    "exit_code": 1,
+    "tests": 81,
+    "failures": 1,
+    "seconds": 23.67,
+    "rejected": true,
+    "failing_tests": [
+      "test_sum_matches_reference"
+    ],
+    "failing_scenarios": [],
+    "designed_to_be_caught_by_scenarios": [],
+    "hypothesis_counterexample_lines": [
+      "values=[2_147_483_648],"
+    ]
+  }
+}

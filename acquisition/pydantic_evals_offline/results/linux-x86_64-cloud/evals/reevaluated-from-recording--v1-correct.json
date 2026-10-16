@@ -1,0 +1,8 @@
+{
+  "source_report": "report--v1-correct.json",
+  "worker_executed": false,
+  "cases_replayed": 13,
+  "original_assertions_reproduced_exactly": true,
+  "new_evaluator": "OneReceiptPerKey v1",
+  "new_evaluator_failing_cases": []
+}

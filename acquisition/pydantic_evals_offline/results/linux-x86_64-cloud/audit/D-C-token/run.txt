@@ -1,0 +1,5 @@
+venv=$WORK/venv-B
+probe_flags=--configure-logfire
+extra_env=LOGFIRE_TOKEN=pylf_v1_us_0000000000000000000000000000000000000000fake LOGFIRE_SEND_TO_LOGFIRE=true
+local_sink=no
+sandbox=/tmp/pe-audit-D-C-token.hrv4td

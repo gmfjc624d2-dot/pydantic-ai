@@ -1,0 +1,111 @@
+{
+  "dataset_digest": "sha256:48bf4a1792c48e9dcd1a4003dfa19ebe32313a47a8ad2f5104f2dc9e6cb45773",
+  "implementations": {
+    "v1-correct": {
+      "rejected": false,
+      "failing_cases": {},
+      "designed_to_be_caught_by": [],
+      "caught_exactly_as_designed": true,
+      "assertion_pass_rate": 1.0,
+      "generated_sum_cases": {
+        "n": 100,
+        "failing": 0,
+        "first_failing_case": null,
+        "first_failing_inputs": null
+      }
+    },
+    "v2-dup-on-retry": {
+      "rejected": true,
+      "failing_cases": {
+        "lost-response-then-retry": [
+          "exactly_once",
+          "balances"
+        ],
+        "duplicate-after-success": [
+          "exactly_once",
+          "balances"
+        ],
+        "key-reuse-different-payload": [
+          "statuses",
+          "responses",
+          "exactly_once",
+          "balances"
+        ]
+      },
+      "designed_to_be_caught_by": [
+        "duplicate-after-success",
+        "key-reuse-different-payload",
+        "lost-response-then-retry"
+      ],
+      "caught_exactly_as_designed": true,
+      "assertion_pass_rate": 0.9120879120879121
+    },
+    "v3-wrong-sum": {
+      "rejected": true,
+      "failing_cases": {
+        "sum-mixed-sign": [
+          "responses"
+        ]
+      },
+      "designed_to_be_caught_by": [
+        "sum-mixed-sign"
+      ],
+      "caught_exactly_as_designed": true,
+      "assertion_pass_rate": 0.989010989010989,
+      "generated_sum_cases": {
+        "n": 100,
+        "failing": 66,
+        "first_failing_case": "gen-sum-001",
+        "first_failing_inputs": [
+          851676806657,
+          -669266755675,
+          -83638630536,
+          83881415035
+        ]
+      }
+    },
+    "v4-nonatomic-resume": {
+      "rejected": true,
+      "failing_cases": {
+        "crash-after-effect-resume": [
+          "exactly_once",
+          "balances"
+        ]
+      },
+      "designed_to_be_caught_by": [
+        "crash-after-effect-resume"
+      ],
+      "caught_exactly_as_designed": true,
+      "assertion_pass_rate": 0.978021978021978
+    },
+    "v5-default-on-miss": {
+      "rejected": true,
+      "failing_cases": {
+        "lookup-miss": [
+          "statuses",
+          "responses"
+        ]
+      },
+      "designed_to_be_caught_by": [
+        "lookup-miss"
+      ],
+      "caught_exactly_as_designed": true,
+      "assertion_pass_rate": 0.978021978021978
+    },
+    "v6-int32-sum": {
+      "rejected": false,
+      "failing_cases": {},
+      "designed_to_be_caught_by": [],
+      "caught_exactly_as_designed": true,
+      "assertion_pass_rate": 1.0,
+      "generated_sum_cases": {
+        "n": 100,
+        "failing": 85,
+        "first_failing_case": "gen-sum-000",
+        "first_failing_inputs": [
+          707299867261
+        ]
+      }
+    }
+  }
+}
