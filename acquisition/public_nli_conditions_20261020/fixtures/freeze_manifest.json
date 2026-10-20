@@ -1,0 +1,38 @@
+{
+  "schema": "nli-fixtures-freeze/v1",
+  "statement": "Frozen before any classifier or baseline prediction was produced. Labels are not edited after this point.",
+  "files": {
+    "dev.jsonl": {
+      "sha256": "6f56dabcea2fa9e1a1815bd8960cfcb976be3f949ff10c0fcc1df17615bc58d8",
+      "items": 24,
+      "labels": {
+        "contradiction": 8,
+        "entailment": 10,
+        "neutral": 6
+      },
+      "single_span_items": 8,
+      "single_span_labels": {
+        "entailment": 3,
+        "neutral": 5
+      }
+    },
+    "heldout.jsonl": {
+      "sha256": "8cbe96a7a06b7977b3af534b6e58949034f70f96ee15171ed8b4efc046c17a74",
+      "items": 24,
+      "labels": {
+        "entailment": 9,
+        "contradiction": 9,
+        "neutral": 6
+      },
+      "single_span_items": 8,
+      "single_span_labels": {
+        "entailment": 2,
+        "neutral": 6
+      }
+    },
+    "excluded.jsonl": {
+      "sha256": "e0a5f93654b2ade7af8205d270ff0c46a63991b8ba283e87b3b87ecf21a1c631",
+      "items": 9
+    }
+  }
+}
