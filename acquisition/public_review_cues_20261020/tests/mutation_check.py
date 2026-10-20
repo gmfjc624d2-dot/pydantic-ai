@@ -7,6 +7,7 @@ Each mutation patches one behavior in memory, reruns the unittest suite, and mus
 
 from __future__ import annotations
 
+import bisect
 import io
 import sys
 import unittest
@@ -20,6 +21,7 @@ import review_cues  # noqa: E402
 
 ORIGINAL_BOUNDARY = review_cues._boundary_ok
 ORIGINAL_FIND = review_cues.find_cues
+ORIGINAL_READ = review_cues.read_request
 
 
 def no_boundaries(text, start, end, boundary):  # type: ignore[no-untyped-def]
@@ -53,19 +55,55 @@ def accepts_surrogates(text, language, ruleset=None):  # type: ignore[no-untyped
     return ORIGINAL_FIND(text, language, ruleset)
 
 
+def later_overlaps_only(spans):  # type: ignore[no-untyped-def]
+    starts = [s for s, _ in spans]
+    return [list(range(i + 1, bisect.bisect_left(starts, end, i + 1))) for i, (_, end) in enumerate(spans)]
+
+
+def touching_spans_overlap(spans):  # type: ignore[no-untyped-def]
+    starts = [s for s, _ in spans]
+    lists = [[] for _ in spans]
+    for i, (_, end) in enumerate(spans):
+        later = range(i + 1, bisect.bisect_right(starts, end, i + 1))  # start_j <= end_i instead of <
+        for j in later:
+            lists[j].append(i)
+        lists[i].extend(later)
+    return lists
+
+
+def unsized_read(stream, limit=review_cues.MAX_REQUEST_BYTES):  # type: ignore[no-untyped-def]
+    raw = stream.read()
+    if len(raw) > limit:
+        raise review_cues.CueInputError('request_too_large', 'too large')
+    return raw
+
+
+def limit_off_by_one(stream, limit=review_cues.MAX_REQUEST_BYTES):  # type: ignore[no-untyped-def]
+    return ORIGINAL_READ(stream, limit + 1)
+
+
+def no_nesting_limit(decoded):  # type: ignore[no-untyped-def]
+    return None
+
+
 MUTATIONS = {
     'no token boundaries': ('_boundary_ok', no_boundaries),
     'combining marks ignored at boundaries': ('_boundary_ok', ignore_marks),
     'byte offsets equal code-point offsets': ('find_cues', bytes_equal_codepoints),
     'returned substring whitespace-normalized': ('find_cues', stripped_text),
     'lone surrogates silently replaced': ('find_cues', accepts_surrogates),
+    'overlaps with earlier matches omitted': ('_overlap_lists', later_overlaps_only),
+    'touching spans reported as overlapping': ('_overlap_lists', touching_spans_overlap),
+    'request read without a size': ('read_request', unsized_read),
+    'request byte limit off by one': ('read_request', limit_off_by_one),
+    'no JSON nesting limit': ('_reject_deep_nesting', no_nesting_limit),
 }
 
 
 def run_suite() -> unittest.TestResult:
     import test_review_cues
 
-    for name in ('find_cues',):
+    for name in ('find_cues', '_overlap_lists'):
         setattr(test_review_cues, name, getattr(review_cues, name))
     suite = unittest.defaultTestLoader.loadTestsFromModule(test_review_cues)
     return unittest.TextTestRunner(stream=io.StringIO(), verbosity=0).run(suite)

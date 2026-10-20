@@ -1,4 +1,4 @@
-# Contract: `review_cues` 1.0.0 (schema `review-cues/1`, ruleset `review-cues-lexicon` 1.0.0)
+# Contract: `review_cues` 1.1.0 (schema `review-cues/1`, ruleset `review-cues-lexicon` 1.0.0)
 
 ## Purpose and non-goals
 
@@ -17,6 +17,20 @@ no relevant qualification.** The lexicon is small and makes no coverage claim.
   Request: a UTF-8 JSON object with exactly `text` (string) and `language` (`"es"`, `"en"` or
   `"es+en"`). Response: UTF-8 JSON. Exit status 0 with a result, 2 with `{"schema", "error": {"code",
   "message"}}`.
+- Request limits (CLI only; checked in this order, each before any parsing):
+  - **At most `MAX_REQUEST_BYTES` = 1,265,536 bytes** (12 × 100,000 + 65,536). Twelve bytes is the
+    longest JSON spelling of one code point (an escaped surrogate pair such as `\ud83d\udccc`), so every
+    text within the code-point limit fits in any spelling, with 64 KiB left for keys, the language value
+    and whitespace. Standard input is read in chunks of at most 64 KiB and never beyond limit + 1 bytes;
+    a larger request is rejected (`request_too_large`) without reading the rest, so a producer still
+    writing may see a broken pipe.
+  - **At most `MAX_JSON_NESTING` = 64 levels of `[`/`{` nesting**, counted outside JSON strings (an
+    unterminated string runs to the end of the input). A valid request nests one level. Deeper input is
+    rejected (`json_too_deep`) because Python's `json` module raises `RecursionError` at a depth that
+    depends on the interpreter and the call stack (run as a script, 1.0.0 exited with status 1 and a
+    traceback from 994 levels on CPython 3.9.25 and from 9,999 levels on 3.13.16; a 2,201-byte array
+    nested 1,100 levels deep was reported on CPython 3.9.6). Because nesting is checked before parsing,
+    malformed input nested more than 64 levels deep is reported as `json_too_deep`, not `invalid_json`.
 - Standard library only; Python ≥ 3.9 (tested on CPython 3.9.25 and 3.13.16, Linux only).
 
 ## Input validation (explicit rejection, never repair)
@@ -27,7 +41,9 @@ no relevant qualification.** The lexicon is small and makes no coverage claim.
 | `invalid_language` | `language` not exactly one of `es`, `en`, `es+en` (case-sensitive) |
 | `text_too_long` | more than 100,000 code points (part of the configuration) |
 | `text_not_utf8_encodable` | the string contains a lone surrogate (e.g. JSON `"\ud800"`) |
+| `request_too_large` | CLI input is longer than 1,265,536 bytes (nothing is decoded or parsed) |
 | `stdin_not_utf8` | CLI input bytes are not valid UTF-8 |
+| `json_too_deep` | CLI input nests `[`/`{` more than 64 levels outside strings (checked before parsing) |
 | `invalid_json` | not parseable JSON, including empty input and a leading UTF-8 BOM |
 | `invalid_json_constant` | `NaN`, `Infinity`, `-Infinity` |
 | `duplicate_key` | a JSON object repeats a key |
@@ -51,9 +67,16 @@ indices), `byte_start`/`byte_end` (half-open UTF-8 byte indices), `review_topics
 order carries no meaning), `rule_id`, `rule_language`, `phrase` (as listed in the rules),
 `matched_forms` (`as_listed`/`NFC`/`NFD`), `uncertainty` {`basis`, `rule_notes` (ambiguities of the
 rule), `observations` (facts about this substring: letter case, line breaks, non-space whitespace,
-decomposed spelling, Unicode case equivalence)}, `overlaps` (indices of intersecting matches).
+decomposed spelling, Unicode case equivalence)}, `overlaps` (ascending indices of every other match
+`o` with `o.start < end` and `start < o.end`).
 Invariants (tested): `text == input[start:end] == utf8[byte_start:byte_end].decode()`; matches sorted
-by (start, end, rule_id); overlap lists are symmetric.
+by (start, end, rule_id); overlap lists are symmetric and equal a brute-force all-pairs check.
+
+Overlap computation (1.1.0): since matches are sorted by start, the later matches meeting match `i`
+are exactly those from `i + 1` up to the first start ≥ `end_i`, found by bisection; each pair is also
+recorded on the later match. Cost is O(m log m + p) for m matches and p overlapping pairs; disjoint
+matches are never compared pairwise. p is half the total length of all `overlaps` lists, so it is
+bounded by the output itself.
 
 ## Documented matching behavior
 
@@ -77,3 +100,15 @@ by (start, end, rule_id); overlap lists are symmetric.
 The rule file `review_cues/rules_v1.json` is data; its byte hash and canonical hash are returned with
 every result. Any change to rules, tool version, language selection, limit or Unicode database
 version changes `configuration_sha256`.
+
+## Changes from 1.0.0
+
+- Output of `find_cues` for any input: unchanged except `tool.version` (`1.1.0`) and therefore
+  `configuration_sha256`. The lexicon, matching, offsets, notes, observations, notice and the
+  `configuration` object are unchanged byte for byte; the overlap relation and its order are the same.
+- CLI: two new rejections, `request_too_large` and `json_too_deep`. No valid request is affected.
+  Invalid requests that 1.0.0 rejected with another code are reported as `json_too_deep` when nested
+  more than 64 levels deep. Requests that made 1.0.0 crash now get a structured rejection: unbounded
+  reads, and deep nesting (`RecursionError`).
+- Not changed: `--rules PATH` parsing, which can still raise raw Python exceptions on a malformed rule
+  file and does not reject an empty phrase (with one, the search never terminates).

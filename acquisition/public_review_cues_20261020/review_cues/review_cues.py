@@ -2,7 +2,7 @@
 
 Pure function:  find_cues(text, language) -> dict          (raises CueInputError on invalid input)
 CLI:            python3 review_cues.py [--rules PATH] < request.json > response.json
-                request: {"text": "...", "language": "es" | "en" | "es+en"}
+                request: {"text": "...", "language": "es" | "en" | "es+en"}, at most MAX_REQUEST_BYTES
                 exit 0 with a result, exit 2 with {"error": {...}} for invalid input.
 
 A highlight means a configured phrase occurred at those coordinates. It never states scope, a speaker's
@@ -12,6 +12,7 @@ means that no configured cue matched, not that the text contains no qualificatio
 
 from __future__ import annotations
 
+import bisect
 import hashlib
 import json
 import re
@@ -22,9 +23,18 @@ from typing import Any, BinaryIO, Dict, List, Optional, Sequence, Tuple
 
 SCHEMA = 'review-cues/1'
 TOOL_NAME = 'review_cues'
-TOOL_VERSION = '1.0.0'
+TOOL_VERSION = '1.1.0'
 LANGUAGES = ('es', 'en', 'es+en')
 MAX_TEXT_CODEPOINTS = 100_000
+# The CLI never reads more than this many request bytes (+1 to detect excess). 12 bytes is the longest JSON
+# spelling of one code point (an escaped surrogate pair such as "\ud83d\udccc"), so any text within
+# MAX_TEXT_CODEPOINTS fits, plus 64 KiB for the keys, the language value and insignificant whitespace.
+MAX_REQUEST_BYTES = 12 * MAX_TEXT_CODEPOINTS + 65_536
+_READ_CHUNK_BYTES = 65_536
+# A valid request nests one level. Deeper JSON is rejected before parsing because Python's json module
+# raises RecursionError at an interpreter-dependent depth (from 994 levels on CPython 3.9.25 as a script).
+MAX_JSON_NESTING = 64
+_JSON_STRING_OR_BRACKET = re.compile(r'"[^"\\]*(?:\\.[^"\\]*)*"?|[\[\]{}]', re.DOTALL)
 DEFAULT_RULES_PATH = Path(__file__).resolve().with_name('rules_v1.json')
 REQUEST_FIELDS = ('text', 'language')
 
@@ -184,6 +194,24 @@ def _validate(text: Any, language: Any) -> bytes:
         ) from None
 
 
+def _overlap_lists(spans: Sequence[Tuple[int, int]]) -> List[List[int]]:
+    """List, for each span i, the ascending indices j != i with start_j < end_i and start_i < end_j.
+
+    `spans` are (start, end) pairs sorted by (start, end). Because starts never decrease, the later spans
+    meeting span i are exactly those from i + 1 up to the first start >= end_i (found by bisection); each
+    such pair is also recorded on the later span, in ascending order. Cost: O(n log n) plus the number of
+    overlapping pairs, so disjoint spans are never compared with each other.
+    """
+    starts = [start for start, _ in spans]
+    lists: List[List[int]] = [[] for _ in spans]
+    for i, (_, end) in enumerate(spans):
+        later = range(i + 1, bisect.bisect_left(starts, end, i + 1))
+        for j in later:
+            lists[j].append(i)
+        lists[i].extend(later)
+    return lists
+
+
 def find_cues(text: str, language: str, ruleset: Optional[Ruleset] = None) -> Dict[str, Any]:
     """Return lexical cue candidates in `text`. Pure: same inputs -> same output; no I/O beyond the rule file."""
     encoded = _validate(text, language)
@@ -226,14 +254,14 @@ def find_cues(text: str, language: str, ruleset: Optional[Ruleset] = None) -> Di
                     '_search_string': value,
                 }
     matches = sorted(found.values(), key=lambda m: (m['start'], m['end'], m['rule_id']))
-    for i, m in enumerate(matches):
-        rule = next(r for r in rules.rules if r.id == m['rule_id'])
+    rules_by_id = {r.id: r for r in rules.rules}
+    for m, overlaps in zip(matches, _overlap_lists([(m['start'], m['end']) for m in matches])):
         m['uncertainty'] = {
             'basis': 'lexical match of a configured phrase; unvalidated as to meaning',
-            'rule_notes': list(rule.notes),
+            'rule_notes': list(rules_by_id[m['rule_id']].notes),
             'observations': _observations(m['text'], m['matched_forms'], m.pop('_search_string')),
         }
-        m['overlaps'] = [j for j, o in enumerate(matches) if j != i and o['start'] < m['end'] and m['start'] < o['end']]
+        m['overlaps'] = overlaps
 
     configuration = {
         'language': language,
@@ -281,12 +309,42 @@ def _reject_constant(name: str) -> Any:
     raise CueInputError('invalid_json_constant', f'{name} is not valid JSON')
 
 
+def read_request(stream: BinaryIO, limit: int = MAX_REQUEST_BYTES) -> bytes:
+    """Read a CLI request in bounded chunks: never more than `limit` + 1 bytes, and reject it if it is larger."""
+    chunks: List[bytes] = []
+    remaining = limit + 1
+    while remaining > 0:
+        chunk = stream.read(min(remaining, _READ_CHUNK_BYTES))
+        if not chunk:
+            break
+        chunks.append(chunk)
+        remaining -= len(chunk)
+    if remaining <= 0:
+        raise CueInputError('request_too_large', f'the request is larger than {limit} bytes; nothing was parsed')
+    return b''.join(chunks)
+
+
+def _reject_deep_nesting(decoded: str) -> None:
+    """Count brackets outside JSON strings (an unterminated string runs to the end) without parsing."""
+    depth = 0
+    for token in _JSON_STRING_OR_BRACKET.finditer(decoded):
+        if token.group() in ('[', '{'):
+            depth += 1
+            if depth > MAX_JSON_NESTING:
+                raise CueInputError(
+                    'json_too_deep', f'JSON nesting is deeper than {MAX_JSON_NESTING} levels; nothing was parsed'
+                )
+        elif token.group() in (']', '}'):
+            depth -= 1
+
+
 def parse_request(raw: bytes) -> Dict[str, Any]:
     """Strictly parse a CLI request: UTF-8 bytes, one JSON object, exactly the fields text and language."""
     try:
         decoded = raw.decode('utf-8', 'strict')
     except UnicodeDecodeError as e:
         raise CueInputError('stdin_not_utf8', f'input is not valid UTF-8 (byte {e.start})') from None
+    _reject_deep_nesting(decoded)
     try:
         request = json.loads(decoded, object_pairs_hook=_reject_duplicates, parse_constant=_reject_constant)
     except json.JSONDecodeError as e:
@@ -315,7 +373,7 @@ def main(
             ruleset = Ruleset.from_path(Path(args[1]))
         elif args:
             raise CueInputError('invalid_arguments', 'usage: review_cues.py [--rules PATH] < request.json')
-        request = parse_request(in_stream.read())
+        request = parse_request(read_request(in_stream))
         result = find_cues(request['text'], request['language'], ruleset)
         status = 0
     except CueInputError as e:
