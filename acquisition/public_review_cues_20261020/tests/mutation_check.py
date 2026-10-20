@@ -8,6 +8,7 @@ Each mutation patches one behavior in memory, reruns the unittest suite, and mus
 from __future__ import annotations
 
 import bisect
+import decimal
 import io
 import sys
 import unittest
@@ -86,6 +87,13 @@ def no_nesting_limit(decoded):  # type: ignore[no-untyped-def]
     return None
 
 
+def decimal_only_after_int_fails(literal):  # type: ignore[no-untyped-def]
+    try:
+        return int(literal)
+    except ValueError:
+        return decimal.Decimal(literal)
+
+
 MUTATIONS = {
     'no token boundaries': ('_boundary_ok', no_boundaries),
     'combining marks ignored at boundaries': ('_boundary_ok', ignore_marks),
@@ -97,6 +105,8 @@ MUTATIONS = {
     'request read without a size': ('read_request', unsized_read),
     'request byte limit off by one': ('read_request', limit_off_by_one),
     'no JSON nesting limit': ('_reject_deep_nesting', no_nesting_limit),
+    'JSON integers parsed with int() only': ('_parse_int', int),
+    'digit threshold applied only after int() fails': ('_parse_int', decimal_only_after_int_fails),
 }
 
 

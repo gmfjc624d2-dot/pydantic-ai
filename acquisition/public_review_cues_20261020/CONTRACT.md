@@ -1,4 +1,4 @@
-# Contract: `review_cues` 1.1.0 (schema `review-cues/1`, ruleset `review-cues-lexicon` 1.0.0)
+# Contract: `review_cues` 1.1.1 (schema `review-cues/1`, ruleset `review-cues-lexicon` 1.0.0)
 
 ## Purpose and non-goals
 
@@ -17,7 +17,7 @@ no relevant qualification.** The lexicon is small and makes no coverage claim.
   Request: a UTF-8 JSON object with exactly `text` (string) and `language` (`"es"`, `"en"` or
   `"es+en"`). Response: UTF-8 JSON. Exit status 0 with a result, 2 with `{"schema", "error": {"code",
   "message"}}`.
-- Request limits (CLI only; checked in this order, each before any parsing):
+- Request limits (CLI only; order: byte limit, UTF-8 decoding, nesting limit, then JSON parsing):
   - **At most `MAX_REQUEST_BYTES` = 1,265,536 bytes** (12 × 100,000 + 65,536). Twelve bytes is the
     longest JSON spelling of one code point (an escaped surrogate pair such as `\ud83d\udccc`), so every
     text within the code-point limit fits in any spelling, with 64 KiB left for keys, the language value
@@ -31,6 +31,10 @@ no relevant qualification.** The lexicon is small and makes no coverage claim.
     traceback from 994 levels on CPython 3.9.25 and from 9,999 levels on 3.13.16; a 2,201-byte array
     nested 1,100 levels deep was reported on CPython 3.9.6). Because nesting is checked before parsing,
     malformed input nested more than 64 levels deep is reported as `json_too_deep`, not `invalid_json`.
+  - **JSON integers of more than `MAX_INT_DIGITS` = 640 digits are never passed to `int()`**; they are
+    kept as an exact `decimal.Decimal` (linear time), which, like any number, no field accepts. This
+    avoids both the `ValueError` of interpreters that limit integer string conversion and the quadratic
+    conversion of interpreters that do not (see "Changes from 1.0.0").
 - Standard library only; Python ≥ 3.9 (tested on CPython 3.9.25 and 3.13.16, Linux only).
 
 ## Input validation (explicit rejection, never repair)
@@ -103,12 +107,27 @@ version changes `configuration_sha256`.
 
 ## Changes from 1.0.0
 
-- Output of `find_cues` for any input: unchanged except `tool.version` (`1.1.0`) and therefore
-  `configuration_sha256`. The lexicon, matching, offsets, notes, observations, notice and the
+- Output of `find_cues` for any input: unchanged except `tool.version` (`1.1.0`, then `1.1.1`) and
+  therefore `configuration_sha256`. The lexicon, matching, offsets, notes, observations, notice and the
   `configuration` object are unchanged byte for byte; the overlap relation and its order are the same.
-- CLI: two new rejections, `request_too_large` and `json_too_deep`. No valid request is affected.
-  Invalid requests that 1.0.0 rejected with another code are reported as `json_too_deep` when nested
-  more than 64 levels deep. Requests that made 1.0.0 crash now get a structured rejection: unbounded
-  reads, and deep nesting (`RecursionError`).
+- CLI (1.1.0): two new rejections, `request_too_large` and `json_too_deep`. Requests valid under 1.0.0
+  that fit the new bounds (at most 1,265,536 bytes; a valid request nests one level, so the depth bound
+  never applies to one) get the same result. **Not every request 1.0.0 accepted is still accepted**:
+  JSON allows unlimited insignificant whitespace, so a valid request larger than 1,265,536 bytes is now
+  rejected as `request_too_large`, by design. Such a request carries more than 65,421 bytes of
+  whitespace: the longest spelling of everything else (100,000 escaped surrogate pairs, fully escaped
+  keys and language value, structure) is 1,200,115 bytes. Invalid requests that 1.0.0 rejected with another code
+  are reported as `json_too_deep` when nested more than 64 levels deep. Requests that made 1.0.0 crash
+  now get a structured rejection: unbounded reads, and deep nesting (`RecursionError`).
+- CLI (1.1.1): JSON integers with more than `MAX_INT_DIGITS` = 640 digits (sign excluded) are parsed as
+  an exact `decimal.Decimal`, never with `int()`. CPython versions that limit integer string conversion
+  (4,300 digits by default; 640 is the lowest configurable limit) made `json.loads` raise `ValueError`
+  for longer literals: 1.0.0 and 1.1.0 then exited with status 1 and a traceback (5,000 digits; seen on
+  3.9.25 and 3.13.16 here, reported on 3.12.14). Versions without the limit (e.g. 3.9.6) convert such
+  literals in quadratic time. No field accepts a number, so these requests now get the code any number
+  gets in that position (`text_not_string`, `invalid_language`, `unknown_field`, `duplicate_key`,
+  `request_not_object`) on every interpreter. Integers of 640 digits or fewer, floats, constants and
+  duplicate keys behave exactly as before, messages included; for longer integers the message names the
+  type `Decimal`. No interpreter setting is changed.
 - Not changed: `--rules PATH` parsing, which can still raise raw Python exceptions on a malformed rule
   file and does not reject an empty phrase (with one, the search never terminates).

@@ -13,6 +13,7 @@ means that no configured cue matched, not that the text contains no qualificatio
 from __future__ import annotations
 
 import bisect
+import decimal
 import hashlib
 import json
 import re
@@ -23,7 +24,7 @@ from typing import Any, BinaryIO, Dict, List, Optional, Sequence, Tuple
 
 SCHEMA = 'review-cues/1'
 TOOL_NAME = 'review_cues'
-TOOL_VERSION = '1.1.0'
+TOOL_VERSION = '1.1.1'
 LANGUAGES = ('es', 'en', 'es+en')
 MAX_TEXT_CODEPOINTS = 100_000
 # The CLI never reads more than this many request bytes (+1 to detect excess). 12 bytes is the longest JSON
@@ -34,6 +35,9 @@ _READ_CHUNK_BYTES = 65_536
 # A valid request nests one level. Deeper JSON is rejected before parsing because Python's json module
 # raises RecursionError at an interpreter-dependent depth (from 994 levels on CPython 3.9.25 as a script).
 MAX_JSON_NESTING = 64
+# JSON integers longer than this are kept as Decimal instead of int (see _parse_int). 640 is the lowest
+# integer string-conversion limit CPython can be configured with, so int() never raises below it.
+MAX_INT_DIGITS = 640
 _JSON_STRING_OR_BRACKET = re.compile(r'"[^"\\]*(?:\\.[^"\\]*)*"?|[\[\]{}]', re.DOTALL)
 DEFAULT_RULES_PATH = Path(__file__).resolve().with_name('rules_v1.json')
 REQUEST_FIELDS = ('text', 'language')
@@ -338,6 +342,18 @@ def _reject_deep_nesting(decoded: str) -> None:
             depth -= 1
 
 
+def _parse_int(literal: str) -> Any:
+    """Parse a JSON integer; literals over MAX_INT_DIGITS digits become an exact Decimal, never an int.
+
+    int() of a long decimal string costs quadratic time where CPython has no conversion limit (e.g. 3.9.6)
+    and raises ValueError where it has one (4,300 digits by default; never fewer than 640). No request
+    field accepts a number, so the request is rejected with the same code either way (e.g. text_not_string).
+    """
+    if len(literal) - literal.startswith('-') > MAX_INT_DIGITS:
+        return decimal.Decimal(literal)
+    return int(literal)
+
+
 def parse_request(raw: bytes) -> Dict[str, Any]:
     """Strictly parse a CLI request: UTF-8 bytes, one JSON object, exactly the fields text and language."""
     try:
@@ -346,7 +362,9 @@ def parse_request(raw: bytes) -> Dict[str, Any]:
         raise CueInputError('stdin_not_utf8', f'input is not valid UTF-8 (byte {e.start})') from None
     _reject_deep_nesting(decoded)
     try:
-        request = json.loads(decoded, object_pairs_hook=_reject_duplicates, parse_constant=_reject_constant)
+        request = json.loads(
+            decoded, object_pairs_hook=_reject_duplicates, parse_constant=_reject_constant, parse_int=_parse_int
+        )
     except json.JSONDecodeError as e:
         raise CueInputError('invalid_json', f'{e.msg} at line {e.lineno} column {e.colno}') from None
     if not isinstance(request, dict):

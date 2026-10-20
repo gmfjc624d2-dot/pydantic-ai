@@ -22,6 +22,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / 'review_cues'))
 
 from review_cues import (  # noqa: E402
+    MAX_INT_DIGITS,
     MAX_JSON_NESTING,
     MAX_REQUEST_BYTES,
     MAX_TEXT_CODEPOINTS,
@@ -211,6 +212,51 @@ class RequestLimits(unittest.TestCase):
         self.assertEqual((status, body['error']['code']), (2, 'json_too_deep'))
         status, body = run_cli(b'[' * (MAX_JSON_NESTING + 1))  # malformed and too deep: depth is checked first
         self.assertEqual((status, body['error']['code']), (2, 'json_too_deep'))
+
+    def test_long_integer_is_a_wrong_type_without_int_conversion(self) -> None:
+        # synthetic counterexample reported against 1.1.0: uncaught ValueError (exit 1) on CPython 3.12.14, whose
+        # int() refuses more than 4,300 digits by default; CPython 3.9.6 (no such limit) returned text_not_string,
+        # but converts long literals in quadratic time, so the digit threshold applies before int() everywhere
+        payload = b'{"text":' + b'7' * 5000 + b',"language":"en"}'
+        self.assertEqual(len(payload), 5025)
+        status, body = run_cli(payload)
+        self.assertEqual((status, body['error']['code']), (2, 'text_not_string'))
+        for digits, kind in ((MAX_INT_DIGITS, 'int'), (MAX_INT_DIGITS + 1, 'Decimal')):
+            for sign in (b'', b'-'):
+                status, body = run_cli(b'{"text": ' + sign + b'9' * digits + b', "language": "en"}')
+                self.assertEqual(
+                    body['error'], {'code': 'text_not_string', 'message': f'"text" must be a string, got {kind}'}
+                )
+        self.assertLessEqual(MAX_INT_DIGITS, getattr(sys.int_info, 'str_digits_check_threshold', MAX_INT_DIGITS))
+        long_int = b'-' + b'9' * 100_000
+        cases = {
+            b'{"text": "if", "language": ' + long_int + b'}': 'invalid_language',
+            b'{"text": ' + long_int + b', "text": "if", "language": "en"}': 'duplicate_key',
+            b'{"text": "if", "language": "en", "n": [' + long_int + b']}': 'unknown_field',
+            long_int: 'request_not_object',
+        }
+        for payload, code in cases.items():
+            status, body = run_cli(payload)
+            self.assertEqual((status, body['error']['code']), (2, code), payload[:40])
+
+    def test_ordinary_numbers_keep_their_rejections(self) -> None:
+        cases = {
+            b'{"text": 7, "language": "en"}': ('text_not_string', '"text" must be a string, got int'),
+            b'{"text": -12345678901234567890, "language": "en"}': (
+                'text_not_string',
+                '"text" must be a string, got int',
+            ),
+            b'{"text": 1.5e999, "language": "en"}': ('text_not_string', '"text" must be a string, got float'),
+            b'{"text": "if", "language": 7}': (
+                'invalid_language',
+                "\"language\" must be one of ['es', 'en', 'es+en'], got 7",
+            ),
+            b'{"text": 7, "text": 8, "language": "en"}': ('duplicate_key', "JSON object repeats the key 'text'"),
+            b'{"text": NaN, "language": "en"}': ('invalid_json_constant', 'NaN is not valid JSON'),
+        }
+        for payload, (code, message) in cases.items():
+            status, body = run_cli(payload)
+            self.assertEqual((status, body['error']), (2, {'code': code, 'message': message}), payload)
 
     def test_brackets_inside_strings_are_not_nesting(self) -> None:
         text = '"[{\\' * 400 + 'según'
