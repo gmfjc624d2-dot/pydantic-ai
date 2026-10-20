@@ -1,0 +1,63 @@
+{
+  "python": "3.9.25",
+  "implementation": "CPython",
+  "executable": "/root/.local/share/uv/python/cpython-3.9-linux-x86_64-gnu/bin/python3.9",
+  "platform": "Linux-6.18.44-fc-v139-x86_64-with-glibc2.39",
+  "machine": "x86_64",
+  "processor": "x86_64",
+  "cpu_count": 4,
+  "loadavg_before": [
+    0.31298828125,
+    0.2236328125,
+    0.13037109375
+  ],
+  "cpu_model": "Intel(R) Xeon(R) Processor @ 2.80GHz",
+  "started_utc": "2026-10-20T23:02:58+00:00",
+  "head_commit": "0419f015fbdfa3e11dcbe99e4d9d21341af101b3",
+  "working_tree_changes_in_this_directory": [
+    "?? acquisition/public_review_cues_20261020/results/linux-x86_64/v1.1.0/"
+  ],
+  "baseline_commit": "1c8c9ca3bc40a842296acab56436ccc1d1283c46",
+  "file_sha256": {
+    "baseline": {
+      "review_cues.py": "55b727372e092634873551c0a8d174607f7d1d9667edfae06fe9cff48e29dc5f",
+      "rules_v1.json": "3588b3b5b650bdf12443d0b82ec074a8181f955a1798cb913f0ddcfa75404346"
+    },
+    "revised": {
+      "review_cues.py": "e9dc723a3bfb38d222494e021be914416106feff688e7978e1f3d8cfb9ce3be6",
+      "rules_v1.json": "3588b3b5b650bdf12443d0b82ec074a8181f955a1798cb913f0ddcfa75404346"
+    }
+  },
+  "timeout_seconds": 60.0,
+  "repeats": 3,
+  "sizes": [
+    2000,
+    10000,
+    50000,
+    100000
+  ],
+  "shapes": {
+    "cue_free": {
+      "language": "en",
+      "description": "no cue at all"
+    },
+    "dense_disjoint": {
+      "language": "es",
+      "description": "a cue every 3 code points, none overlapping"
+    },
+    "dense_nested": {
+      "language": "en",
+      "description": "\"Only if\" and nested \"if\" every 8 code points"
+    },
+    "mixed_sentences": {
+      "language": "es+en",
+      "description": "seeded random ES/EN sentences, ~30% cue words"
+    }
+  },
+  "finished_utc": "2026-10-20T23:09:25+00:00",
+  "loadavg_after": [
+    1.13671875,
+    0.8447265625,
+    0.46044921875
+  ]
+}

@@ -1,0 +1,21 @@
+{"python": "3.9.25", "platform": "Linux-6.18.44-fc-v139-x86_64-with-glibc2.39", "executable": "/root/.local/share/uv/python/cpython-3.9-linux-x86_64-gnu/bin/python3.9"}
+{"impl": "1.1.0", "setting": "default limit", "digits": 5000, "version": "1.1.0", "payload_bytes": 5025, "status": "uncaught", "outcome": "ValueError", "seconds": 0.00021351300028982223}
+{"impl": "1.1.0", "setting": "default limit", "digits": 50000, "version": "1.1.0", "payload_bytes": 50025, "status": "uncaught", "outcome": "ValueError", "seconds": 0.0006944199999452394}
+{"impl": "1.1.0", "setting": "default limit", "digits": 100000, "version": "1.1.0", "payload_bytes": 100025, "status": "uncaught", "outcome": "ValueError", "seconds": 0.0014577980000467505}
+{"impl": "1.1.0", "setting": "default limit", "digits": 200000, "version": "1.1.0", "payload_bytes": 200025, "status": "uncaught", "outcome": "ValueError", "seconds": 0.0028985729995838483}
+{"impl": "1.1.0", "setting": "default limit", "digits": 1265511, "version": "1.1.0", "payload_bytes": 1265536, "status": "uncaught", "outcome": "ValueError", "seconds": 0.02805776600007448}
+{"impl": "working tree", "setting": "default limit", "digits": 5000, "version": "1.1.1", "payload_bytes": 5025, "status": 2, "outcome": "text_not_string", "seconds": 0.00022037500002625166}
+{"impl": "working tree", "setting": "default limit", "digits": 50000, "version": "1.1.1", "payload_bytes": 50025, "status": 2, "outcome": "text_not_string", "seconds": 0.0009855930002231617}
+{"impl": "working tree", "setting": "default limit", "digits": 100000, "version": "1.1.1", "payload_bytes": 100025, "status": 2, "outcome": "text_not_string", "seconds": 0.0019575739997890196}
+{"impl": "working tree", "setting": "default limit", "digits": 200000, "version": "1.1.1", "payload_bytes": 200025, "status": 2, "outcome": "text_not_string", "seconds": 0.003784872999858635}
+{"impl": "working tree", "setting": "default limit", "digits": 1265511, "version": "1.1.1", "payload_bytes": 1265536, "status": 2, "outcome": "text_not_string", "seconds": 0.025201037999977416}
+{"impl": "1.1.0", "setting": "limit disabled (-X int_max_str_digits=0)", "digits": 5000, "version": "1.1.0", "payload_bytes": 5025, "status": 2, "outcome": "text_not_string", "seconds": 0.0002942239998446894}
+{"impl": "1.1.0", "setting": "limit disabled (-X int_max_str_digits=0)", "digits": 50000, "version": "1.1.0", "payload_bytes": 50025, "status": 2, "outcome": "text_not_string", "seconds": 0.014196951000030822}
+{"impl": "1.1.0", "setting": "limit disabled (-X int_max_str_digits=0)", "digits": 100000, "version": "1.1.0", "payload_bytes": 100025, "status": 2, "outcome": "text_not_string", "seconds": 0.049784742999690934}
+{"impl": "1.1.0", "setting": "limit disabled (-X int_max_str_digits=0)", "digits": 200000, "version": "1.1.0", "payload_bytes": 200025, "status": 2, "outcome": "text_not_string", "seconds": 0.21459675000005518}
+{"impl": "1.1.0", "setting": "limit disabled (-X int_max_str_digits=0)", "digits": 1265511, "version": "1.1.0", "payload_bytes": 1265536, "status": 2, "outcome": "text_not_string", "seconds": 7.814041378000184}
+{"impl": "working tree", "setting": "limit disabled (-X int_max_str_digits=0)", "digits": 5000, "version": "1.1.1", "payload_bytes": 5025, "status": 2, "outcome": "text_not_string", "seconds": 0.0002003790000344452}
+{"impl": "working tree", "setting": "limit disabled (-X int_max_str_digits=0)", "digits": 50000, "version": "1.1.1", "payload_bytes": 50025, "status": 2, "outcome": "text_not_string", "seconds": 0.0011169569997946383}
+{"impl": "working tree", "setting": "limit disabled (-X int_max_str_digits=0)", "digits": 100000, "version": "1.1.1", "payload_bytes": 100025, "status": 2, "outcome": "text_not_string", "seconds": 0.002509336000002804}
+{"impl": "working tree", "setting": "limit disabled (-X int_max_str_digits=0)", "digits": 200000, "version": "1.1.1", "payload_bytes": 200025, "status": 2, "outcome": "text_not_string", "seconds": 0.004048043999773654}
+{"impl": "working tree", "setting": "limit disabled (-X int_max_str_digits=0)", "digits": 1265511, "version": "1.1.1", "payload_bytes": 1265536, "status": 2, "outcome": "text_not_string", "seconds": 0.023879642000338208}

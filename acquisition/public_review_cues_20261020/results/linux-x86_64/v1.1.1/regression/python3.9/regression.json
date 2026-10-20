@@ -1,0 +1,66 @@
+{
+  "kind": "regression reproduction of stored 1.0.0 outputs (not a held-out evaluation)",
+  "tool_version": "1.1.1",
+  "python": "3.9.25",
+  "implementation": "CPython",
+  "platform": "Linux-6.18.44-fc-v139-x86_64-with-glibc2.39",
+  "unicode_database_version": "13.0.0",
+  "masked_fields": [
+    "tool.version",
+    "configuration.unicode_database_version",
+    "configuration_sha256"
+  ],
+  "sets": {
+    "dev/python3.13": {
+      "items": 24,
+      "stored_items": 24,
+      "items_with_identical_masked_output": 24,
+      "items_differing": [],
+      "items_with_identical_evaluation_classes": 24,
+      "evaluation_items_differing": [],
+      "stored_unicode_database_version": "15.1.0",
+      "stored_tool_version": "1.0.0",
+      "unmasked_configuration_identical": false
+    },
+    "dev/python3.9": {
+      "items": 24,
+      "stored_items": 24,
+      "items_with_identical_masked_output": 24,
+      "items_differing": [],
+      "items_with_identical_evaluation_classes": 24,
+      "evaluation_items_differing": [],
+      "stored_unicode_database_version": "13.0.0",
+      "stored_tool_version": "1.0.0",
+      "unmasked_configuration_identical": true
+    },
+    "dev": {
+      "results_sha256": "cc7e1c92f5c6291b20bedec0eb4edd67d74d082365f24f1d0a1ff7cc8a2582b0"
+    },
+    "reserved/python3.13": {
+      "items": 24,
+      "stored_items": 24,
+      "items_with_identical_masked_output": 24,
+      "items_differing": [],
+      "items_with_identical_evaluation_classes": 24,
+      "evaluation_items_differing": [],
+      "stored_unicode_database_version": "15.1.0",
+      "stored_tool_version": "1.0.0",
+      "unmasked_configuration_identical": false
+    },
+    "reserved/python3.9": {
+      "items": 24,
+      "stored_items": 24,
+      "items_with_identical_masked_output": 24,
+      "items_differing": [],
+      "items_with_identical_evaluation_classes": 24,
+      "evaluation_items_differing": [],
+      "stored_unicode_database_version": "13.0.0",
+      "stored_tool_version": "1.0.0",
+      "unmasked_configuration_identical": true
+    },
+    "reserved": {
+      "results_sha256": "824a1bfc70f5bb3892511f072160c6fe16340e99f1dbf2bed1d978f00761347e"
+    }
+  },
+  "all_identical": true
+}
