@@ -1,0 +1,1391 @@
+{
+  "summary": {
+    "set": "dev",
+    "tool_version": "1.0.0",
+    "ruleset_canonical_sha256": "b33ac9e99a5177e317ab7ab274a7ca6821491cb912f10264b9a50a3a5726af63",
+    "fixtures_sha256": "d9702afaf321826fe81a0d21f8875ec32292683f4a0a3df0636f38ea4f10cf77",
+    "items": 24,
+    "gold_spans": 48,
+    "gold_hit": 48,
+    "highlights": 53,
+    "highlight_classes": {
+      "on_distractor": 2,
+      "redundant_nested": 3,
+      "true_positive": 48
+    },
+    "by_language": {
+      "en": {
+        "gold": 23,
+        "gold_hit": 23,
+        "highlights": 27,
+        "true_positive_highlights": 23
+      },
+      "es": {
+        "gold": 25,
+        "gold_hit": 25,
+        "highlights": 26,
+        "true_positive_highlights": 25
+      }
+    },
+    "by_topic_gold_recall": {
+      "condition": {
+        "gold": 9,
+        "hit": 9
+      },
+      "exception": {
+        "gold": 7,
+        "hit": 7
+      },
+      "negation": {
+        "gold": 14,
+        "hit": 14
+      },
+      "uncertainty": {
+        "gold": 7,
+        "hit": 7
+      },
+      "attribution": {
+        "gold": 9,
+        "hit": 9
+      },
+      "obligation": {
+        "gold": 5,
+        "hit": 5
+      }
+    },
+    "by_cue_origin": {
+      "in_dev_gold": {
+        "gold": 48,
+        "hit": 48
+      },
+      "in_annotation_spec": {
+        "gold": 0,
+        "hit": 0
+      },
+      "closed_class_lexicon_only": {
+        "gold": 0,
+        "hit": 0
+      },
+      "not_in_lexicon": {
+        "gold": 0,
+        "hit": 0
+      }
+    },
+    "format_feature_items": {
+      "d-en-06": {
+        "features": [
+          "nbsp_inside_multiword_cue"
+        ],
+        "all_gold_hit": true
+      },
+      "d-en-11": {
+        "features": [
+          "upper_case"
+        ],
+        "all_gold_hit": true
+      },
+      "d-en-12": {
+        "features": [
+          "emoji_vs16_before_cue",
+          "crlf"
+        ],
+        "all_gold_hit": true
+      },
+      "d-es-01": {
+        "features": [
+          "word_containing_cue_letters"
+        ],
+        "all_gold_hit": true
+      },
+      "d-es-09": {
+        "features": [
+          "nbsp_inside_multiword_cue"
+        ],
+        "all_gold_hit": true
+      },
+      "d-es-11": {
+        "features": [
+          "upper_case"
+        ],
+        "all_gold_hit": true
+      },
+      "d-es-12": {
+        "features": [
+          "decomposed_accent_in_cue",
+          "decomposed_non_cue"
+        ],
+        "all_gold_hit": true
+      }
+    },
+    "empty_gold_items": {}
+  },
+  "failures": {
+    "omissions": [],
+    "distracting_or_partial_highlights": [
+      {
+        "item_id": "d-en-04",
+        "text": "except",
+        "start": 23,
+        "end": 29,
+        "byte_start": 23,
+        "byte_end": 29,
+        "rule_id": "en.exception.except",
+        "review_topics": [
+          "exception"
+        ],
+        "class": "redundant_nested"
+      },
+      {
+        "item_id": "d-en-06",
+        "text": "may",
+        "start": 4,
+        "end": 7,
+        "byte_start": 4,
+        "byte_end": 7,
+        "rule_id": "en.uncertainty.may",
+        "review_topics": [
+          "uncertainty"
+        ],
+        "distractor_note": "permission, not a configured topic",
+        "class": "on_distractor"
+      },
+      {
+        "item_id": "d-en-10",
+        "text": "except",
+        "start": 35,
+        "end": 41,
+        "byte_start": 35,
+        "byte_end": 41,
+        "rule_id": "en.exception.except",
+        "review_topics": [
+          "exception"
+        ],
+        "class": "redundant_nested"
+      },
+      {
+        "item_id": "d-en-12",
+        "text": "if",
+        "start": 63,
+        "end": 65,
+        "byte_start": 67,
+        "byte_end": 69,
+        "rule_id": "en.condition.if",
+        "review_topics": [
+          "condition"
+        ],
+        "class": "redundant_nested"
+      },
+      {
+        "item_id": "d-es-04",
+        "text": "salvo",
+        "start": 64,
+        "end": 69,
+        "byte_start": 65,
+        "byte_end": 70,
+        "rule_id": "es.exception.salvo",
+        "review_topics": [
+          "exception"
+        ],
+        "distractor_note": "\"a salvo\" means \"safe\"",
+        "class": "on_distractor"
+      }
+    ],
+    "gold_origin": [
+      {
+        "item_id": "d-en-01",
+        "span": "If",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-en-01",
+        "span": "not",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-en-02",
+        "span": "unless",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-en-03",
+        "span": "According to",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-en-03",
+        "span": "may",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-en-04",
+        "span": "except for",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-en-05",
+        "span": "reported",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-en-05",
+        "span": "not",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-en-06",
+        "span": "as long as",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-en-07",
+        "span": "Nobody",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-en-07",
+        "span": "n't",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-en-08",
+        "span": "claims",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-en-08",
+        "span": "says",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-en-08",
+        "span": "might",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-en-09",
+        "span": "no",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-en-09",
+        "span": "perhaps",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-en-09",
+        "span": "never",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-en-10",
+        "span": "must",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-en-10",
+        "span": "except for",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-en-11",
+        "span": "IF",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-en-11",
+        "span": "MUST",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-en-12",
+        "span": "unless",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-en-12",
+        "span": "Only if",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-es-01",
+        "span": "Si",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-es-01",
+        "span": "no",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-es-01",
+        "span": "ni",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-es-02",
+        "span": "a menos que",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-es-03",
+        "span": "De acuerdo con",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-es-03",
+        "span": "puede",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-es-04",
+        "span": "salvo",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-es-05",
+        "span": "informó",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-es-05",
+        "span": "no",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-es-06",
+        "span": "tienen que",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-es-06",
+        "span": "quizá",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-es-07",
+        "span": "Nadie",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-es-07",
+        "span": "tampoco",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-es-08",
+        "span": "afirma",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-es-08",
+        "span": "dice",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-es-08",
+        "span": "podrían",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-es-09",
+        "span": "No",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-es-09",
+        "span": "tal vez",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-es-09",
+        "span": "nunca",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-es-10",
+        "span": "Hay que",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-es-10",
+        "span": "excepto",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-es-11",
+        "span": "SI",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-es-11",
+        "span": "DEBEN",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-es-12",
+        "span": "Según",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "d-es-12",
+        "span": "sin",
+        "origin": "in_dev_gold",
+        "hit": true
+      }
+    ]
+  },
+  "per_item": [
+    {
+      "item_id": "d-en-01",
+      "lang": "en",
+      "highlights": [
+        {
+          "text": "If",
+          "start": 0,
+          "end": 2,
+          "byte_start": 0,
+          "byte_end": 2,
+          "rule_id": "en.condition.if",
+          "review_topics": [
+            "condition"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "not",
+          "start": 38,
+          "end": 41,
+          "byte_start": 38,
+          "byte_end": 41,
+          "rule_id": "en.negation.not",
+          "review_topics": [
+            "negation"
+          ],
+          "class": "true_positive"
+        }
+      ],
+      "omissions": [],
+      "gold_hit": [
+        true,
+        true
+      ]
+    },
+    {
+      "item_id": "d-en-02",
+      "lang": "en",
+      "highlights": [
+        {
+          "text": "unless",
+          "start": 37,
+          "end": 43,
+          "byte_start": 37,
+          "byte_end": 43,
+          "rule_id": "en.condition.unless",
+          "review_topics": [
+            "condition",
+            "exception"
+          ],
+          "class": "true_positive"
+        }
+      ],
+      "omissions": [],
+      "gold_hit": [
+        true
+      ]
+    },
+    {
+      "item_id": "d-en-03",
+      "lang": "en",
+      "highlights": [
+        {
+          "text": "According to",
+          "start": 0,
+          "end": 12,
+          "byte_start": 0,
+          "byte_end": 12,
+          "rule_id": "en.attribution.according_to",
+          "review_topics": [
+            "attribution"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "may",
+          "start": 38,
+          "end": 41,
+          "byte_start": 38,
+          "byte_end": 41,
+          "rule_id": "en.uncertainty.may",
+          "review_topics": [
+            "uncertainty"
+          ],
+          "class": "true_positive"
+        }
+      ],
+      "omissions": [],
+      "gold_hit": [
+        true,
+        true
+      ]
+    },
+    {
+      "item_id": "d-en-04",
+      "lang": "en",
+      "highlights": [
+        {
+          "text": "except",
+          "start": 23,
+          "end": 29,
+          "byte_start": 23,
+          "byte_end": 29,
+          "rule_id": "en.exception.except",
+          "review_topics": [
+            "exception"
+          ],
+          "class": "redundant_nested"
+        },
+        {
+          "text": "except for",
+          "start": 23,
+          "end": 33,
+          "byte_start": 23,
+          "byte_end": 33,
+          "rule_id": "en.exception.except_for",
+          "review_topics": [
+            "exception"
+          ],
+          "class": "true_positive"
+        }
+      ],
+      "omissions": [],
+      "gold_hit": [
+        true
+      ]
+    },
+    {
+      "item_id": "d-en-05",
+      "lang": "en",
+      "highlights": [
+        {
+          "text": "reported",
+          "start": 20,
+          "end": 28,
+          "byte_start": 20,
+          "byte_end": 28,
+          "rule_id": "en.attribution.verb",
+          "review_topics": [
+            "attribution"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "not",
+          "start": 48,
+          "end": 51,
+          "byte_start": 48,
+          "byte_end": 51,
+          "rule_id": "en.negation.not",
+          "review_topics": [
+            "negation"
+          ],
+          "class": "true_positive"
+        }
+      ],
+      "omissions": [],
+      "gold_hit": [
+        true,
+        true
+      ]
+    },
+    {
+      "item_id": "d-en-06",
+      "lang": "en",
+      "highlights": [
+        {
+          "text": "may",
+          "start": 4,
+          "end": 7,
+          "byte_start": 4,
+          "byte_end": 7,
+          "rule_id": "en.uncertainty.may",
+          "review_topics": [
+            "uncertainty"
+          ],
+          "distractor_note": "permission, not a configured topic",
+          "class": "on_distractor"
+        },
+        {
+          "text": "as long as",
+          "start": 30,
+          "end": 40,
+          "byte_start": 30,
+          "byte_end": 41,
+          "rule_id": "en.condition.as_long_as",
+          "review_topics": [
+            "condition"
+          ],
+          "class": "true_positive"
+        }
+      ],
+      "omissions": [],
+      "gold_hit": [
+        true
+      ]
+    },
+    {
+      "item_id": "d-en-07",
+      "lang": "en",
+      "highlights": [
+        {
+          "text": "Nobody",
+          "start": 0,
+          "end": 6,
+          "byte_start": 0,
+          "byte_end": 6,
+          "rule_id": "en.negation.pronoun",
+          "review_topics": [
+            "negation"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "n't",
+          "start": 42,
+          "end": 45,
+          "byte_start": 42,
+          "byte_end": 45,
+          "rule_id": "en.negation.nt",
+          "review_topics": [
+            "negation"
+          ],
+          "class": "true_positive"
+        }
+      ],
+      "omissions": [],
+      "gold_hit": [
+        true,
+        true
+      ]
+    },
+    {
+      "item_id": "d-en-08",
+      "lang": "en",
+      "highlights": [
+        {
+          "text": "claims",
+          "start": 11,
+          "end": 17,
+          "byte_start": 11,
+          "byte_end": 17,
+          "rule_id": "en.attribution.verb",
+          "review_topics": [
+            "attribution"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "says",
+          "start": 61,
+          "end": 65,
+          "byte_start": 61,
+          "byte_end": 65,
+          "rule_id": "en.attribution.verb",
+          "review_topics": [
+            "attribution"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "might",
+          "start": 71,
+          "end": 76,
+          "byte_start": 71,
+          "byte_end": 76,
+          "rule_id": "en.uncertainty.might",
+          "review_topics": [
+            "uncertainty"
+          ],
+          "class": "true_positive"
+        }
+      ],
+      "omissions": [],
+      "gold_hit": [
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "item_id": "d-en-09",
+      "lang": "en",
+      "highlights": [
+        {
+          "text": "no",
+          "start": 9,
+          "end": 11,
+          "byte_start": 9,
+          "byte_end": 11,
+          "rule_id": "en.negation.no",
+          "review_topics": [
+            "negation"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "perhaps",
+          "start": 28,
+          "end": 35,
+          "byte_start": 28,
+          "byte_end": 35,
+          "rule_id": "en.uncertainty.adverb",
+          "review_topics": [
+            "uncertainty"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "never",
+          "start": 43,
+          "end": 48,
+          "byte_start": 43,
+          "byte_end": 48,
+          "rule_id": "en.negation.never",
+          "review_topics": [
+            "negation"
+          ],
+          "class": "true_positive"
+        }
+      ],
+      "omissions": [],
+      "gold_hit": [
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "item_id": "d-en-10",
+      "lang": "en",
+      "highlights": [
+        {
+          "text": "must",
+          "start": 8,
+          "end": 12,
+          "byte_start": 8,
+          "byte_end": 12,
+          "rule_id": "en.obligation.must",
+          "review_topics": [
+            "obligation"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "except",
+          "start": 35,
+          "end": 41,
+          "byte_start": 35,
+          "byte_end": 41,
+          "rule_id": "en.exception.except",
+          "review_topics": [
+            "exception"
+          ],
+          "class": "redundant_nested"
+        },
+        {
+          "text": "except for",
+          "start": 35,
+          "end": 45,
+          "byte_start": 35,
+          "byte_end": 45,
+          "rule_id": "en.exception.except_for",
+          "review_topics": [
+            "exception"
+          ],
+          "class": "true_positive"
+        }
+      ],
+      "omissions": [],
+      "gold_hit": [
+        true,
+        true
+      ]
+    },
+    {
+      "item_id": "d-en-11",
+      "lang": "en",
+      "highlights": [
+        {
+          "text": "IF",
+          "start": 0,
+          "end": 2,
+          "byte_start": 0,
+          "byte_end": 2,
+          "rule_id": "en.condition.if",
+          "review_topics": [
+            "condition"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "MUST",
+          "start": 29,
+          "end": 33,
+          "byte_start": 29,
+          "byte_end": 33,
+          "rule_id": "en.obligation.must",
+          "review_topics": [
+            "obligation"
+          ],
+          "class": "true_positive"
+        }
+      ],
+      "omissions": [],
+      "gold_hit": [
+        true,
+        true
+      ]
+    },
+    {
+      "item_id": "d-en-12",
+      "lang": "en",
+      "highlights": [
+        {
+          "text": "unless",
+          "start": 27,
+          "end": 33,
+          "byte_start": 31,
+          "byte_end": 37,
+          "rule_id": "en.condition.unless",
+          "review_topics": [
+            "condition",
+            "exception"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "Only if",
+          "start": 58,
+          "end": 65,
+          "byte_start": 62,
+          "byte_end": 69,
+          "rule_id": "en.condition.only_if",
+          "review_topics": [
+            "condition"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "if",
+          "start": 63,
+          "end": 65,
+          "byte_start": 67,
+          "byte_end": 69,
+          "rule_id": "en.condition.if",
+          "review_topics": [
+            "condition"
+          ],
+          "class": "redundant_nested"
+        }
+      ],
+      "omissions": [],
+      "gold_hit": [
+        true,
+        true
+      ]
+    },
+    {
+      "item_id": "d-es-01",
+      "lang": "es",
+      "highlights": [
+        {
+          "text": "Si",
+          "start": 0,
+          "end": 2,
+          "byte_start": 0,
+          "byte_end": 2,
+          "rule_id": "es.condition.si",
+          "review_topics": [
+            "condition"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "no",
+          "start": 29,
+          "end": 31,
+          "byte_start": 29,
+          "byte_end": 31,
+          "rule_id": "es.negation.no",
+          "review_topics": [
+            "negation"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "ni",
+          "start": 52,
+          "end": 54,
+          "byte_start": 53,
+          "byte_end": 55,
+          "rule_id": "es.negation.ni",
+          "review_topics": [
+            "negation"
+          ],
+          "class": "true_positive"
+        }
+      ],
+      "omissions": [],
+      "gold_hit": [
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "item_id": "d-es-02",
+      "lang": "es",
+      "highlights": [
+        {
+          "text": "a menos que",
+          "start": 30,
+          "end": 41,
+          "byte_start": 31,
+          "byte_end": 42,
+          "rule_id": "es.condition.a_menos_que",
+          "review_topics": [
+            "condition",
+            "exception"
+          ],
+          "class": "true_positive"
+        }
+      ],
+      "omissions": [],
+      "gold_hit": [
+        true
+      ]
+    },
+    {
+      "item_id": "d-es-03",
+      "lang": "es",
+      "highlights": [
+        {
+          "text": "De acuerdo con",
+          "start": 0,
+          "end": 14,
+          "byte_start": 0,
+          "byte_end": 14,
+          "rule_id": "es.attribution.de_acuerdo_con",
+          "review_topics": [
+            "attribution"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "puede",
+          "start": 34,
+          "end": 39,
+          "byte_start": 35,
+          "byte_end": 40,
+          "rule_id": "es.uncertainty.poder",
+          "review_topics": [
+            "uncertainty"
+          ],
+          "class": "true_positive"
+        }
+      ],
+      "omissions": [],
+      "gold_hit": [
+        true,
+        true
+      ]
+    },
+    {
+      "item_id": "d-es-04",
+      "lang": "es",
+      "highlights": [
+        {
+          "text": "salvo",
+          "start": 28,
+          "end": 33,
+          "byte_start": 28,
+          "byte_end": 33,
+          "rule_id": "es.exception.salvo",
+          "review_topics": [
+            "exception"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "salvo",
+          "start": 64,
+          "end": 69,
+          "byte_start": 65,
+          "byte_end": 70,
+          "rule_id": "es.exception.salvo",
+          "review_topics": [
+            "exception"
+          ],
+          "distractor_note": "\"a salvo\" means \"safe\"",
+          "class": "on_distractor"
+        }
+      ],
+      "omissions": [],
+      "gold_hit": [
+        true
+      ]
+    },
+    {
+      "item_id": "d-es-05",
+      "lang": "es",
+      "highlights": [
+        {
+          "text": "informó",
+          "start": 12,
+          "end": 19,
+          "byte_start": 13,
+          "byte_end": 21,
+          "rule_id": "es.attribution.verb",
+          "review_topics": [
+            "attribution"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "no",
+          "start": 32,
+          "end": 34,
+          "byte_start": 34,
+          "byte_end": 36,
+          "rule_id": "es.negation.no",
+          "review_topics": [
+            "negation"
+          ],
+          "class": "true_positive"
+        }
+      ],
+      "omissions": [],
+      "gold_hit": [
+        true,
+        true
+      ]
+    },
+    {
+      "item_id": "d-es-06",
+      "lang": "es",
+      "highlights": [
+        {
+          "text": "tienen que",
+          "start": 12,
+          "end": 22,
+          "byte_start": 12,
+          "byte_end": 22,
+          "rule_id": "es.obligation.tener_que",
+          "review_topics": [
+            "obligation"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "quizá",
+          "start": 41,
+          "end": 46,
+          "byte_start": 41,
+          "byte_end": 47,
+          "rule_id": "es.uncertainty.adverb",
+          "review_topics": [
+            "uncertainty"
+          ],
+          "class": "true_positive"
+        }
+      ],
+      "omissions": [],
+      "gold_hit": [
+        true,
+        true
+      ]
+    },
+    {
+      "item_id": "d-es-07",
+      "lang": "es",
+      "highlights": [
+        {
+          "text": "Nadie",
+          "start": 0,
+          "end": 5,
+          "byte_start": 0,
+          "byte_end": 5,
+          "rule_id": "es.negation.pronoun",
+          "review_topics": [
+            "negation"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "tampoco",
+          "start": 36,
+          "end": 43,
+          "byte_start": 36,
+          "byte_end": 43,
+          "rule_id": "es.negation.adverb",
+          "review_topics": [
+            "negation"
+          ],
+          "class": "true_positive"
+        }
+      ],
+      "omissions": [],
+      "gold_hit": [
+        true,
+        true
+      ]
+    },
+    {
+      "item_id": "d-es-08",
+      "lang": "es",
+      "highlights": [
+        {
+          "text": "afirma",
+          "start": 10,
+          "end": 16,
+          "byte_start": 10,
+          "byte_end": 16,
+          "rule_id": "es.attribution.verb",
+          "review_topics": [
+            "attribution"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "dice",
+          "start": 61,
+          "end": 65,
+          "byte_start": 61,
+          "byte_end": 65,
+          "rule_id": "es.attribution.verb",
+          "review_topics": [
+            "attribution"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "podrían",
+          "start": 70,
+          "end": 77,
+          "byte_start": 70,
+          "byte_end": 78,
+          "rule_id": "es.uncertainty.poder",
+          "review_topics": [
+            "uncertainty"
+          ],
+          "class": "true_positive"
+        }
+      ],
+      "omissions": [],
+      "gold_hit": [
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "item_id": "d-es-09",
+      "lang": "es",
+      "highlights": [
+        {
+          "text": "No",
+          "start": 0,
+          "end": 2,
+          "byte_start": 0,
+          "byte_end": 2,
+          "rule_id": "es.negation.no",
+          "review_topics": [
+            "negation"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "tal vez",
+          "start": 24,
+          "end": 31,
+          "byte_start": 24,
+          "byte_end": 32,
+          "rule_id": "es.uncertainty.adverb",
+          "review_topics": [
+            "uncertainty"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "nunca",
+          "start": 32,
+          "end": 37,
+          "byte_start": 33,
+          "byte_end": 38,
+          "rule_id": "es.negation.adverb",
+          "review_topics": [
+            "negation"
+          ],
+          "class": "true_positive"
+        }
+      ],
+      "omissions": [],
+      "gold_hit": [
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "item_id": "d-es-10",
+      "lang": "es",
+      "highlights": [
+        {
+          "text": "Hay que",
+          "start": 0,
+          "end": 7,
+          "byte_start": 0,
+          "byte_end": 7,
+          "rule_id": "es.obligation.hay_que",
+          "review_topics": [
+            "obligation"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "excepto",
+          "start": 28,
+          "end": 35,
+          "byte_start": 28,
+          "byte_end": 35,
+          "rule_id": "es.exception.excepto",
+          "review_topics": [
+            "exception"
+          ],
+          "class": "true_positive"
+        }
+      ],
+      "omissions": [],
+      "gold_hit": [
+        true,
+        true
+      ]
+    },
+    {
+      "item_id": "d-es-11",
+      "lang": "es",
+      "highlights": [
+        {
+          "text": "SI",
+          "start": 0,
+          "end": 2,
+          "byte_start": 0,
+          "byte_end": 2,
+          "rule_id": "es.condition.si",
+          "review_topics": [
+            "condition"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "DEBEN",
+          "start": 35,
+          "end": 40,
+          "byte_start": 35,
+          "byte_end": 40,
+          "rule_id": "es.obligation.deber",
+          "review_topics": [
+            "obligation"
+          ],
+          "class": "true_positive"
+        }
+      ],
+      "omissions": [],
+      "gold_hit": [
+        true,
+        true
+      ]
+    },
+    {
+      "item_id": "d-es-12",
+      "lang": "es",
+      "highlights": [
+        {
+          "text": "Según",
+          "start": 0,
+          "end": 6,
+          "byte_start": 0,
+          "byte_end": 7,
+          "rule_id": "es.attribution.segun",
+          "review_topics": [
+            "attribution"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "sin",
+          "start": 46,
+          "end": 49,
+          "byte_start": 49,
+          "byte_end": 52,
+          "rule_id": "es.negation.sin",
+          "review_topics": [
+            "negation"
+          ],
+          "class": "true_positive"
+        }
+      ],
+      "omissions": [],
+      "gold_hit": [
+        true,
+        true
+      ]
+    }
+  ]
+}
