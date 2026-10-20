@@ -1,0 +1,70 @@
+{
+  "system": "lexical-baseline/v1",
+  "tau": 0.6,
+  "selection": "max dev macro-F1 over dev full-context trials (es+en), ties -> larger tau; held-out never used",
+  "grid": [
+    {
+      "tau": 0.5,
+      "dev_macro_f1": 0.526557,
+      "dev_accuracy": 0.583333
+    },
+    {
+      "tau": 0.55,
+      "dev_macro_f1": 0.526557,
+      "dev_accuracy": 0.583333
+    },
+    {
+      "tau": 0.6,
+      "dev_macro_f1": 0.530473,
+      "dev_accuracy": 0.583333
+    },
+    {
+      "tau": 0.65,
+      "dev_macro_f1": 0.517089,
+      "dev_accuracy": 0.5625
+    },
+    {
+      "tau": 0.7,
+      "dev_macro_f1": 0.425628,
+      "dev_accuracy": 0.458333
+    },
+    {
+      "tau": 0.75,
+      "dev_macro_f1": 0.425628,
+      "dev_accuracy": 0.458333
+    },
+    {
+      "tau": 0.8,
+      "dev_macro_f1": 0.417843,
+      "dev_accuracy": 0.4375
+    },
+    {
+      "tau": 0.85,
+      "dev_macro_f1": 0.336818,
+      "dev_accuracy": 0.333333
+    },
+    {
+      "tau": 0.9,
+      "dev_macro_f1": 0.279352,
+      "dev_accuracy": 0.270833
+    },
+    {
+      "tau": 0.95,
+      "dev_macro_f1": 0.279352,
+      "dev_accuracy": 0.270833
+    },
+    {
+      "tau": 1.0,
+      "dev_macro_f1": 0.279352,
+      "dev_accuracy": 0.270833
+    }
+  ],
+  "prefix_match_chars": 5,
+  "fixtures_sha256": {
+    "dev.jsonl": "6f56dabcea2fa9e1a1815bd8960cfcb976be3f949ff10c0fcc1df17615bc58d8",
+    "heldout.jsonl": "8cbe96a7a06b7977b3af534b6e58949034f70f96ee15171ed8b4efc046c17a74",
+    "excluded.jsonl": "e0a5f93654b2ade7af8205d270ff0c46a63991b8ba283e87b3b87ecf21a1c631"
+  },
+  "code_sha256": "49343b76f5b0aa694ece61769addcb3400009c5fda6bb87aac6408fa67a5570c",
+  "fitted_at": "2026-10-20T21:29:13.081442+00:00"
+}

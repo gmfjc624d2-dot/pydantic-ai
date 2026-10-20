@@ -1,0 +1,23 @@
+{
+  "provenance": "Requester-provided public Hugging Face API/card metadata, retrieved by the requester from an ordinary macOS network path on 2026-10-20 and relayed in the request. NOT independently observed by the Cloud session that wrote this file: huggingface.co was denied by its egress policy.",
+  "repo": "MoritzLaurer/mDeBERTa-v3-base-mnli-xnli",
+  "revision": "8adb042d524ecd5c26d3e3ba0e3fbcf7e2d0864c",
+  "visibility": "public",
+  "gated": false,
+  "license_from_card": "mit",
+  "config": {
+    "architectures": ["DebertaV2ForSequenceClassification"],
+    "id2label": {"0": "entailment", "1": "neutral", "2": "contradiction"},
+    "max_position_embeddings": 512,
+    "torch_dtype": "float16"
+  },
+  "card_notes": [
+    "The card warns that FP16 is unsupported; plan CPU float32 despite config torch_dtype float16."
+  ],
+  "files": {
+    "model.safetensors": {"size_bytes": 557652046, "sha256": "65af59b1ff4450b09ecbf13ca35c840dbf038b26ff8e10e5ea89ca724828ed1e", "source": "Hub LFS sha256"},
+    "spm.model": {"size_bytes": 4305025, "sha256": "13c8d666d62a7bc4ac8f040aab68e942c861f93303156cc28f5c7e885d86d6e3"},
+    "tokenizer.json": {"size_bytes": 16331396, "sha256": "3aca3ce69a0a35aeb144a52c4f1d41c4246b8785f8f398315cc8fb6b24057810"}
+  },
+  "files_without_requester_hash": ["config.json", "tokenizer_config.json", "special_tokens_map.json", "added_tokens.json"]
+}

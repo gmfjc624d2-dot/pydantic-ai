@@ -1,0 +1,3425 @@
+{
+  "fixtures_sha256": {
+    "dev.jsonl": "6f56dabcea2fa9e1a1815bd8960cfcb976be3f949ff10c0fcc1df17615bc58d8",
+    "heldout.jsonl": "8cbe96a7a06b7977b3af534b6e58949034f70f96ee15171ed8b4efc046c17a74",
+    "excluded.jsonl": "e0a5f93654b2ade7af8205d270ff0c46a63991b8ba283e87b3b87ecf21a1c631"
+  },
+  "errata_sha256": "9a86a273b6b8c61189f0112e5f5222680377e72277423467d5e15fdced043ff5",
+  "independence_caveat": "Each set has 24 items in 6 scenario groups of 4 related variants; Spanish and English are paired variants of the same item, and span trials reuse the same items. Neither the 48 language trials nor the 24 items are independent observations, so no independence-based confidence interval is reported; results are counts with group-level listings.",
+  "systems": {
+    "lexical-baseline/v1": {
+      "run_dir": "lexical-baseline",
+      "run_manifest": {
+        "system": "lexical-baseline/v1",
+        "config": "baseline_config.json",
+        "config_sha256": "e19840b06be3c3b8f519b80d9c00fef062cfe6fe03db4b355b08dce305904cdd",
+        "fixtures_sha256": {
+          "dev.jsonl": "6f56dabcea2fa9e1a1815bd8960cfcb976be3f949ff10c0fcc1df17615bc58d8",
+          "heldout.jsonl": "8cbe96a7a06b7977b3af534b6e58949034f70f96ee15171ed8b4efc046c17a74",
+          "excluded.jsonl": "e0a5f93654b2ade7af8205d270ff0c46a63991b8ba283e87b3b87ecf21a1c631"
+        },
+        "python": "3.13.16",
+        "created_at": "2026-10-20T21:29:13.148553+00:00",
+        "files": {
+          "predictions--dev.jsonl": {
+            "sha256": "0434c7fa56437096fc7d130b5c7b2c57a9017079a41a0c6dab6d8b92fad83c27",
+            "trials": 64,
+            "predicted": {
+              "entailment": 37,
+              "contradiction": 11,
+              "neutral": 16
+            }
+          },
+          "predictions--heldout.jsonl": {
+            "sha256": "73b5efac892bbb6663be2f0e3d4ef0706c812ac27c027f1b5a80224cffb234ac",
+            "trials": 64,
+            "predicted": {
+              "entailment": 50,
+              "contradiction": 5,
+              "neutral": 9
+            }
+          }
+        }
+      },
+      "sets": {
+        "dev": {
+          "trials_expected": 64,
+          "trials_scored": 64,
+          "trials_missing": [],
+          "non_ok_status": {},
+          "full": {
+            "subsets": {
+              "original_full_set": {
+                "items": 24,
+                "by_language": {
+                  "es": {
+                    "correct": 14,
+                    "n": 24
+                  },
+                  "en": {
+                    "correct": 14,
+                    "n": 24
+                  }
+                },
+                "items_correct_in_both_languages": {
+                  "correct": 14,
+                  "n": 24
+                },
+                "item_ids": [
+                  "d-attribution-1",
+                  "d-attribution-2",
+                  "d-attribution-3",
+                  "d-attribution-4",
+                  "d-condition-1",
+                  "d-condition-2",
+                  "d-condition-3",
+                  "d-condition-4",
+                  "d-exception-1",
+                  "d-exception-2",
+                  "d-exception-3",
+                  "d-exception-4",
+                  "d-modality-1",
+                  "d-modality-2",
+                  "d-modality-3",
+                  "d-modality-4",
+                  "d-negation-1",
+                  "d-negation-2",
+                  "d-negation-3",
+                  "d-negation-4",
+                  "d-reference-1",
+                  "d-reference-2",
+                  "d-reference-3",
+                  "d-reference-4"
+                ]
+              },
+              "excluding_disputed": {
+                "items": 24,
+                "by_language": {
+                  "es": {
+                    "correct": 14,
+                    "n": 24
+                  },
+                  "en": {
+                    "correct": 14,
+                    "n": 24
+                  }
+                },
+                "items_correct_in_both_languages": {
+                  "correct": 14,
+                  "n": 24
+                },
+                "item_ids": [
+                  "d-attribution-1",
+                  "d-attribution-2",
+                  "d-attribution-3",
+                  "d-attribution-4",
+                  "d-condition-1",
+                  "d-condition-2",
+                  "d-condition-3",
+                  "d-condition-4",
+                  "d-exception-1",
+                  "d-exception-2",
+                  "d-exception-3",
+                  "d-exception-4",
+                  "d-modality-1",
+                  "d-modality-2",
+                  "d-modality-3",
+                  "d-modality-4",
+                  "d-negation-1",
+                  "d-negation-2",
+                  "d-negation-3",
+                  "d-negation-4",
+                  "d-reference-1",
+                  "d-reference-2",
+                  "d-reference-3",
+                  "d-reference-4"
+                ]
+              },
+              "only:convention_coherent_source": {
+                "items": 1,
+                "by_language": {
+                  "es": {
+                    "correct": 0,
+                    "n": 1
+                  },
+                  "en": {
+                    "correct": 0,
+                    "n": 1
+                  }
+                },
+                "items_correct_in_both_languages": {
+                  "correct": 0,
+                  "n": 1
+                },
+                "item_ids": [
+                  "d-attribution-3"
+                ]
+              },
+              "only:convention_standing_rule": {
+                "items": 2,
+                "by_language": {
+                  "es": {
+                    "correct": 0,
+                    "n": 2
+                  },
+                  "en": {
+                    "correct": 0,
+                    "n": 2
+                  }
+                },
+                "items_correct_in_both_languages": {
+                  "correct": 0,
+                  "n": 2
+                },
+                "item_ids": [
+                  "d-condition-1",
+                  "d-condition-2"
+                ]
+              },
+              "only:pre_freeze_residual_concern": {
+                "items": 3,
+                "by_language": {
+                  "es": {
+                    "correct": 2,
+                    "n": 3
+                  },
+                  "en": {
+                    "correct": 2,
+                    "n": 3
+                  }
+                },
+                "items_correct_in_both_languages": {
+                  "correct": 2,
+                  "n": 3
+                },
+                "item_ids": [
+                  "d-exception-4",
+                  "d-modality-3",
+                  "d-modality-4"
+                ]
+              },
+              "assumption_light_core": {
+                "items": 21,
+                "by_language": {
+                  "es": {
+                    "correct": 14,
+                    "n": 21
+                  },
+                  "en": {
+                    "correct": 14,
+                    "n": 21
+                  }
+                },
+                "items_correct_in_both_languages": {
+                  "correct": 14,
+                  "n": 21
+                },
+                "item_ids": [
+                  "d-attribution-1",
+                  "d-attribution-2",
+                  "d-attribution-4",
+                  "d-condition-3",
+                  "d-condition-4",
+                  "d-exception-1",
+                  "d-exception-2",
+                  "d-exception-3",
+                  "d-exception-4",
+                  "d-modality-1",
+                  "d-modality-2",
+                  "d-modality-3",
+                  "d-modality-4",
+                  "d-negation-1",
+                  "d-negation-2",
+                  "d-negation-3",
+                  "d-negation-4",
+                  "d-reference-1",
+                  "d-reference-2",
+                  "d-reference-3",
+                  "d-reference-4"
+                ]
+              }
+            },
+            "by_group": {
+              "d-attribution": {
+                "by_language": {
+                  "es": {
+                    "correct": 2,
+                    "n": 4
+                  },
+                  "en": {
+                    "correct": 2,
+                    "n": 4
+                  }
+                },
+                "items": [
+                  {
+                    "item_id": "d-attribution-1",
+                    "role": "base",
+                    "gold": "entailment",
+                    "pred_es": "entailment",
+                    "pred_en": "entailment",
+                    "flags": []
+                  },
+                  {
+                    "item_id": "d-attribution-2",
+                    "role": "paraphrase",
+                    "gold": "entailment",
+                    "pred_es": "entailment",
+                    "pred_en": "entailment",
+                    "flags": []
+                  },
+                  {
+                    "item_id": "d-attribution-3",
+                    "role": "meaning_change",
+                    "gold": "contradiction",
+                    "pred_es": "entailment",
+                    "pred_en": "entailment",
+                    "flags": [
+                      "convention_coherent_source"
+                    ]
+                  },
+                  {
+                    "item_id": "d-attribution-4",
+                    "role": "missing_qualifier",
+                    "gold": "neutral",
+                    "pred_es": "entailment",
+                    "pred_en": "entailment",
+                    "flags": []
+                  }
+                ]
+              },
+              "d-condition": {
+                "by_language": {
+                  "es": {
+                    "correct": 1,
+                    "n": 4
+                  },
+                  "en": {
+                    "correct": 1,
+                    "n": 4
+                  }
+                },
+                "items": [
+                  {
+                    "item_id": "d-condition-1",
+                    "role": "base",
+                    "gold": "contradiction",
+                    "pred_es": "entailment",
+                    "pred_en": "entailment",
+                    "flags": [
+                      "convention_standing_rule"
+                    ]
+                  },
+                  {
+                    "item_id": "d-condition-2",
+                    "role": "paraphrase",
+                    "gold": "contradiction",
+                    "pred_es": "entailment",
+                    "pred_en": "entailment",
+                    "flags": [
+                      "convention_standing_rule"
+                    ]
+                  },
+                  {
+                    "item_id": "d-condition-3",
+                    "role": "meaning_change",
+                    "gold": "entailment",
+                    "pred_es": "entailment",
+                    "pred_en": "entailment",
+                    "flags": []
+                  },
+                  {
+                    "item_id": "d-condition-4",
+                    "role": "missing_qualifier",
+                    "gold": "neutral",
+                    "pred_es": "entailment",
+                    "pred_en": "entailment",
+                    "flags": []
+                  }
+                ]
+              },
+              "d-exception": {
+                "by_language": {
+                  "es": {
+                    "correct": 2,
+                    "n": 4
+                  },
+                  "en": {
+                    "correct": 2,
+                    "n": 4
+                  }
+                },
+                "items": [
+                  {
+                    "item_id": "d-exception-1",
+                    "role": "base",
+                    "gold": "entailment",
+                    "pred_es": "contradiction",
+                    "pred_en": "neutral",
+                    "flags": []
+                  },
+                  {
+                    "item_id": "d-exception-2",
+                    "role": "paraphrase",
+                    "gold": "entailment",
+                    "pred_es": "neutral",
+                    "pred_en": "neutral",
+                    "flags": []
+                  },
+                  {
+                    "item_id": "d-exception-3",
+                    "role": "meaning_change",
+                    "gold": "contradiction",
+                    "pred_es": "contradiction",
+                    "pred_en": "contradiction",
+                    "flags": []
+                  },
+                  {
+                    "item_id": "d-exception-4",
+                    "role": "missing_qualifier",
+                    "gold": "neutral",
+                    "pred_es": "neutral",
+                    "pred_en": "neutral",
+                    "flags": [
+                      "pre_freeze_residual_concern"
+                    ]
+                  }
+                ]
+              },
+              "d-modality": {
+                "by_language": {
+                  "es": {
+                    "correct": 3,
+                    "n": 4
+                  },
+                  "en": {
+                    "correct": 3,
+                    "n": 4
+                  }
+                },
+                "items": [
+                  {
+                    "item_id": "d-modality-1",
+                    "role": "base",
+                    "gold": "entailment",
+                    "pred_es": "entailment",
+                    "pred_en": "entailment",
+                    "flags": []
+                  },
+                  {
+                    "item_id": "d-modality-2",
+                    "role": "paraphrase",
+                    "gold": "entailment",
+                    "pred_es": "entailment",
+                    "pred_en": "entailment",
+                    "flags": []
+                  },
+                  {
+                    "item_id": "d-modality-3",
+                    "role": "meaning_change",
+                    "gold": "contradiction",
+                    "pred_es": "contradiction",
+                    "pred_en": "contradiction",
+                    "flags": [
+                      "pre_freeze_residual_concern"
+                    ]
+                  },
+                  {
+                    "item_id": "d-modality-4",
+                    "role": "missing_qualifier",
+                    "gold": "neutral",
+                    "pred_es": "entailment",
+                    "pred_en": "entailment",
+                    "flags": [
+                      "pre_freeze_residual_concern"
+                    ]
+                  }
+                ]
+              },
+              "d-negation": {
+                "by_language": {
+                  "es": {
+                    "correct": 3,
+                    "n": 4
+                  },
+                  "en": {
+                    "correct": 3,
+                    "n": 4
+                  }
+                },
+                "items": [
+                  {
+                    "item_id": "d-negation-1",
+                    "role": "base",
+                    "gold": "contradiction",
+                    "pred_es": "contradiction",
+                    "pred_en": "contradiction",
+                    "flags": []
+                  },
+                  {
+                    "item_id": "d-negation-2",
+                    "role": "paraphrase",
+                    "gold": "contradiction",
+                    "pred_es": "contradiction",
+                    "pred_en": "contradiction",
+                    "flags": []
+                  },
+                  {
+                    "item_id": "d-negation-3",
+                    "role": "meaning_change",
+                    "gold": "entailment",
+                    "pred_es": "entailment",
+                    "pred_en": "entailment",
+                    "flags": []
+                  },
+                  {
+                    "item_id": "d-negation-4",
+                    "role": "missing_qualifier",
+                    "gold": "neutral",
+                    "pred_es": "entailment",
+                    "pred_en": "entailment",
+                    "flags": []
+                  }
+                ]
+              },
+              "d-reference": {
+                "by_language": {
+                  "es": {
+                    "correct": 3,
+                    "n": 4
+                  },
+                  "en": {
+                    "correct": 3,
+                    "n": 4
+                  }
+                },
+                "items": [
+                  {
+                    "item_id": "d-reference-1",
+                    "role": "base",
+                    "gold": "entailment",
+                    "pred_es": "entailment",
+                    "pred_en": "entailment",
+                    "flags": []
+                  },
+                  {
+                    "item_id": "d-reference-2",
+                    "role": "paraphrase",
+                    "gold": "entailment",
+                    "pred_es": "entailment",
+                    "pred_en": "entailment",
+                    "flags": []
+                  },
+                  {
+                    "item_id": "d-reference-3",
+                    "role": "meaning_change",
+                    "gold": "contradiction",
+                    "pred_es": "contradiction",
+                    "pred_en": "contradiction",
+                    "flags": []
+                  },
+                  {
+                    "item_id": "d-reference-4",
+                    "role": "missing_qualifier",
+                    "gold": "neutral",
+                    "pred_es": "entailment",
+                    "pred_en": "entailment",
+                    "flags": []
+                  }
+                ]
+              }
+            },
+            "confusion_gold_by_pred": {
+              "entailment": {
+                "entailment": 16,
+                "neutral": 3,
+                "contradiction": 1
+              },
+              "neutral": {
+                "entailment": 10,
+                "neutral": 2,
+                "contradiction": 0
+              },
+              "contradiction": {
+                "entailment": 6,
+                "neutral": 0,
+                "contradiction": 10
+              }
+            },
+            "per_class": {
+              "entailment": {
+                "support": 20,
+                "predicted": 32,
+                "correct": 16,
+                "precision": 0.5,
+                "recall": 0.8,
+                "f1": 0.6154
+              },
+              "neutral": {
+                "support": 12,
+                "predicted": 5,
+                "correct": 2,
+                "precision": 0.4,
+                "recall": 0.1667,
+                "f1": 0.2353
+              },
+              "contradiction": {
+                "support": 16,
+                "predicted": 11,
+                "correct": 10,
+                "precision": 0.9091,
+                "recall": 0.625,
+                "f1": 0.7407
+              },
+              "macro_f1_descriptive": 0.5305
+            },
+            "by_role": {
+              "base": {
+                "correct": 8,
+                "n": 12
+              },
+              "paraphrase": {
+                "correct": 8,
+                "n": 12
+              },
+              "meaning_change": {
+                "correct": 10,
+                "n": 12
+              },
+              "missing_qualifier": {
+                "correct": 2,
+                "n": 12
+              }
+            },
+            "paraphrase_consistency": {
+              "correct": 11,
+              "n": 12
+            },
+            "minimal_pair_sensitivity": {
+              "correct": 7,
+              "n": 12
+            },
+            "cross_lingual_agreement": {
+              "correct": 23,
+              "n": 24
+            }
+          },
+          "span": {
+            "by_language": {
+              "es": {
+                "correct": 6,
+                "n": 8
+              },
+              "en": {
+                "correct": 3,
+                "n": 8
+              }
+            },
+            "excluding_convention_sensitive": {
+              "correct": 5,
+              "n": 10
+            },
+            "convention_sensitive_only": {
+              "correct": 4,
+              "n": 6
+            },
+            "span_prediction_equals_full_reference_label": {
+              "correct": 6,
+              "n": 16
+            },
+            "trials": [
+              {
+                "trial_id": "d-exception-1/es/span",
+                "span_gold": "entailment",
+                "full_reference_label": "entailment",
+                "pred": "entailment",
+                "convention_sensitive": false
+              },
+              {
+                "trial_id": "d-exception-1/en/span",
+                "span_gold": "entailment",
+                "full_reference_label": "entailment",
+                "pred": "neutral",
+                "convention_sensitive": false
+              },
+              {
+                "trial_id": "d-exception-2/es/span",
+                "span_gold": "entailment",
+                "full_reference_label": "entailment",
+                "pred": "neutral",
+                "convention_sensitive": false
+              },
+              {
+                "trial_id": "d-exception-2/en/span",
+                "span_gold": "entailment",
+                "full_reference_label": "entailment",
+                "pred": "neutral",
+                "convention_sensitive": false
+              },
+              {
+                "trial_id": "d-exception-3/es/span",
+                "span_gold": "entailment",
+                "full_reference_label": "contradiction",
+                "pred": "entailment",
+                "convention_sensitive": false
+              },
+              {
+                "trial_id": "d-exception-3/en/span",
+                "span_gold": "entailment",
+                "full_reference_label": "contradiction",
+                "pred": "neutral",
+                "convention_sensitive": false
+              },
+              {
+                "trial_id": "d-exception-4/es/span",
+                "span_gold": "neutral",
+                "full_reference_label": "neutral",
+                "pred": "neutral",
+                "convention_sensitive": false
+              },
+              {
+                "trial_id": "d-exception-4/en/span",
+                "span_gold": "neutral",
+                "full_reference_label": "neutral",
+                "pred": "neutral",
+                "convention_sensitive": false
+              },
+              {
+                "trial_id": "d-reference-1/es/span",
+                "span_gold": "neutral",
+                "full_reference_label": "entailment",
+                "pred": "entailment",
+                "convention_sensitive": true
+              },
+              {
+                "trial_id": "d-reference-1/en/span",
+                "span_gold": "neutral",
+                "full_reference_label": "entailment",
+                "pred": "entailment",
+                "convention_sensitive": true
+              },
+              {
+                "trial_id": "d-reference-2/es/span",
+                "span_gold": "neutral",
+                "full_reference_label": "entailment",
+                "pred": "neutral",
+                "convention_sensitive": true
+              },
+              {
+                "trial_id": "d-reference-2/en/span",
+                "span_gold": "neutral",
+                "full_reference_label": "entailment",
+                "pred": "neutral",
+                "convention_sensitive": true
+              },
+              {
+                "trial_id": "d-reference-3/es/span",
+                "span_gold": "neutral",
+                "full_reference_label": "contradiction",
+                "pred": "neutral",
+                "convention_sensitive": true
+              },
+              {
+                "trial_id": "d-reference-3/en/span",
+                "span_gold": "neutral",
+                "full_reference_label": "contradiction",
+                "pred": "neutral",
+                "convention_sensitive": true
+              },
+              {
+                "trial_id": "d-reference-4/es/span",
+                "span_gold": "neutral",
+                "full_reference_label": "neutral",
+                "pred": "neutral",
+                "convention_sensitive": false
+              },
+              {
+                "trial_id": "d-reference-4/en/span",
+                "span_gold": "neutral",
+                "full_reference_label": "neutral",
+                "pred": "entailment",
+                "convention_sensitive": false
+              }
+            ]
+          },
+          "errors": [
+            {
+              "trial_id": "d-condition-1/es/full",
+              "group_id": "d-condition",
+              "role": "base",
+              "gold": "contradiction",
+              "pred": "entailment",
+              "flags": [
+                "convention_standing_rule"
+              ],
+              "convention_sensitive_span": false,
+              "premise": "Si la temperatura baja de cero grados, la fuente del patio del museo se apaga.",
+              "hypothesis": "Si la temperatura baja de cero grados, la fuente del patio del museo sigue encendida.",
+              "evidence": {
+                "features": {
+                  "coverage": 0.777778,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "temperatura",
+                    "baja",
+                    "cero",
+                    "grados",
+                    "fuente",
+                    "patio",
+                    "museo",
+                    "sigue",
+                    "encendida"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": [
+                    "sigue",
+                    "encendida"
+                  ]
+                }
+              }
+            },
+            {
+              "trial_id": "d-condition-1/en/full",
+              "group_id": "d-condition",
+              "role": "base",
+              "gold": "contradiction",
+              "pred": "entailment",
+              "flags": [
+                "convention_standing_rule"
+              ],
+              "convention_sensitive_span": false,
+              "premise": "If the temperature drops below zero, the fountain in the museum courtyard is switched off.",
+              "hypothesis": "If the temperature drops below zero, the fountain in the museum courtyard stays on.",
+              "evidence": {
+                "features": {
+                  "coverage": 0.875,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "temperature",
+                    "drops",
+                    "below",
+                    "zero",
+                    "fountain",
+                    "museum",
+                    "courtyard",
+                    "stays"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": [
+                    "stays"
+                  ]
+                }
+              }
+            },
+            {
+              "trial_id": "d-condition-2/es/full",
+              "group_id": "d-condition",
+              "role": "paraphrase",
+              "gold": "contradiction",
+              "pred": "entailment",
+              "flags": [
+                "convention_standing_rule"
+              ],
+              "convention_sensitive_span": false,
+              "premise": "Si la temperatura baja de cero grados, la fuente del patio del museo se apaga.",
+              "hypothesis": "La fuente del patio sigue funcionando incluso cuando la temperatura baja de cero grados.",
+              "evidence": {
+                "features": {
+                  "coverage": 0.75,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "fuente",
+                    "patio",
+                    "sigue",
+                    "funcionando",
+                    "temperatura",
+                    "baja",
+                    "cero",
+                    "grados"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": [
+                    "sigue",
+                    "funcionando"
+                  ]
+                }
+              }
+            },
+            {
+              "trial_id": "d-condition-2/en/full",
+              "group_id": "d-condition",
+              "role": "paraphrase",
+              "gold": "contradiction",
+              "pred": "entailment",
+              "flags": [
+                "convention_standing_rule"
+              ],
+              "convention_sensitive_span": false,
+              "premise": "If the temperature drops below zero, the fountain in the museum courtyard is switched off.",
+              "hypothesis": "The courtyard fountain keeps running even when the temperature falls below zero.",
+              "evidence": {
+                "features": {
+                  "coverage": 0.625,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "courtyard",
+                    "fountain",
+                    "keeps",
+                    "running",
+                    "temperature",
+                    "falls",
+                    "below",
+                    "zero"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": [
+                    "keeps",
+                    "running",
+                    "falls"
+                  ]
+                }
+              }
+            },
+            {
+              "trial_id": "d-condition-4/es/full",
+              "group_id": "d-condition",
+              "role": "missing_qualifier",
+              "gold": "neutral",
+              "pred": "entailment",
+              "flags": [],
+              "convention_sensitive_span": false,
+              "premise": "Si la temperatura baja de cero grados, la fuente del patio del museo se apaga.",
+              "hypothesis": "La fuente del patio del museo está apagada.",
+              "evidence": {
+                "features": {
+                  "coverage": 1.0,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "fuente",
+                    "patio",
+                    "museo",
+                    "apagada"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": []
+                }
+              }
+            },
+            {
+              "trial_id": "d-condition-4/en/full",
+              "group_id": "d-condition",
+              "role": "missing_qualifier",
+              "gold": "neutral",
+              "pred": "entailment",
+              "flags": [],
+              "convention_sensitive_span": false,
+              "premise": "If the temperature drops below zero, the fountain in the museum courtyard is switched off.",
+              "hypothesis": "The fountain in the museum courtyard is switched off.",
+              "evidence": {
+                "features": {
+                  "coverage": 1.0,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "fountain",
+                    "museum",
+                    "courtyard",
+                    "switched",
+                    "off"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": []
+                }
+              }
+            },
+            {
+              "trial_id": "d-exception-1/es/full",
+              "group_id": "d-exception",
+              "role": "base",
+              "gold": "entailment",
+              "pred": "contradiction",
+              "flags": [],
+              "convention_sensitive_span": false,
+              "premise": "Los visitantes pueden tomar fotografías en cualquier lugar del museo. La única excepción es la sala de mapas, donde no se permite fotografiar.",
+              "hypothesis": "Los visitantes pueden tomar fotografías en la galería de esculturas del museo.",
+              "evidence": {
+                "features": {
+                  "coverage": 0.666667,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "visitantes",
+                    "tomar",
+                    "fotografias",
+                    "galeria",
+                    "esculturas",
+                    "museo"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 1,
+                  "negation_parity_mismatch": true,
+                  "unmatched_tokens": [
+                    "galeria",
+                    "esculturas"
+                  ]
+                }
+              }
+            },
+            {
+              "trial_id": "d-exception-1/en/full",
+              "group_id": "d-exception",
+              "role": "base",
+              "gold": "entailment",
+              "pred": "neutral",
+              "flags": [],
+              "convention_sensitive_span": false,
+              "premise": "Visitors may take photographs anywhere in the museum. The only exception is the map room, where photography is not allowed.",
+              "hypothesis": "Visitors may take photographs in the museum's sculpture gallery.",
+              "evidence": {
+                "features": {
+                  "coverage": 0.571429,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "visitors",
+                    "take",
+                    "photographs",
+                    "museum",
+                    "s",
+                    "sculpture",
+                    "gallery"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 1,
+                  "negation_parity_mismatch": true,
+                  "unmatched_tokens": [
+                    "s",
+                    "sculpture",
+                    "gallery"
+                  ]
+                }
+              }
+            },
+            {
+              "trial_id": "d-exception-1/en/span",
+              "group_id": "d-exception",
+              "role": "base",
+              "gold": "entailment",
+              "pred": "neutral",
+              "flags": [],
+              "convention_sensitive_span": false,
+              "premise": "Visitors may take photographs anywhere in the museum.",
+              "hypothesis": "Visitors may take photographs in the museum's sculpture gallery.",
+              "evidence": {
+                "features": {
+                  "coverage": 0.571429,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "visitors",
+                    "take",
+                    "photographs",
+                    "museum",
+                    "s",
+                    "sculpture",
+                    "gallery"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": [
+                    "s",
+                    "sculpture",
+                    "gallery"
+                  ]
+                }
+              }
+            },
+            {
+              "trial_id": "d-exception-2/es/full",
+              "group_id": "d-exception",
+              "role": "paraphrase",
+              "gold": "entailment",
+              "pred": "neutral",
+              "flags": [],
+              "convention_sensitive_span": false,
+              "premise": "Los visitantes pueden tomar fotografías en cualquier lugar del museo. La única excepción es la sala de mapas, donde no se permite fotografiar.",
+              "hypothesis": "Está permitido hacer fotos en la galería de esculturas del museo.",
+              "evidence": {
+                "features": {
+                  "coverage": 0.333333,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "permitido",
+                    "hacer",
+                    "fotos",
+                    "galeria",
+                    "esculturas",
+                    "museo"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 1,
+                  "negation_parity_mismatch": true,
+                  "unmatched_tokens": [
+                    "hacer",
+                    "fotos",
+                    "galeria",
+                    "esculturas"
+                  ]
+                }
+              }
+            },
+            {
+              "trial_id": "d-exception-2/es/span",
+              "group_id": "d-exception",
+              "role": "paraphrase",
+              "gold": "entailment",
+              "pred": "neutral",
+              "flags": [],
+              "convention_sensitive_span": false,
+              "premise": "Los visitantes pueden tomar fotografías en cualquier lugar del museo.",
+              "hypothesis": "Está permitido hacer fotos en la galería de esculturas del museo.",
+              "evidence": {
+                "features": {
+                  "coverage": 0.166667,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "permitido",
+                    "hacer",
+                    "fotos",
+                    "galeria",
+                    "esculturas",
+                    "museo"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": [
+                    "permitido",
+                    "hacer",
+                    "fotos",
+                    "galeria",
+                    "esculturas"
+                  ]
+                }
+              }
+            },
+            {
+              "trial_id": "d-exception-2/en/full",
+              "group_id": "d-exception",
+              "role": "paraphrase",
+              "gold": "entailment",
+              "pred": "neutral",
+              "flags": [],
+              "convention_sensitive_span": false,
+              "premise": "Visitors may take photographs anywhere in the museum. The only exception is the map room, where photography is not allowed.",
+              "hypothesis": "Taking pictures is allowed in the museum's sculpture gallery.",
+              "evidence": {
+                "features": {
+                  "coverage": 0.285714,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "taking",
+                    "pictures",
+                    "allowed",
+                    "museum",
+                    "s",
+                    "sculpture",
+                    "gallery"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 1,
+                  "negation_parity_mismatch": true,
+                  "unmatched_tokens": [
+                    "taking",
+                    "pictures",
+                    "s",
+                    "sculpture",
+                    "gallery"
+                  ]
+                }
+              }
+            },
+            {
+              "trial_id": "d-exception-2/en/span",
+              "group_id": "d-exception",
+              "role": "paraphrase",
+              "gold": "entailment",
+              "pred": "neutral",
+              "flags": [],
+              "convention_sensitive_span": false,
+              "premise": "Visitors may take photographs anywhere in the museum.",
+              "hypothesis": "Taking pictures is allowed in the museum's sculpture gallery.",
+              "evidence": {
+                "features": {
+                  "coverage": 0.142857,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "taking",
+                    "pictures",
+                    "allowed",
+                    "museum",
+                    "s",
+                    "sculpture",
+                    "gallery"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": [
+                    "taking",
+                    "pictures",
+                    "allowed",
+                    "s",
+                    "sculpture",
+                    "gallery"
+                  ]
+                }
+              }
+            },
+            {
+              "trial_id": "d-exception-3/en/span",
+              "group_id": "d-exception",
+              "role": "meaning_change",
+              "gold": "entailment",
+              "pred": "neutral",
+              "flags": [],
+              "convention_sensitive_span": false,
+              "premise": "Visitors may take photographs anywhere in the museum.",
+              "hypothesis": "Visitors may take photographs in the museum's map room.",
+              "evidence": {
+                "features": {
+                  "coverage": 0.571429,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "visitors",
+                    "take",
+                    "photographs",
+                    "museum",
+                    "s",
+                    "map",
+                    "room"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": [
+                    "s",
+                    "map",
+                    "room"
+                  ]
+                }
+              }
+            },
+            {
+              "trial_id": "d-negation-4/es/full",
+              "group_id": "d-negation",
+              "role": "missing_qualifier",
+              "gold": "neutral",
+              "pred": "entailment",
+              "flags": [],
+              "convention_sensitive_span": false,
+              "premise": "No todos los capítulos de la guía de viaje incluyen un mapa.",
+              "hypothesis": "Ninguno de los capítulos de la guía de viaje incluye un mapa.",
+              "evidence": {
+                "features": {
+                  "coverage": 1.0,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "capitulos",
+                    "guia",
+                    "viaje",
+                    "incluye",
+                    "mapa"
+                  ],
+                  "negation_cues_hypothesis": 1,
+                  "negation_cues_premise": 1,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": []
+                }
+              }
+            },
+            {
+              "trial_id": "d-negation-4/en/full",
+              "group_id": "d-negation",
+              "role": "missing_qualifier",
+              "gold": "neutral",
+              "pred": "entailment",
+              "flags": [],
+              "convention_sensitive_span": false,
+              "premise": "Not all of the chapters in the travel guide include a map.",
+              "hypothesis": "None of the chapters in the travel guide includes a map.",
+              "evidence": {
+                "features": {
+                  "coverage": 1.0,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "chapters",
+                    "travel",
+                    "guide",
+                    "includes",
+                    "map"
+                  ],
+                  "negation_cues_hypothesis": 1,
+                  "negation_cues_premise": 1,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": []
+                }
+              }
+            },
+            {
+              "trial_id": "d-modality-4/es/full",
+              "group_id": "d-modality",
+              "role": "missing_qualifier",
+              "gold": "neutral",
+              "pred": "entailment",
+              "flags": [
+                "pre_freeze_residual_concern"
+              ],
+              "convention_sensitive_span": false,
+              "premise": "Mañana probablemente lloverá en el norte del valle.",
+              "hypothesis": "Mañana lloverá en el norte del valle.",
+              "evidence": {
+                "features": {
+                  "coverage": 1.0,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "manana",
+                    "llovera",
+                    "norte",
+                    "valle"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": []
+                }
+              }
+            },
+            {
+              "trial_id": "d-modality-4/en/full",
+              "group_id": "d-modality",
+              "role": "missing_qualifier",
+              "gold": "neutral",
+              "pred": "entailment",
+              "flags": [
+                "pre_freeze_residual_concern"
+              ],
+              "convention_sensitive_span": false,
+              "premise": "Tomorrow it will probably rain in the north of the valley.",
+              "hypothesis": "It will rain in the north of the valley tomorrow.",
+              "evidence": {
+                "features": {
+                  "coverage": 1.0,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "rain",
+                    "north",
+                    "valley",
+                    "tomorrow"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": []
+                }
+              }
+            },
+            {
+              "trial_id": "d-attribution-3/es/full",
+              "group_id": "d-attribution",
+              "role": "meaning_change",
+              "gold": "contradiction",
+              "pred": "entailment",
+              "flags": [
+                "convention_coherent_source"
+              ],
+              "convention_sensitive_span": false,
+              "premise": "Según el guía, el jarrón tiene dos mil años. Sin embargo, el catálogo del museo indica que el jarrón se fabricó en 1990.",
+              "hypothesis": "El catálogo del museo indica que el jarrón tiene dos mil años.",
+              "evidence": {
+                "features": {
+                  "coverage": 1.0,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "catalogo",
+                    "museo",
+                    "indica",
+                    "jarron",
+                    "tiene",
+                    "dos",
+                    "mil",
+                    "anos"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": []
+                }
+              }
+            },
+            {
+              "trial_id": "d-attribution-3/en/full",
+              "group_id": "d-attribution",
+              "role": "meaning_change",
+              "gold": "contradiction",
+              "pred": "entailment",
+              "flags": [
+                "convention_coherent_source"
+              ],
+              "convention_sensitive_span": false,
+              "premise": "According to the tour guide, the vase is two thousand years old. The museum's catalogue, however, states that the vase was made in 1990.",
+              "hypothesis": "The museum's catalogue states that the vase is two thousand years old.",
+              "evidence": {
+                "features": {
+                  "coverage": 1.0,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "museum",
+                    "s",
+                    "catalogue",
+                    "states",
+                    "vase",
+                    "two",
+                    "thousand",
+                    "years",
+                    "old"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": []
+                }
+              }
+            },
+            {
+              "trial_id": "d-attribution-4/es/full",
+              "group_id": "d-attribution",
+              "role": "missing_qualifier",
+              "gold": "neutral",
+              "pred": "entailment",
+              "flags": [],
+              "convention_sensitive_span": false,
+              "premise": "Según el guía, el jarrón tiene dos mil años. Sin embargo, el catálogo del museo indica que el jarrón se fabricó en 1990.",
+              "hypothesis": "El jarrón tiene dos mil años.",
+              "evidence": {
+                "features": {
+                  "coverage": 1.0,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "jarron",
+                    "tiene",
+                    "dos",
+                    "mil",
+                    "anos"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": []
+                }
+              }
+            },
+            {
+              "trial_id": "d-attribution-4/en/full",
+              "group_id": "d-attribution",
+              "role": "missing_qualifier",
+              "gold": "neutral",
+              "pred": "entailment",
+              "flags": [],
+              "convention_sensitive_span": false,
+              "premise": "According to the tour guide, the vase is two thousand years old. The museum's catalogue, however, states that the vase was made in 1990.",
+              "hypothesis": "The vase is two thousand years old.",
+              "evidence": {
+                "features": {
+                  "coverage": 1.0,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "vase",
+                    "two",
+                    "thousand",
+                    "years",
+                    "old"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": []
+                }
+              }
+            },
+            {
+              "trial_id": "d-reference-1/es/span",
+              "group_id": "d-reference",
+              "role": "base",
+              "gold": "neutral",
+              "pred": "entailment",
+              "flags": [],
+              "convention_sensitive_span": true,
+              "premise": "Fue fabricado en 1850.",
+              "hypothesis": "El telescopio fue fabricado en 1850.",
+              "evidence": {
+                "features": {
+                  "coverage": 0.666667,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "telescopio",
+                    "fabricado",
+                    "1850"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": [
+                    "telescopio"
+                  ]
+                }
+              }
+            },
+            {
+              "trial_id": "d-reference-1/en/span",
+              "group_id": "d-reference",
+              "role": "base",
+              "gold": "neutral",
+              "pred": "entailment",
+              "flags": [],
+              "convention_sensitive_span": true,
+              "premise": "It was made in 1850.",
+              "hypothesis": "The telescope was made in 1850.",
+              "evidence": {
+                "features": {
+                  "coverage": 0.666667,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "telescope",
+                    "made",
+                    "1850"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": [
+                    "telescope"
+                  ]
+                }
+              }
+            },
+            {
+              "trial_id": "d-reference-4/es/full",
+              "group_id": "d-reference",
+              "role": "missing_qualifier",
+              "gold": "neutral",
+              "pred": "entailment",
+              "flags": [],
+              "convention_sensitive_span": false,
+              "premise": "Las conservadoras compraron un telescopio y dos globos terráqueos. Fue fabricado en 1850.",
+              "hypothesis": "Los globos terráqueos fueron fabricados en 1850.",
+              "evidence": {
+                "features": {
+                  "coverage": 0.8,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "globos",
+                    "terraqueos",
+                    "fueron",
+                    "fabricados",
+                    "1850"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": [
+                    "fueron"
+                  ]
+                }
+              }
+            },
+            {
+              "trial_id": "d-reference-4/en/full",
+              "group_id": "d-reference",
+              "role": "missing_qualifier",
+              "gold": "neutral",
+              "pred": "entailment",
+              "flags": [],
+              "convention_sensitive_span": false,
+              "premise": "The curators bought a telescope and two globes. It was made in 1850.",
+              "hypothesis": "The globes were made in 1850.",
+              "evidence": {
+                "features": {
+                  "coverage": 1.0,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "globes",
+                    "made",
+                    "1850"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": []
+                }
+              }
+            },
+            {
+              "trial_id": "d-reference-4/en/span",
+              "group_id": "d-reference",
+              "role": "missing_qualifier",
+              "gold": "neutral",
+              "pred": "entailment",
+              "flags": [],
+              "convention_sensitive_span": false,
+              "premise": "It was made in 1850.",
+              "hypothesis": "The globes were made in 1850.",
+              "evidence": {
+                "features": {
+                  "coverage": 0.666667,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "globes",
+                    "made",
+                    "1850"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": [
+                    "globes"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "heldout": {
+          "trials_expected": 64,
+          "trials_scored": 64,
+          "trials_missing": [],
+          "non_ok_status": {},
+          "full": {
+            "subsets": {
+              "original_full_set": {
+                "items": 24,
+                "by_language": {
+                  "es": {
+                    "correct": 8,
+                    "n": 24
+                  },
+                  "en": {
+                    "correct": 11,
+                    "n": 24
+                  }
+                },
+                "items_correct_in_both_languages": {
+                  "correct": 8,
+                  "n": 24
+                },
+                "item_ids": [
+                  "h-attribution-1",
+                  "h-attribution-2",
+                  "h-attribution-3",
+                  "h-attribution-4",
+                  "h-condition-1",
+                  "h-condition-2",
+                  "h-condition-3",
+                  "h-condition-4",
+                  "h-exception-1",
+                  "h-exception-2",
+                  "h-exception-3",
+                  "h-exception-4",
+                  "h-modality-1",
+                  "h-modality-2",
+                  "h-modality-3",
+                  "h-modality-4",
+                  "h-negation-1",
+                  "h-negation-2",
+                  "h-negation-3",
+                  "h-negation-4",
+                  "h-reference-1",
+                  "h-reference-2",
+                  "h-reference-3",
+                  "h-reference-4"
+                ]
+              },
+              "excluding_disputed": {
+                "items": 23,
+                "by_language": {
+                  "es": {
+                    "correct": 7,
+                    "n": 23
+                  },
+                  "en": {
+                    "correct": 10,
+                    "n": 23
+                  }
+                },
+                "items_correct_in_both_languages": {
+                  "correct": 7,
+                  "n": 23
+                },
+                "item_ids": [
+                  "h-attribution-1",
+                  "h-attribution-2",
+                  "h-attribution-3",
+                  "h-attribution-4",
+                  "h-condition-1",
+                  "h-condition-2",
+                  "h-condition-3",
+                  "h-condition-4",
+                  "h-exception-1",
+                  "h-exception-2",
+                  "h-exception-3",
+                  "h-exception-4",
+                  "h-modality-1",
+                  "h-modality-2",
+                  "h-modality-3",
+                  "h-modality-4",
+                  "h-negation-1",
+                  "h-negation-3",
+                  "h-negation-4",
+                  "h-reference-1",
+                  "h-reference-2",
+                  "h-reference-3",
+                  "h-reference-4"
+                ]
+              },
+              "only:convention_coherent_source": {
+                "items": 2,
+                "by_language": {
+                  "es": {
+                    "correct": 0,
+                    "n": 2
+                  },
+                  "en": {
+                    "correct": 0,
+                    "n": 2
+                  }
+                },
+                "items_correct_in_both_languages": {
+                  "correct": 0,
+                  "n": 2
+                },
+                "item_ids": [
+                  "h-attribution-1",
+                  "h-attribution-2"
+                ]
+              },
+              "only:disputed": {
+                "items": 1,
+                "by_language": {
+                  "es": {
+                    "correct": 1,
+                    "n": 1
+                  },
+                  "en": {
+                    "correct": 1,
+                    "n": 1
+                  }
+                },
+                "items_correct_in_both_languages": {
+                  "correct": 1,
+                  "n": 1
+                },
+                "item_ids": [
+                  "h-negation-2"
+                ]
+              },
+              "only:pre_freeze_residual_concern": {
+                "items": 3,
+                "by_language": {
+                  "es": {
+                    "correct": 1,
+                    "n": 3
+                  },
+                  "en": {
+                    "correct": 1,
+                    "n": 3
+                  }
+                },
+                "items_correct_in_both_languages": {
+                  "correct": 1,
+                  "n": 3
+                },
+                "item_ids": [
+                  "h-exception-4",
+                  "h-modality-4",
+                  "h-negation-4"
+                ]
+              },
+              "assumption_light_core": {
+                "items": 21,
+                "by_language": {
+                  "es": {
+                    "correct": 7,
+                    "n": 21
+                  },
+                  "en": {
+                    "correct": 10,
+                    "n": 21
+                  }
+                },
+                "items_correct_in_both_languages": {
+                  "correct": 7,
+                  "n": 21
+                },
+                "item_ids": [
+                  "h-attribution-3",
+                  "h-attribution-4",
+                  "h-condition-1",
+                  "h-condition-2",
+                  "h-condition-3",
+                  "h-condition-4",
+                  "h-exception-1",
+                  "h-exception-2",
+                  "h-exception-3",
+                  "h-exception-4",
+                  "h-modality-1",
+                  "h-modality-2",
+                  "h-modality-3",
+                  "h-modality-4",
+                  "h-negation-1",
+                  "h-negation-3",
+                  "h-negation-4",
+                  "h-reference-1",
+                  "h-reference-2",
+                  "h-reference-3",
+                  "h-reference-4"
+                ]
+              }
+            },
+            "by_group": {
+              "h-attribution": {
+                "by_language": {
+                  "es": {
+                    "correct": 1,
+                    "n": 4
+                  },
+                  "en": {
+                    "correct": 1,
+                    "n": 4
+                  }
+                },
+                "items": [
+                  {
+                    "item_id": "h-attribution-1",
+                    "role": "base",
+                    "gold": "contradiction",
+                    "pred_es": "entailment",
+                    "pred_en": "entailment",
+                    "flags": [
+                      "convention_coherent_source"
+                    ]
+                  },
+                  {
+                    "item_id": "h-attribution-2",
+                    "role": "paraphrase",
+                    "gold": "contradiction",
+                    "pred_es": "entailment",
+                    "pred_en": "entailment",
+                    "flags": [
+                      "convention_coherent_source"
+                    ]
+                  },
+                  {
+                    "item_id": "h-attribution-3",
+                    "role": "meaning_change",
+                    "gold": "entailment",
+                    "pred_es": "entailment",
+                    "pred_en": "entailment",
+                    "flags": []
+                  },
+                  {
+                    "item_id": "h-attribution-4",
+                    "role": "missing_qualifier",
+                    "gold": "neutral",
+                    "pred_es": "entailment",
+                    "pred_en": "entailment",
+                    "flags": []
+                  }
+                ]
+              },
+              "h-condition": {
+                "by_language": {
+                  "es": {
+                    "correct": 1,
+                    "n": 4
+                  },
+                  "en": {
+                    "correct": 1,
+                    "n": 4
+                  }
+                },
+                "items": [
+                  {
+                    "item_id": "h-condition-1",
+                    "role": "base",
+                    "gold": "entailment",
+                    "pred_es": "entailment",
+                    "pred_en": "entailment",
+                    "flags": []
+                  },
+                  {
+                    "item_id": "h-condition-2",
+                    "role": "paraphrase",
+                    "gold": "entailment",
+                    "pred_es": "contradiction",
+                    "pred_en": "contradiction",
+                    "flags": []
+                  },
+                  {
+                    "item_id": "h-condition-3",
+                    "role": "meaning_change",
+                    "gold": "contradiction",
+                    "pred_es": "entailment",
+                    "pred_en": "entailment",
+                    "flags": []
+                  },
+                  {
+                    "item_id": "h-condition-4",
+                    "role": "missing_qualifier",
+                    "gold": "neutral",
+                    "pred_es": "entailment",
+                    "pred_en": "entailment",
+                    "flags": []
+                  }
+                ]
+              },
+              "h-exception": {
+                "by_language": {
+                  "es": {
+                    "correct": 1,
+                    "n": 4
+                  },
+                  "en": {
+                    "correct": 1,
+                    "n": 4
+                  }
+                },
+                "items": [
+                  {
+                    "item_id": "h-exception-1",
+                    "role": "base",
+                    "gold": "contradiction",
+                    "pred_es": "entailment",
+                    "pred_en": "entailment",
+                    "flags": []
+                  },
+                  {
+                    "item_id": "h-exception-2",
+                    "role": "paraphrase",
+                    "gold": "contradiction",
+                    "pred_es": "entailment",
+                    "pred_en": "entailment",
+                    "flags": []
+                  },
+                  {
+                    "item_id": "h-exception-3",
+                    "role": "meaning_change",
+                    "gold": "entailment",
+                    "pred_es": "entailment",
+                    "pred_en": "entailment",
+                    "flags": []
+                  },
+                  {
+                    "item_id": "h-exception-4",
+                    "role": "missing_qualifier",
+                    "gold": "neutral",
+                    "pred_es": "entailment",
+                    "pred_en": "entailment",
+                    "flags": [
+                      "pre_freeze_residual_concern"
+                    ]
+                  }
+                ]
+              },
+              "h-modality": {
+                "by_language": {
+                  "es": {
+                    "correct": 1,
+                    "n": 4
+                  },
+                  "en": {
+                    "correct": 2,
+                    "n": 4
+                  }
+                },
+                "items": [
+                  {
+                    "item_id": "h-modality-1",
+                    "role": "base",
+                    "gold": "contradiction",
+                    "pred_es": "entailment",
+                    "pred_en": "entailment",
+                    "flags": []
+                  },
+                  {
+                    "item_id": "h-modality-2",
+                    "role": "paraphrase",
+                    "gold": "contradiction",
+                    "pred_es": "entailment",
+                    "pred_en": "contradiction",
+                    "flags": []
+                  },
+                  {
+                    "item_id": "h-modality-3",
+                    "role": "meaning_change",
+                    "gold": "entailment",
+                    "pred_es": "entailment",
+                    "pred_en": "entailment",
+                    "flags": []
+                  },
+                  {
+                    "item_id": "h-modality-4",
+                    "role": "missing_qualifier",
+                    "gold": "neutral",
+                    "pred_es": "entailment",
+                    "pred_en": "entailment",
+                    "flags": [
+                      "pre_freeze_residual_concern"
+                    ]
+                  }
+                ]
+              },
+              "h-negation": {
+                "by_language": {
+                  "es": {
+                    "correct": 2,
+                    "n": 4
+                  },
+                  "en": {
+                    "correct": 4,
+                    "n": 4
+                  }
+                },
+                "items": [
+                  {
+                    "item_id": "h-negation-1",
+                    "role": "base",
+                    "gold": "entailment",
+                    "pred_es": "contradiction",
+                    "pred_en": "entailment",
+                    "flags": []
+                  },
+                  {
+                    "item_id": "h-negation-2",
+                    "role": "paraphrase",
+                    "gold": "entailment",
+                    "pred_es": "entailment",
+                    "pred_en": "entailment",
+                    "flags": [
+                      "disputed"
+                    ]
+                  },
+                  {
+                    "item_id": "h-negation-3",
+                    "role": "meaning_change",
+                    "gold": "contradiction",
+                    "pred_es": "entailment",
+                    "pred_en": "contradiction",
+                    "flags": []
+                  },
+                  {
+                    "item_id": "h-negation-4",
+                    "role": "missing_qualifier",
+                    "gold": "neutral",
+                    "pred_es": "neutral",
+                    "pred_en": "neutral",
+                    "flags": [
+                      "pre_freeze_residual_concern"
+                    ]
+                  }
+                ]
+              },
+              "h-reference": {
+                "by_language": {
+                  "es": {
+                    "correct": 2,
+                    "n": 4
+                  },
+                  "en": {
+                    "correct": 2,
+                    "n": 4
+                  }
+                },
+                "items": [
+                  {
+                    "item_id": "h-reference-1",
+                    "role": "base",
+                    "gold": "entailment",
+                    "pred_es": "entailment",
+                    "pred_en": "entailment",
+                    "flags": []
+                  },
+                  {
+                    "item_id": "h-reference-2",
+                    "role": "paraphrase",
+                    "gold": "entailment",
+                    "pred_es": "entailment",
+                    "pred_en": "entailment",
+                    "flags": []
+                  },
+                  {
+                    "item_id": "h-reference-3",
+                    "role": "meaning_change",
+                    "gold": "contradiction",
+                    "pred_es": "entailment",
+                    "pred_en": "entailment",
+                    "flags": []
+                  },
+                  {
+                    "item_id": "h-reference-4",
+                    "role": "missing_qualifier",
+                    "gold": "neutral",
+                    "pred_es": "entailment",
+                    "pred_en": "entailment",
+                    "flags": []
+                  }
+                ]
+              }
+            },
+            "confusion_gold_by_pred": {
+              "entailment": {
+                "entailment": 15,
+                "neutral": 0,
+                "contradiction": 3
+              },
+              "neutral": {
+                "entailment": 10,
+                "neutral": 2,
+                "contradiction": 0
+              },
+              "contradiction": {
+                "entailment": 16,
+                "neutral": 0,
+                "contradiction": 2
+              }
+            },
+            "per_class": {
+              "entailment": {
+                "support": 18,
+                "predicted": 41,
+                "correct": 15,
+                "precision": 0.3659,
+                "recall": 0.8333,
+                "f1": 0.5085
+              },
+              "neutral": {
+                "support": 12,
+                "predicted": 2,
+                "correct": 2,
+                "precision": 1.0,
+                "recall": 0.1667,
+                "f1": 0.2857
+              },
+              "contradiction": {
+                "support": 18,
+                "predicted": 5,
+                "correct": 2,
+                "precision": 0.4,
+                "recall": 0.1111,
+                "f1": 0.1739
+              },
+              "macro_f1_descriptive": 0.3227
+            },
+            "by_role": {
+              "base": {
+                "correct": 5,
+                "n": 12
+              },
+              "paraphrase": {
+                "correct": 5,
+                "n": 12
+              },
+              "meaning_change": {
+                "correct": 7,
+                "n": 12
+              },
+              "missing_qualifier": {
+                "correct": 2,
+                "n": 12
+              }
+            },
+            "paraphrase_consistency": {
+              "correct": 8,
+              "n": 12
+            },
+            "minimal_pair_sensitivity": {
+              "correct": 2,
+              "n": 12
+            },
+            "cross_lingual_agreement": {
+              "correct": 21,
+              "n": 24
+            }
+          },
+          "span": {
+            "by_language": {
+              "es": {
+                "correct": 5,
+                "n": 8
+              },
+              "en": {
+                "correct": 4,
+                "n": 8
+              }
+            },
+            "excluding_convention_sensitive": {
+              "correct": 5,
+              "n": 10
+            },
+            "convention_sensitive_only": {
+              "correct": 4,
+              "n": 6
+            },
+            "span_prediction_equals_full_reference_label": {
+              "correct": 2,
+              "n": 16
+            },
+            "trials": [
+              {
+                "trial_id": "h-exception-1/es/span",
+                "span_gold": "entailment",
+                "full_reference_label": "contradiction",
+                "pred": "entailment",
+                "convention_sensitive": false
+              },
+              {
+                "trial_id": "h-exception-1/en/span",
+                "span_gold": "entailment",
+                "full_reference_label": "contradiction",
+                "pred": "entailment",
+                "convention_sensitive": false
+              },
+              {
+                "trial_id": "h-exception-2/es/span",
+                "span_gold": "entailment",
+                "full_reference_label": "contradiction",
+                "pred": "entailment",
+                "convention_sensitive": false
+              },
+              {
+                "trial_id": "h-exception-2/en/span",
+                "span_gold": "entailment",
+                "full_reference_label": "contradiction",
+                "pred": "neutral",
+                "convention_sensitive": false
+              },
+              {
+                "trial_id": "h-exception-3/es/span",
+                "span_gold": "neutral",
+                "full_reference_label": "entailment",
+                "pred": "neutral",
+                "convention_sensitive": false
+              },
+              {
+                "trial_id": "h-exception-3/en/span",
+                "span_gold": "neutral",
+                "full_reference_label": "entailment",
+                "pred": "neutral",
+                "convention_sensitive": false
+              },
+              {
+                "trial_id": "h-exception-4/es/span",
+                "span_gold": "neutral",
+                "full_reference_label": "neutral",
+                "pred": "entailment",
+                "convention_sensitive": false
+              },
+              {
+                "trial_id": "h-exception-4/en/span",
+                "span_gold": "neutral",
+                "full_reference_label": "neutral",
+                "pred": "entailment",
+                "convention_sensitive": false
+              },
+              {
+                "trial_id": "h-reference-1/es/span",
+                "span_gold": "neutral",
+                "full_reference_label": "entailment",
+                "pred": "entailment",
+                "convention_sensitive": true
+              },
+              {
+                "trial_id": "h-reference-1/en/span",
+                "span_gold": "neutral",
+                "full_reference_label": "entailment",
+                "pred": "entailment",
+                "convention_sensitive": true
+              },
+              {
+                "trial_id": "h-reference-2/es/span",
+                "span_gold": "neutral",
+                "full_reference_label": "entailment",
+                "pred": "neutral",
+                "convention_sensitive": true
+              },
+              {
+                "trial_id": "h-reference-2/en/span",
+                "span_gold": "neutral",
+                "full_reference_label": "entailment",
+                "pred": "neutral",
+                "convention_sensitive": true
+              },
+              {
+                "trial_id": "h-reference-3/es/span",
+                "span_gold": "neutral",
+                "full_reference_label": "contradiction",
+                "pred": "neutral",
+                "convention_sensitive": true
+              },
+              {
+                "trial_id": "h-reference-3/en/span",
+                "span_gold": "neutral",
+                "full_reference_label": "contradiction",
+                "pred": "neutral",
+                "convention_sensitive": true
+              },
+              {
+                "trial_id": "h-reference-4/es/span",
+                "span_gold": "neutral",
+                "full_reference_label": "neutral",
+                "pred": "entailment",
+                "convention_sensitive": false
+              },
+              {
+                "trial_id": "h-reference-4/en/span",
+                "span_gold": "neutral",
+                "full_reference_label": "neutral",
+                "pred": "entailment",
+                "convention_sensitive": false
+              }
+            ]
+          },
+          "errors": [
+            {
+              "trial_id": "h-condition-2/es/full",
+              "group_id": "h-condition",
+              "role": "paraphrase",
+              "gold": "entailment",
+              "pred": "contradiction",
+              "flags": [],
+              "convention_sensitive_span": false,
+              "premise": "En este rompecabezas, una ficha se pinta de azul solo si tiene exactamente cuatro lados.",
+              "hypothesis": "En este rompecabezas, ninguna ficha se pinta de azul a menos que tenga exactamente cuatro lados.",
+              "evidence": {
+                "features": {
+                  "coverage": 0.777778,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "rompecabezas",
+                    "ficha",
+                    "pinta",
+                    "azul",
+                    "menos",
+                    "tenga",
+                    "exactamente",
+                    "cuatro",
+                    "lados"
+                  ],
+                  "negation_cues_hypothesis": 1,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": true,
+                  "unmatched_tokens": [
+                    "menos",
+                    "tenga"
+                  ]
+                }
+              }
+            },
+            {
+              "trial_id": "h-condition-2/en/full",
+              "group_id": "h-condition",
+              "role": "paraphrase",
+              "gold": "entailment",
+              "pred": "contradiction",
+              "flags": [],
+              "convention_sensitive_span": false,
+              "premise": "In this puzzle, a tile is painted blue only if it has exactly four sides.",
+              "hypothesis": "In this puzzle, no tile is painted blue unless it has exactly four sides.",
+              "evidence": {
+                "features": {
+                  "coverage": 0.875,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "puzzle",
+                    "tile",
+                    "painted",
+                    "blue",
+                    "unless",
+                    "exactly",
+                    "four",
+                    "sides"
+                  ],
+                  "negation_cues_hypothesis": 1,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": true,
+                  "unmatched_tokens": [
+                    "unless"
+                  ]
+                }
+              }
+            },
+            {
+              "trial_id": "h-condition-3/es/full",
+              "group_id": "h-condition",
+              "role": "meaning_change",
+              "gold": "contradiction",
+              "pred": "entailment",
+              "flags": [],
+              "convention_sensitive_span": false,
+              "premise": "En este rompecabezas, una ficha se pinta de azul solo si tiene exactamente cuatro lados.",
+              "hypothesis": "En este rompecabezas, una ficha azul tiene exactamente tres lados.",
+              "evidence": {
+                "features": {
+                  "coverage": 0.857143,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "rompecabezas",
+                    "ficha",
+                    "azul",
+                    "tiene",
+                    "exactamente",
+                    "tres",
+                    "lados"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": [
+                    "tres"
+                  ]
+                }
+              }
+            },
+            {
+              "trial_id": "h-condition-3/en/full",
+              "group_id": "h-condition",
+              "role": "meaning_change",
+              "gold": "contradiction",
+              "pred": "entailment",
+              "flags": [],
+              "convention_sensitive_span": false,
+              "premise": "In this puzzle, a tile is painted blue only if it has exactly four sides.",
+              "hypothesis": "In this puzzle, one blue tile has exactly three sides.",
+              "evidence": {
+                "features": {
+                  "coverage": 0.833333,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "puzzle",
+                    "blue",
+                    "tile",
+                    "exactly",
+                    "three",
+                    "sides"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": [
+                    "three"
+                  ]
+                }
+              }
+            },
+            {
+              "trial_id": "h-condition-4/es/full",
+              "group_id": "h-condition",
+              "role": "missing_qualifier",
+              "gold": "neutral",
+              "pred": "entailment",
+              "flags": [],
+              "convention_sensitive_span": false,
+              "premise": "En este rompecabezas, una ficha se pinta de azul solo si tiene exactamente cuatro lados.",
+              "hypothesis": "Todas las fichas de este rompecabezas con exactamente cuatro lados se pintan de azul.",
+              "evidence": {
+                "features": {
+                  "coverage": 1.0,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "fichas",
+                    "rompecabezas",
+                    "exactamente",
+                    "cuatro",
+                    "lados",
+                    "pintan",
+                    "azul"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": []
+                }
+              }
+            },
+            {
+              "trial_id": "h-condition-4/en/full",
+              "group_id": "h-condition",
+              "role": "missing_qualifier",
+              "gold": "neutral",
+              "pred": "entailment",
+              "flags": [],
+              "convention_sensitive_span": false,
+              "premise": "In this puzzle, a tile is painted blue only if it has exactly four sides.",
+              "hypothesis": "Every tile in this puzzle with exactly four sides is painted blue.",
+              "evidence": {
+                "features": {
+                  "coverage": 1.0,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "tile",
+                    "puzzle",
+                    "exactly",
+                    "four",
+                    "sides",
+                    "painted",
+                    "blue"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": []
+                }
+              }
+            },
+            {
+              "trial_id": "h-exception-1/es/full",
+              "group_id": "h-exception",
+              "role": "base",
+              "gold": "contradiction",
+              "pred": "entailment",
+              "flags": [],
+              "convention_sensitive_span": false,
+              "premise": "Todos los libros de la sala de lectura se pueden prestar durante dos semanas. Los diccionarios son la excepción: deben quedarse en la sala.",
+              "hypothesis": "Los diccionarios de la sala de lectura se pueden prestar durante dos semanas.",
+              "evidence": {
+                "features": {
+                  "coverage": 1.0,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "diccionarios",
+                    "sala",
+                    "lectura",
+                    "prestar",
+                    "durante",
+                    "dos",
+                    "semanas"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": []
+                }
+              }
+            },
+            {
+              "trial_id": "h-exception-1/en/full",
+              "group_id": "h-exception",
+              "role": "base",
+              "gold": "contradiction",
+              "pred": "entailment",
+              "flags": [],
+              "convention_sensitive_span": false,
+              "premise": "All books in the reading room can be borrowed for two weeks. Dictionaries are the exception: they must stay in the room.",
+              "hypothesis": "The dictionaries in the reading room can be borrowed for two weeks.",
+              "evidence": {
+                "features": {
+                  "coverage": 1.0,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "dictionaries",
+                    "reading",
+                    "room",
+                    "borrowed",
+                    "two",
+                    "weeks"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": []
+                }
+              }
+            },
+            {
+              "trial_id": "h-exception-2/es/full",
+              "group_id": "h-exception",
+              "role": "paraphrase",
+              "gold": "contradiction",
+              "pred": "entailment",
+              "flags": [],
+              "convention_sensitive_span": false,
+              "premise": "Todos los libros de la sala de lectura se pueden prestar durante dos semanas. Los diccionarios son la excepción: deben quedarse en la sala.",
+              "hypothesis": "Los lectores pueden pedir prestados los diccionarios de la sala de lectura durante dos semanas.",
+              "evidence": {
+                "features": {
+                  "coverage": 0.777778,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "lectores",
+                    "pedir",
+                    "prestados",
+                    "diccionarios",
+                    "sala",
+                    "lectura",
+                    "durante",
+                    "dos",
+                    "semanas"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": [
+                    "lectores",
+                    "pedir"
+                  ]
+                }
+              }
+            },
+            {
+              "trial_id": "h-exception-2/en/full",
+              "group_id": "h-exception",
+              "role": "paraphrase",
+              "gold": "contradiction",
+              "pred": "entailment",
+              "flags": [],
+              "convention_sensitive_span": false,
+              "premise": "All books in the reading room can be borrowed for two weeks. Dictionaries are the exception: they must stay in the room.",
+              "hypothesis": "Readers are allowed to borrow the reading room's dictionaries for two weeks.",
+              "evidence": {
+                "features": {
+                  "coverage": 0.666667,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "readers",
+                    "allowed",
+                    "borrow",
+                    "reading",
+                    "room",
+                    "s",
+                    "dictionaries",
+                    "two",
+                    "weeks"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": [
+                    "readers",
+                    "allowed",
+                    "s"
+                  ]
+                }
+              }
+            },
+            {
+              "trial_id": "h-exception-2/en/span",
+              "group_id": "h-exception",
+              "role": "paraphrase",
+              "gold": "entailment",
+              "pred": "neutral",
+              "flags": [],
+              "convention_sensitive_span": false,
+              "premise": "All books in the reading room can be borrowed for two weeks.",
+              "hypothesis": "Readers are allowed to borrow the reading room's dictionaries for two weeks.",
+              "evidence": {
+                "features": {
+                  "coverage": 0.555556,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "readers",
+                    "allowed",
+                    "borrow",
+                    "reading",
+                    "room",
+                    "s",
+                    "dictionaries",
+                    "two",
+                    "weeks"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": [
+                    "readers",
+                    "allowed",
+                    "s",
+                    "dictionaries"
+                  ]
+                }
+              }
+            },
+            {
+              "trial_id": "h-exception-4/es/full",
+              "group_id": "h-exception",
+              "role": "missing_qualifier",
+              "gold": "neutral",
+              "pred": "entailment",
+              "flags": [
+                "pre_freeze_residual_concern"
+              ],
+              "convention_sensitive_span": false,
+              "premise": "Todos los libros de la sala de lectura se pueden prestar durante dos semanas. Los diccionarios son la excepción: deben quedarse en la sala.",
+              "hypothesis": "Las revistas de la sala de lectura se pueden prestar durante dos semanas.",
+              "evidence": {
+                "features": {
+                  "coverage": 0.857143,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "revistas",
+                    "sala",
+                    "lectura",
+                    "prestar",
+                    "durante",
+                    "dos",
+                    "semanas"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": [
+                    "revistas"
+                  ]
+                }
+              }
+            },
+            {
+              "trial_id": "h-exception-4/es/span",
+              "group_id": "h-exception",
+              "role": "missing_qualifier",
+              "gold": "neutral",
+              "pred": "entailment",
+              "flags": [
+                "pre_freeze_residual_concern"
+              ],
+              "convention_sensitive_span": false,
+              "premise": "Todos los libros de la sala de lectura se pueden prestar durante dos semanas.",
+              "hypothesis": "Las revistas de la sala de lectura se pueden prestar durante dos semanas.",
+              "evidence": {
+                "features": {
+                  "coverage": 0.857143,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "revistas",
+                    "sala",
+                    "lectura",
+                    "prestar",
+                    "durante",
+                    "dos",
+                    "semanas"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": [
+                    "revistas"
+                  ]
+                }
+              }
+            },
+            {
+              "trial_id": "h-exception-4/en/full",
+              "group_id": "h-exception",
+              "role": "missing_qualifier",
+              "gold": "neutral",
+              "pred": "entailment",
+              "flags": [
+                "pre_freeze_residual_concern"
+              ],
+              "convention_sensitive_span": false,
+              "premise": "All books in the reading room can be borrowed for two weeks. Dictionaries are the exception: they must stay in the room.",
+              "hypothesis": "Magazines in the reading room can be borrowed for two weeks.",
+              "evidence": {
+                "features": {
+                  "coverage": 0.833333,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "magazines",
+                    "reading",
+                    "room",
+                    "borrowed",
+                    "two",
+                    "weeks"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": [
+                    "magazines"
+                  ]
+                }
+              }
+            },
+            {
+              "trial_id": "h-exception-4/en/span",
+              "group_id": "h-exception",
+              "role": "missing_qualifier",
+              "gold": "neutral",
+              "pred": "entailment",
+              "flags": [
+                "pre_freeze_residual_concern"
+              ],
+              "convention_sensitive_span": false,
+              "premise": "All books in the reading room can be borrowed for two weeks.",
+              "hypothesis": "Magazines in the reading room can be borrowed for two weeks.",
+              "evidence": {
+                "features": {
+                  "coverage": 0.833333,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "magazines",
+                    "reading",
+                    "room",
+                    "borrowed",
+                    "two",
+                    "weeks"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": [
+                    "magazines"
+                  ]
+                }
+              }
+            },
+            {
+              "trial_id": "h-negation-1/es/full",
+              "group_id": "h-negation",
+              "role": "base",
+              "gold": "entailment",
+              "pred": "contradiction",
+              "flags": [],
+              "convention_sensitive_span": false,
+              "premise": "La estación meteorológica no registró ninguna nevada en marzo.",
+              "hypothesis": "Ninguna nevada fue registrada por la estación meteorológica en marzo.",
+              "evidence": {
+                "features": {
+                  "coverage": 1.0,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "nevada",
+                    "registrada",
+                    "estacion",
+                    "meteorologica",
+                    "marzo"
+                  ],
+                  "negation_cues_hypothesis": 1,
+                  "negation_cues_premise": 2,
+                  "negation_parity_mismatch": true,
+                  "unmatched_tokens": []
+                }
+              }
+            },
+            {
+              "trial_id": "h-negation-3/es/full",
+              "group_id": "h-negation",
+              "role": "meaning_change",
+              "gold": "contradiction",
+              "pred": "entailment",
+              "flags": [],
+              "convention_sensitive_span": false,
+              "premise": "La estación meteorológica no registró ninguna nevada en marzo.",
+              "hypothesis": "La estación meteorológica registró alguna nevada en marzo.",
+              "evidence": {
+                "features": {
+                  "coverage": 1.0,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "estacion",
+                    "meteorologica",
+                    "registro",
+                    "nevada",
+                    "marzo"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 2,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": []
+                }
+              }
+            },
+            {
+              "trial_id": "h-modality-1/es/full",
+              "group_id": "h-modality",
+              "role": "base",
+              "gold": "contradiction",
+              "pred": "entailment",
+              "flags": [],
+              "convention_sensitive_span": false,
+              "premise": "La restauración del mapa antiguo podría terminar antes de junio.",
+              "hypothesis": "Es imposible que la restauración del mapa antiguo termine antes de junio.",
+              "evidence": {
+                "features": {
+                  "coverage": 0.857143,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "imposible",
+                    "restauracion",
+                    "mapa",
+                    "antiguo",
+                    "termine",
+                    "antes",
+                    "junio"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": [
+                    "imposible"
+                  ]
+                }
+              }
+            },
+            {
+              "trial_id": "h-modality-1/en/full",
+              "group_id": "h-modality",
+              "role": "base",
+              "gold": "contradiction",
+              "pred": "entailment",
+              "flags": [],
+              "convention_sensitive_span": false,
+              "premise": "The restoration of the old map might be finished before June.",
+              "hypothesis": "It is impossible for the restoration of the old map to be finished before June.",
+              "evidence": {
+                "features": {
+                  "coverage": 0.857143,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "impossible",
+                    "restoration",
+                    "old",
+                    "map",
+                    "finished",
+                    "before",
+                    "june"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": [
+                    "impossible"
+                  ]
+                }
+              }
+            },
+            {
+              "trial_id": "h-modality-2/es/full",
+              "group_id": "h-modality",
+              "role": "paraphrase",
+              "gold": "contradiction",
+              "pred": "entailment",
+              "flags": [],
+              "convention_sensitive_span": false,
+              "premise": "La restauración del mapa antiguo podría terminar antes de junio.",
+              "hypothesis": "La restauración del mapa antiguo no puede completarse de ningún modo antes de junio.",
+              "evidence": {
+                "features": {
+                  "coverage": 0.714286,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "restauracion",
+                    "mapa",
+                    "antiguo",
+                    "completarse",
+                    "modo",
+                    "antes",
+                    "junio"
+                  ],
+                  "negation_cues_hypothesis": 2,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": [
+                    "completarse",
+                    "modo"
+                  ]
+                }
+              }
+            },
+            {
+              "trial_id": "h-modality-4/es/full",
+              "group_id": "h-modality",
+              "role": "missing_qualifier",
+              "gold": "neutral",
+              "pred": "entailment",
+              "flags": [
+                "pre_freeze_residual_concern"
+              ],
+              "convention_sensitive_span": false,
+              "premise": "La restauración del mapa antiguo podría terminar antes de junio.",
+              "hypothesis": "La restauración del mapa antiguo terminará antes de junio.",
+              "evidence": {
+                "features": {
+                  "coverage": 1.0,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "restauracion",
+                    "mapa",
+                    "antiguo",
+                    "terminara",
+                    "antes",
+                    "junio"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": []
+                }
+              }
+            },
+            {
+              "trial_id": "h-modality-4/en/full",
+              "group_id": "h-modality",
+              "role": "missing_qualifier",
+              "gold": "neutral",
+              "pred": "entailment",
+              "flags": [
+                "pre_freeze_residual_concern"
+              ],
+              "convention_sensitive_span": false,
+              "premise": "The restoration of the old map might be finished before June.",
+              "hypothesis": "The restoration of the old map will be finished before June.",
+              "evidence": {
+                "features": {
+                  "coverage": 1.0,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "restoration",
+                    "old",
+                    "map",
+                    "finished",
+                    "before",
+                    "june"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": []
+                }
+              }
+            },
+            {
+              "trial_id": "h-attribution-1/es/full",
+              "group_id": "h-attribution",
+              "role": "base",
+              "gold": "contradiction",
+              "pred": "entailment",
+              "flags": [
+                "convention_coherent_source"
+              ],
+              "convention_sensitive_span": false,
+              "premise": "El locutor de radio dijo que la carretera de montaña estaba cerrada por el hielo. Sin embargo, el blog del tiempo informó de que la carretera estuvo abierta todo el día.",
+              "hypothesis": "El blog del tiempo informó de que la carretera de montaña estaba cerrada por el hielo.",
+              "evidence": {
+                "features": {
+                  "coverage": 1.0,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "blog",
+                    "tiempo",
+                    "informo",
+                    "carretera",
+                    "montana",
+                    "cerrada",
+                    "hielo"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": []
+                }
+              }
+            },
+            {
+              "trial_id": "h-attribution-1/en/full",
+              "group_id": "h-attribution",
+              "role": "base",
+              "gold": "contradiction",
+              "pred": "entailment",
+              "flags": [
+                "convention_coherent_source"
+              ],
+              "convention_sensitive_span": false,
+              "premise": "The radio announcer said that the mountain road was closed because of ice. The weather blog, however, reported that the road was open all day.",
+              "hypothesis": "The weather blog reported that the mountain road was closed because of ice.",
+              "evidence": {
+                "features": {
+                  "coverage": 1.0,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "weather",
+                    "blog",
+                    "reported",
+                    "mountain",
+                    "road",
+                    "closed",
+                    "because",
+                    "ice"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": []
+                }
+              }
+            },
+            {
+              "trial_id": "h-attribution-2/es/full",
+              "group_id": "h-attribution",
+              "role": "paraphrase",
+              "gold": "contradiction",
+              "pred": "entailment",
+              "flags": [
+                "convention_coherent_source"
+              ],
+              "convention_sensitive_span": false,
+              "premise": "El locutor de radio dijo que la carretera de montaña estaba cerrada por el hielo. Sin embargo, el blog del tiempo informó de que la carretera estuvo abierta todo el día.",
+              "hypothesis": "Según el blog del tiempo, el hielo había cerrado la carretera de montaña.",
+              "evidence": {
+                "features": {
+                  "coverage": 0.857143,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "blog",
+                    "tiempo",
+                    "hielo",
+                    "habia",
+                    "cerrado",
+                    "carretera",
+                    "montana"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": [
+                    "habia"
+                  ]
+                }
+              }
+            },
+            {
+              "trial_id": "h-attribution-2/en/full",
+              "group_id": "h-attribution",
+              "role": "paraphrase",
+              "gold": "contradiction",
+              "pred": "entailment",
+              "flags": [
+                "convention_coherent_source"
+              ],
+              "convention_sensitive_span": false,
+              "premise": "The radio announcer said that the mountain road was closed because of ice. The weather blog, however, reported that the road was open all day.",
+              "hypothesis": "According to the weather blog, ice had closed the mountain road.",
+              "evidence": {
+                "features": {
+                  "coverage": 1.0,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "weather",
+                    "blog",
+                    "ice",
+                    "closed",
+                    "mountain",
+                    "road"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": []
+                }
+              }
+            },
+            {
+              "trial_id": "h-attribution-4/es/full",
+              "group_id": "h-attribution",
+              "role": "missing_qualifier",
+              "gold": "neutral",
+              "pred": "entailment",
+              "flags": [],
+              "convention_sensitive_span": false,
+              "premise": "El locutor de radio dijo que la carretera de montaña estaba cerrada por el hielo. Sin embargo, el blog del tiempo informó de que la carretera estuvo abierta todo el día.",
+              "hypothesis": "La carretera de montaña estaba cerrada por el hielo.",
+              "evidence": {
+                "features": {
+                  "coverage": 1.0,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "carretera",
+                    "montana",
+                    "cerrada",
+                    "hielo"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": []
+                }
+              }
+            },
+            {
+              "trial_id": "h-attribution-4/en/full",
+              "group_id": "h-attribution",
+              "role": "missing_qualifier",
+              "gold": "neutral",
+              "pred": "entailment",
+              "flags": [],
+              "convention_sensitive_span": false,
+              "premise": "The radio announcer said that the mountain road was closed because of ice. The weather blog, however, reported that the road was open all day.",
+              "hypothesis": "The mountain road was closed because of ice.",
+              "evidence": {
+                "features": {
+                  "coverage": 1.0,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "mountain",
+                    "road",
+                    "closed",
+                    "because",
+                    "ice"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": []
+                }
+              }
+            },
+            {
+              "trial_id": "h-reference-1/es/span",
+              "group_id": "h-reference",
+              "role": "base",
+              "gold": "neutral",
+              "pred": "entailment",
+              "flags": [],
+              "convention_sensitive_span": true,
+              "premise": "Tiene cuatrocientas páginas.",
+              "hypothesis": "La novela tiene cuatrocientas páginas.",
+              "evidence": {
+                "features": {
+                  "coverage": 0.75,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "novela",
+                    "tiene",
+                    "cuatrocientas",
+                    "paginas"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": [
+                    "novela"
+                  ]
+                }
+              }
+            },
+            {
+              "trial_id": "h-reference-1/en/span",
+              "group_id": "h-reference",
+              "role": "base",
+              "gold": "neutral",
+              "pred": "entailment",
+              "flags": [],
+              "convention_sensitive_span": true,
+              "premise": "It has four hundred pages.",
+              "hypothesis": "The novel has four hundred pages.",
+              "evidence": {
+                "features": {
+                  "coverage": 0.75,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "novel",
+                    "four",
+                    "hundred",
+                    "pages"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": [
+                    "novel"
+                  ]
+                }
+              }
+            },
+            {
+              "trial_id": "h-reference-3/es/full",
+              "group_id": "h-reference",
+              "role": "meaning_change",
+              "gold": "contradiction",
+              "pred": "entailment",
+              "flags": [],
+              "convention_sensitive_span": false,
+              "premise": "Las alumnas donaron una novela y dos atlas. Tiene cuatrocientas páginas.",
+              "hypothesis": "La novela tiene cuarenta páginas.",
+              "evidence": {
+                "features": {
+                  "coverage": 0.75,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "novela",
+                    "tiene",
+                    "cuarenta",
+                    "paginas"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": [
+                    "cuarenta"
+                  ]
+                }
+              }
+            },
+            {
+              "trial_id": "h-reference-3/en/full",
+              "group_id": "h-reference",
+              "role": "meaning_change",
+              "gold": "contradiction",
+              "pred": "entailment",
+              "flags": [],
+              "convention_sensitive_span": false,
+              "premise": "The students donated a novel and two atlases. It has four hundred pages.",
+              "hypothesis": "The novel has forty pages.",
+              "evidence": {
+                "features": {
+                  "coverage": 0.666667,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "novel",
+                    "forty",
+                    "pages"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": [
+                    "forty"
+                  ]
+                }
+              }
+            },
+            {
+              "trial_id": "h-reference-4/es/full",
+              "group_id": "h-reference",
+              "role": "missing_qualifier",
+              "gold": "neutral",
+              "pred": "entailment",
+              "flags": [],
+              "convention_sensitive_span": false,
+              "premise": "Las alumnas donaron una novela y dos atlas. Tiene cuatrocientas páginas.",
+              "hypothesis": "Cada atlas tiene cuatrocientas páginas.",
+              "evidence": {
+                "features": {
+                  "coverage": 1.0,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "atlas",
+                    "tiene",
+                    "cuatrocientas",
+                    "paginas"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": []
+                }
+              }
+            },
+            {
+              "trial_id": "h-reference-4/es/span",
+              "group_id": "h-reference",
+              "role": "missing_qualifier",
+              "gold": "neutral",
+              "pred": "entailment",
+              "flags": [],
+              "convention_sensitive_span": false,
+              "premise": "Tiene cuatrocientas páginas.",
+              "hypothesis": "Cada atlas tiene cuatrocientas páginas.",
+              "evidence": {
+                "features": {
+                  "coverage": 0.75,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "atlas",
+                    "tiene",
+                    "cuatrocientas",
+                    "paginas"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": [
+                    "atlas"
+                  ]
+                }
+              }
+            },
+            {
+              "trial_id": "h-reference-4/en/full",
+              "group_id": "h-reference",
+              "role": "missing_qualifier",
+              "gold": "neutral",
+              "pred": "entailment",
+              "flags": [],
+              "convention_sensitive_span": false,
+              "premise": "The students donated a novel and two atlases. It has four hundred pages.",
+              "hypothesis": "Each atlas has four hundred pages.",
+              "evidence": {
+                "features": {
+                  "coverage": 1.0,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "atlas",
+                    "four",
+                    "hundred",
+                    "pages"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": []
+                }
+              }
+            },
+            {
+              "trial_id": "h-reference-4/en/span",
+              "group_id": "h-reference",
+              "role": "missing_qualifier",
+              "gold": "neutral",
+              "pred": "entailment",
+              "flags": [],
+              "convention_sensitive_span": false,
+              "premise": "It has four hundred pages.",
+              "hypothesis": "Each atlas has four hundred pages.",
+              "evidence": {
+                "features": {
+                  "coverage": 0.75,
+                  "digits_missing_from_premise": [],
+                  "hypothesis_content_tokens": [
+                    "atlas",
+                    "four",
+                    "hundred",
+                    "pages"
+                  ],
+                  "negation_cues_hypothesis": 0,
+                  "negation_cues_premise": 0,
+                  "negation_parity_mismatch": false,
+                  "unmatched_tokens": [
+                    "atlas"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

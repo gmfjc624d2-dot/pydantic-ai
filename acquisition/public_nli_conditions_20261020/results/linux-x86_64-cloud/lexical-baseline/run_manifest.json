@@ -1,0 +1,32 @@
+{
+  "system": "lexical-baseline/v1",
+  "config": "baseline_config.json",
+  "config_sha256": "e19840b06be3c3b8f519b80d9c00fef062cfe6fe03db4b355b08dce305904cdd",
+  "fixtures_sha256": {
+    "dev.jsonl": "6f56dabcea2fa9e1a1815bd8960cfcb976be3f949ff10c0fcc1df17615bc58d8",
+    "heldout.jsonl": "8cbe96a7a06b7977b3af534b6e58949034f70f96ee15171ed8b4efc046c17a74",
+    "excluded.jsonl": "e0a5f93654b2ade7af8205d270ff0c46a63991b8ba283e87b3b87ecf21a1c631"
+  },
+  "python": "3.13.16",
+  "created_at": "2026-10-20T21:29:13.148553+00:00",
+  "files": {
+    "predictions--dev.jsonl": {
+      "sha256": "0434c7fa56437096fc7d130b5c7b2c57a9017079a41a0c6dab6d8b92fad83c27",
+      "trials": 64,
+      "predicted": {
+        "entailment": 37,
+        "contradiction": 11,
+        "neutral": 16
+      }
+    },
+    "predictions--heldout.jsonl": {
+      "sha256": "73b5efac892bbb6663be2f0e3d4ef0706c812ac27c027f1b5a80224cffb234ac",
+      "trials": 64,
+      "predicted": {
+        "entailment": 50,
+        "contradiction": 5,
+        "neutral": 9
+      }
+    }
+  }
+}

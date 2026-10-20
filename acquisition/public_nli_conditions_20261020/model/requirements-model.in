@@ -1,0 +1,7 @@
+# Model-run dependencies (top level). Locked per platform with uv pip compile; see README.
+torch
+transformers
+tokenizers
+safetensors
+huggingface_hub
+sentencepiece

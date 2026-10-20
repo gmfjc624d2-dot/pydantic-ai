@@ -1,0 +1,33 @@
+{
+  "schema": "nli-fixtures-errata/v1",
+  "applies_to_freeze_commit": "733b7f763de04edcfeb33d12be90be145185e5c9",
+  "rule": "Errata add flags and qualifications only. They never change a frozen label; the original full-set score is always reported alongside any subset.",
+  "entries": [
+    {
+      "item_ids": ["h-negation-2"],
+      "flag": "disputed",
+      "source": "independent requester review of the freeze commit, 2026-10-20, made without seeing any per-item prediction",
+      "note": "'Recorded no snow at all' is not a strict paraphrase of 'did not record any snowfall' (either language): a station can record existing snow depth while recording no new snowfall. Frozen label (entailment) retained; results are reported with and without this item."
+    },
+    {
+      "item_ids": ["d-condition-1", "d-condition-2"],
+      "flag": "convention_standing_rule",
+      "source": "independent requester review of the freeze commit, 2026-10-20, made without seeing any per-item prediction",
+      "note": "Under a strict all-situations reading, 'if A then off' and 'if A then on' are both true when A never occurs, so they are not logically contradictory. The contradiction label requires reading the conditional as a standing rule whose condition is relevant (A can occur). Reported as a separate group, not as assumption-free contradiction."
+    },
+    {
+      "item_ids": ["d-attribution-3", "h-attribution-1", "h-attribution-2"],
+      "flag": "convention_coherent_source",
+      "source": "independent requester review of the freeze commit, 2026-10-20; also listed as a residual concern in the pre-freeze fixtures/REVIEW.md",
+      "note": "The contradiction label assumes a coherent source and a single reporting event (a source could, in principle, report both things). Reported as a separate group, not as assumption-free contradiction."
+    },
+    {
+      "item_ids": ["d-modality-3", "d-modality-4", "h-modality-4", "h-negation-4", "h-exception-4", "d-exception-4"],
+      "flag": "pre_freeze_residual_concern",
+      "source": "fixtures/REVIEW.md in the freeze commit (registered before any prediction existed)",
+      "note": "Retained with a documented concern before the freeze. Broken out in a listing only; not removed from any headline number."
+    }
+  ],
+  "independence_caveat": "Each set has 24 items in 6 scenario groups of 4 related variants; Spanish and English are paired variants of the same item, and span trials reuse the same items. Neither the 48 language trials nor the 24 items are independent observations, so no independence-based confidence interval is reported; results are counts with group-level listings.",
+  "not_acted_on": "After the lexical-baseline predictions existed locally, the fixture author noticed that h-modality-1/2 ('might be finished' vs 'impossible') also rely on a shared epistemic-state reading. They were deliberately NOT added as a subset flag, because defining subsets after seeing predictions would be post-hoc; they remain in every count."
+}

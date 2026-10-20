@@ -1,0 +1,108 @@
+{
+  "collected_at": "2026-10-20",
+  "environment": "Claude Code cloud session, Linux x86_64, egress via policy proxy",
+  "proxy_relay_failures_verbatim": [
+    {
+      "ts": "2026-10-20T21:18:42.947Z",
+      "kind": "connect_rejected",
+      "detail": "gateway answered 403 to CONNECT (policy denial or upstream failure)",
+      "host": "huggingface.co:443"
+    },
+    {
+      "ts": "2026-10-20T21:19:26.100Z",
+      "kind": "connect_rejected",
+      "detail": "gateway answered 403 to CONNECT (policy denial or upstream failure)",
+      "host": "download.pytorch.org:443"
+    },
+    {
+      "ts": "2026-10-20T21:19:26.636Z",
+      "kind": "connect_rejected",
+      "detail": "gateway answered 403 to CONNECT (policy denial or upstream failure)",
+      "host": "aclanthology.org:443"
+    },
+    {
+      "ts": "2026-10-20T21:19:51.164Z",
+      "kind": "connect_rejected",
+      "detail": "gateway answered 403 to CONNECT (policy denial or upstream failure)",
+      "host": "arxiv.org:443"
+    },
+    {
+      "ts": "2026-10-20T21:19:51.417Z",
+      "kind": "connect_rejected",
+      "detail": "gateway answered 403 to CONNECT (policy denial or upstream failure)",
+      "host": "export.arxiv.org:443"
+    },
+    {
+      "ts": "2026-10-20T21:19:52.163Z",
+      "kind": "connect_rejected",
+      "detail": "gateway answered 403 to CONNECT (policy denial or upstream failure)",
+      "host": "www.semanticscholar.org:443"
+    },
+    {
+      "ts": "2026-10-20T21:19:52.201Z",
+      "kind": "connect_rejected",
+      "detail": "gateway answered 403 to CONNECT (policy denial or upstream failure)",
+      "host": "api.semanticscholar.org:443"
+    },
+    {
+      "ts": "2026-10-20T21:19:52.451Z",
+      "kind": "connect_rejected",
+      "detail": "gateway answered 403 to CONNECT (policy denial or upstream failure)",
+      "host": "doi.org:443"
+    },
+    {
+      "ts": "2026-10-20T21:33:23.947Z",
+      "kind": "connect_rejected",
+      "detail": "gateway answered 403 to CONNECT (policy denial or upstream failure)",
+      "host": "huggingface.co:443"
+    }
+  ],
+  "session_tool_observations": [
+    {
+      "tool": "curl (container)",
+      "target": "https://huggingface.co/api/models/MoritzLaurer/mDeBERTa-v3-base-mnli-xnli?blobs=true",
+      "result": "curl: (56) CONNECT tunnel failed, response 403"
+    },
+    {
+      "tool": "curl -I (container)",
+      "results": {
+        "https://download.pytorch.org/whl/cpu/torch/": "000 (CONNECT 403)",
+        "https://pypi.org/simple/torch/": "200",
+        "https://github.com": "400 (reachable)",
+        "https://aclanthology.org/2026.acl-long.1472/": "000 (CONNECT 403)",
+        "https://arxiv.org/": "000",
+        "https://export.arxiv.org/": "000",
+        "https://raw.githubusercontent.com/": "301 (reachable)",
+        "https://api.github.com/": "200",
+        "https://www.semanticscholar.org/": "000",
+        "https://api.semanticscholar.org/": "000",
+        "https://doi.org/": "000"
+      }
+    },
+    {
+      "tool": "WebFetch (documentation reader)",
+      "target": "https://huggingface.co/api/models/MoritzLaurer/mDeBERTa-v3-base-mnli-xnli?blobs=true",
+      "result": "getaddrinfo ENOTFOUND huggingface.co"
+    },
+    {
+      "tool": "WebFetch (documentation reader)",
+      "target": "https://huggingface.co/MoritzLaurer/mDeBERTa-v3-base-mnli-xnli",
+      "result": "getaddrinfo ENOTFOUND huggingface.co"
+    },
+    {
+      "tool": "WebFetch (documentation reader)",
+      "target": "https://aclanthology.org/2026.acl-long.1472/",
+      "result": "getaddrinfo ENOTFOUND aclanthology.org"
+    },
+    {
+      "tool": "WebSearch",
+      "query": "\"2026.acl-long.1472\" and extended search for title/authors",
+      "result": "no page for this identifier found; paper identity unconfirmed"
+    },
+    {
+      "tool": "model/fetch_model.py (huggingface_hub 2.2.0)",
+      "result": "see model-attempts/attempts.jsonl: ProxyError 403 Forbidden at model_info; not retried"
+    }
+  ],
+  "policy_note": "Proxy README: do not retry or route around 403 policy denials. No mirror, relay or alternate host for model weights was used."
+}
