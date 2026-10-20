@@ -1,0 +1,1340 @@
+{
+  "summary": {
+    "set": "reserved",
+    "tool_version": "1.0.0",
+    "ruleset_canonical_sha256": "b33ac9e99a5177e317ab7ab274a7ca6821491cb912f10264b9a50a3a5726af63",
+    "fixtures_sha256": "eecc0e2bfe0f68fdd1716501949efd447172278ede8304c9aa5a2b8929842ae3",
+    "items": 24,
+    "gold_spans": 42,
+    "gold_hit": 35,
+    "highlights": 41,
+    "highlight_classes": {
+      "on_distractor": 5,
+      "partial_shorter_than_gold": 1,
+      "true_positive": 35
+    },
+    "by_language": {
+      "en": {
+        "gold": 23,
+        "gold_hit": 20,
+        "highlights": 21,
+        "true_positive_highlights": 20
+      },
+      "es": {
+        "gold": 19,
+        "gold_hit": 15,
+        "highlights": 20,
+        "true_positive_highlights": 15
+      }
+    },
+    "by_topic_gold_recall": {
+      "condition": {
+        "gold": 8,
+        "hit": 4
+      },
+      "exception": {
+        "gold": 5,
+        "hit": 3
+      },
+      "negation": {
+        "gold": 11,
+        "hit": 11
+      },
+      "uncertainty": {
+        "gold": 9,
+        "hit": 7
+      },
+      "attribution": {
+        "gold": 8,
+        "hit": 8
+      },
+      "obligation": {
+        "gold": 6,
+        "hit": 5
+      }
+    },
+    "by_cue_origin": {
+      "in_dev_gold": {
+        "gold": 25,
+        "hit": 25
+      },
+      "in_annotation_spec": {
+        "gold": 10,
+        "hit": 10
+      },
+      "closed_class_lexicon_only": {
+        "gold": 1,
+        "hit": 0
+      },
+      "not_in_lexicon": {
+        "gold": 6,
+        "hit": 0
+      }
+    },
+    "format_feature_items": {
+      "r-en-03": {
+        "features": [
+          "emoji_before_cue"
+        ],
+        "all_gold_hit": true
+      },
+      "r-en-06": {
+        "features": [
+          "crlf_inside_multiword_cue"
+        ],
+        "all_gold_hit": true
+      },
+      "r-es-10": {
+        "features": [
+          "decomposed_accent_in_cue"
+        ],
+        "all_gold_hit": true
+      }
+    },
+    "empty_gold_items": {
+      "r-en-12": 0,
+      "r-es-12": 0
+    }
+  },
+  "failures": {
+    "omissions": [
+      {
+        "item_id": "r-en-07",
+        "span": "should",
+        "start": 49,
+        "end": 55,
+        "topics": [
+          "obligation",
+          "uncertainty"
+        ],
+        "reason": "no highlight"
+      },
+      {
+        "item_id": "r-en-09",
+        "span": "Assuming",
+        "start": 0,
+        "end": 8,
+        "topics": [
+          "condition"
+        ],
+        "reason": "no highlight"
+      },
+      {
+        "item_id": "r-en-11",
+        "span": "does not apply to",
+        "start": 52,
+        "end": 69,
+        "topics": [
+          "exception"
+        ],
+        "reason": "partially or wrongly highlighted"
+      },
+      {
+        "item_id": "r-es-01",
+        "span": "probablemente",
+        "start": 40,
+        "end": 53,
+        "topics": [
+          "uncertainty"
+        ],
+        "reason": "no highlight"
+      },
+      {
+        "item_id": "r-es-02",
+        "span": "salvo que",
+        "start": 46,
+        "end": 55,
+        "topics": [
+          "exception",
+          "condition"
+        ],
+        "reason": "partially or wrongly highlighted"
+      },
+      {
+        "item_id": "r-es-06",
+        "span": "siempre y cuando",
+        "start": 40,
+        "end": 56,
+        "topics": [
+          "condition"
+        ],
+        "reason": "no highlight"
+      },
+      {
+        "item_id": "r-es-08",
+        "span": "En el supuesto de que",
+        "start": 0,
+        "end": 21,
+        "topics": [
+          "condition"
+        ],
+        "reason": "no highlight"
+      }
+    ],
+    "distracting_or_partial_highlights": [
+      {
+        "item_id": "r-en-08",
+        "text": "May",
+        "start": 3,
+        "end": 6,
+        "byte_start": 3,
+        "byte_end": 6,
+        "rule_id": "en.uncertainty.may",
+        "review_topics": [
+          "uncertainty"
+        ],
+        "distractor_note": "month name, not a modal",
+        "class": "on_distractor"
+      },
+      {
+        "item_id": "r-es-02",
+        "text": "salvo",
+        "start": 46,
+        "end": 51,
+        "byte_start": 46,
+        "byte_end": 51,
+        "rule_id": "es.exception.salvo",
+        "review_topics": [
+          "exception"
+        ],
+        "class": "partial_shorter_than_gold"
+      },
+      {
+        "item_id": "r-es-06",
+        "text": "pueden",
+        "start": 13,
+        "end": 19,
+        "byte_start": 13,
+        "byte_end": 19,
+        "rule_id": "es.uncertainty.poder",
+        "review_topics": [
+          "uncertainty"
+        ],
+        "distractor_note": "permission, not a configured topic",
+        "class": "on_distractor"
+      },
+      {
+        "item_id": "r-es-07",
+        "text": "nada",
+        "start": 8,
+        "end": 12,
+        "byte_start": 9,
+        "byte_end": 13,
+        "rule_id": "es.negation.pronoun",
+        "review_topics": [
+          "negation"
+        ],
+        "distractor_note": "verb \"nadar\" (swims), not the negative pronoun",
+        "class": "on_distractor"
+      },
+      {
+        "item_id": "r-es-11",
+        "text": "no",
+        "start": 44,
+        "end": 46,
+        "byte_start": 44,
+        "byte_end": 46,
+        "rule_id": "es.negation.no",
+        "review_topics": [
+          "negation"
+        ],
+        "distractor_note": "concessive connective (\"nevertheless\"), not negation",
+        "class": "on_distractor"
+      },
+      {
+        "item_id": "r-es-11",
+        "text": "pueden",
+        "start": 71,
+        "end": 77,
+        "byte_start": 71,
+        "byte_end": 77,
+        "rule_id": "es.uncertainty.poder",
+        "review_topics": [
+          "uncertainty"
+        ],
+        "distractor_note": "permission, not a configured topic",
+        "class": "on_distractor"
+      }
+    ],
+    "gold_origin": [
+      {
+        "item_id": "r-en-01",
+        "span": "If",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "r-en-01",
+        "span": "probably",
+        "origin": "in_annotation_spec",
+        "hit": true
+      },
+      {
+        "item_id": "r-en-02",
+        "span": "must",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "r-en-02",
+        "span": "not",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "r-en-02",
+        "span": "unless",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "r-en-03",
+        "span": "According to",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "r-en-03",
+        "span": "likely",
+        "origin": "in_annotation_spec",
+        "hit": true
+      },
+      {
+        "item_id": "r-en-04",
+        "span": "except",
+        "origin": "in_annotation_spec",
+        "hit": true
+      },
+      {
+        "item_id": "r-en-05",
+        "span": "says",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "r-en-05",
+        "span": "might",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "r-en-05",
+        "span": "nobody",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "r-en-06",
+        "span": "provided\r\nthat",
+        "origin": "in_annotation_spec",
+        "hit": true
+      },
+      {
+        "item_id": "r-en-07",
+        "span": "n't",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "r-en-07",
+        "span": "should",
+        "origin": "closed_class_lexicon_only",
+        "hit": false
+      },
+      {
+        "item_id": "r-en-07",
+        "span": "n't",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "r-en-08",
+        "span": "no",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "r-en-09",
+        "span": "Assuming",
+        "origin": "not_in_lexicon",
+        "hit": false
+      },
+      {
+        "item_id": "r-en-10",
+        "span": "reportedly",
+        "origin": "in_annotation_spec",
+        "hit": true
+      },
+      {
+        "item_id": "r-en-10",
+        "span": "said",
+        "origin": "in_annotation_spec",
+        "hit": true
+      },
+      {
+        "item_id": "r-en-10",
+        "span": "never",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "r-en-11",
+        "span": "have to",
+        "origin": "in_annotation_spec",
+        "hit": true
+      },
+      {
+        "item_id": "r-en-11",
+        "span": "does not apply to",
+        "origin": "not_in_lexicon",
+        "hit": false
+      },
+      {
+        "item_id": "r-en-11",
+        "span": "not",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "r-es-01",
+        "span": "Si",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "r-es-01",
+        "span": "probablemente",
+        "origin": "not_in_lexicon",
+        "hit": false
+      },
+      {
+        "item_id": "r-es-02",
+        "span": "no",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "r-es-02",
+        "span": "deben",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "r-es-02",
+        "span": "salvo que",
+        "origin": "not_in_lexicon",
+        "hit": false
+      },
+      {
+        "item_id": "r-es-03",
+        "span": "Según",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "r-es-03",
+        "span": "quizás",
+        "origin": "in_annotation_spec",
+        "hit": true
+      },
+      {
+        "item_id": "r-es-04",
+        "span": "excepto",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "r-es-05",
+        "span": "dice",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "r-es-05",
+        "span": "podría",
+        "origin": "in_annotation_spec",
+        "hit": true
+      },
+      {
+        "item_id": "r-es-05",
+        "span": "nadie",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "r-es-06",
+        "span": "siempre y cuando",
+        "origin": "not_in_lexicon",
+        "hit": false
+      },
+      {
+        "item_id": "r-es-07",
+        "span": "no",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "r-es-08",
+        "span": "En el supuesto de que",
+        "origin": "not_in_lexicon",
+        "hit": false
+      },
+      {
+        "item_id": "r-es-09",
+        "span": "Al parecer",
+        "origin": "in_annotation_spec",
+        "hit": true
+      },
+      {
+        "item_id": "r-es-09",
+        "span": "nunca",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "r-es-10",
+        "span": "Según",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "r-es-10",
+        "span": "hay que",
+        "origin": "in_dev_gold",
+        "hit": true
+      },
+      {
+        "item_id": "r-es-11",
+        "span": "deben",
+        "origin": "in_dev_gold",
+        "hit": true
+      }
+    ]
+  },
+  "per_item": [
+    {
+      "item_id": "r-en-01",
+      "lang": "en",
+      "highlights": [
+        {
+          "text": "If",
+          "start": 0,
+          "end": 2,
+          "byte_start": 0,
+          "byte_end": 2,
+          "rule_id": "en.condition.if",
+          "review_topics": [
+            "condition"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "probably",
+          "start": 42,
+          "end": 50,
+          "byte_start": 42,
+          "byte_end": 50,
+          "rule_id": "en.uncertainty.adverb",
+          "review_topics": [
+            "uncertainty"
+          ],
+          "class": "true_positive"
+        }
+      ],
+      "omissions": [],
+      "gold_hit": [
+        true,
+        true
+      ]
+    },
+    {
+      "item_id": "r-en-02",
+      "lang": "en",
+      "highlights": [
+        {
+          "text": "must",
+          "start": 9,
+          "end": 13,
+          "byte_start": 9,
+          "byte_end": 13,
+          "rule_id": "en.obligation.must",
+          "review_topics": [
+            "obligation"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "not",
+          "start": 14,
+          "end": 17,
+          "byte_start": 14,
+          "byte_end": 17,
+          "rule_id": "en.negation.not",
+          "review_topics": [
+            "negation"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "unless",
+          "start": 40,
+          "end": 46,
+          "byte_start": 40,
+          "byte_end": 46,
+          "rule_id": "en.condition.unless",
+          "review_topics": [
+            "condition",
+            "exception"
+          ],
+          "class": "true_positive"
+        }
+      ],
+      "omissions": [],
+      "gold_hit": [
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "item_id": "r-en-03",
+      "lang": "en",
+      "highlights": [
+        {
+          "text": "According to",
+          "start": 1,
+          "end": 13,
+          "byte_start": 4,
+          "byte_end": 16,
+          "rule_id": "en.attribution.according_to",
+          "review_topics": [
+            "attribution"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "likely",
+          "start": 39,
+          "end": 45,
+          "byte_start": 42,
+          "byte_end": 48,
+          "rule_id": "en.uncertainty.adverb",
+          "review_topics": [
+            "uncertainty"
+          ],
+          "class": "true_positive"
+        }
+      ],
+      "omissions": [],
+      "gold_hit": [
+        true,
+        true
+      ]
+    },
+    {
+      "item_id": "r-en-04",
+      "lang": "en",
+      "highlights": [
+        {
+          "text": "except",
+          "start": 30,
+          "end": 36,
+          "byte_start": 30,
+          "byte_end": 36,
+          "rule_id": "en.exception.except",
+          "review_topics": [
+            "exception"
+          ],
+          "class": "true_positive"
+        }
+      ],
+      "omissions": [],
+      "gold_hit": [
+        true
+      ]
+    },
+    {
+      "item_id": "r-en-05",
+      "lang": "en",
+      "highlights": [
+        {
+          "text": "says",
+          "start": 13,
+          "end": 17,
+          "byte_start": 13,
+          "byte_end": 17,
+          "rule_id": "en.attribution.verb",
+          "review_topics": [
+            "attribution"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "might",
+          "start": 23,
+          "end": 28,
+          "byte_start": 23,
+          "byte_end": 28,
+          "rule_id": "en.uncertainty.might",
+          "review_topics": [
+            "uncertainty"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "nobody",
+          "start": 39,
+          "end": 45,
+          "byte_start": 39,
+          "byte_end": 45,
+          "rule_id": "en.negation.pronoun",
+          "review_topics": [
+            "negation"
+          ],
+          "class": "true_positive"
+        }
+      ],
+      "omissions": [],
+      "gold_hit": [
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "item_id": "r-en-06",
+      "lang": "en",
+      "highlights": [
+        {
+          "text": "provided\r\nthat",
+          "start": 30,
+          "end": 44,
+          "byte_start": 30,
+          "byte_end": 44,
+          "rule_id": "en.condition.provided_that",
+          "review_topics": [
+            "condition"
+          ],
+          "class": "true_positive"
+        }
+      ],
+      "omissions": [],
+      "gold_hit": [
+        true
+      ]
+    },
+    {
+      "item_id": "r-en-07",
+      "lang": "en",
+      "highlights": [
+        {
+          "text": "n't",
+          "start": 15,
+          "end": 18,
+          "byte_start": 15,
+          "byte_end": 18,
+          "rule_id": "en.negation.nt",
+          "review_topics": [
+            "negation"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "n't",
+          "start": 55,
+          "end": 58,
+          "byte_start": 55,
+          "byte_end": 58,
+          "rule_id": "en.negation.nt",
+          "review_topics": [
+            "negation"
+          ],
+          "class": "true_positive"
+        }
+      ],
+      "omissions": [
+        {
+          "span": "should",
+          "start": 49,
+          "end": 55,
+          "topics": [
+            "obligation",
+            "uncertainty"
+          ],
+          "reason": "no highlight"
+        }
+      ],
+      "gold_hit": [
+        true,
+        false,
+        true
+      ]
+    },
+    {
+      "item_id": "r-en-08",
+      "lang": "en",
+      "highlights": [
+        {
+          "text": "May",
+          "start": 3,
+          "end": 6,
+          "byte_start": 3,
+          "byte_end": 6,
+          "rule_id": "en.uncertainty.may",
+          "review_topics": [
+            "uncertainty"
+          ],
+          "distractor_note": "month name, not a modal",
+          "class": "on_distractor"
+        },
+        {
+          "text": "no",
+          "start": 28,
+          "end": 30,
+          "byte_start": 28,
+          "byte_end": 30,
+          "rule_id": "en.negation.no",
+          "review_topics": [
+            "negation"
+          ],
+          "class": "true_positive"
+        }
+      ],
+      "omissions": [],
+      "gold_hit": [
+        true
+      ]
+    },
+    {
+      "item_id": "r-en-09",
+      "lang": "en",
+      "highlights": [],
+      "omissions": [
+        {
+          "span": "Assuming",
+          "start": 0,
+          "end": 8,
+          "topics": [
+            "condition"
+          ],
+          "reason": "no highlight"
+        }
+      ],
+      "gold_hit": [
+        false
+      ]
+    },
+    {
+      "item_id": "r-en-10",
+      "lang": "en",
+      "highlights": [
+        {
+          "text": "reportedly",
+          "start": 10,
+          "end": 20,
+          "byte_start": 10,
+          "byte_end": 20,
+          "rule_id": "en.attribution.reportedly",
+          "review_topics": [
+            "attribution",
+            "uncertainty"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "said",
+          "start": 21,
+          "end": 25,
+          "byte_start": 21,
+          "byte_end": 25,
+          "rule_id": "en.attribution.verb",
+          "review_topics": [
+            "attribution"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "never",
+          "start": 46,
+          "end": 51,
+          "byte_start": 46,
+          "byte_end": 51,
+          "rule_id": "en.negation.never",
+          "review_topics": [
+            "negation"
+          ],
+          "class": "true_positive"
+        }
+      ],
+      "omissions": [],
+      "gold_hit": [
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "item_id": "r-en-11",
+      "lang": "en",
+      "highlights": [
+        {
+          "text": "have to",
+          "start": 19,
+          "end": 26,
+          "byte_start": 19,
+          "byte_end": 26,
+          "rule_id": "en.obligation.have_to",
+          "review_topics": [
+            "obligation"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "not",
+          "start": 57,
+          "end": 60,
+          "byte_start": 57,
+          "byte_end": 60,
+          "rule_id": "en.negation.not",
+          "review_topics": [
+            "negation"
+          ],
+          "class": "true_positive"
+        }
+      ],
+      "omissions": [
+        {
+          "span": "does not apply to",
+          "start": 52,
+          "end": 69,
+          "topics": [
+            "exception"
+          ],
+          "reason": "partially or wrongly highlighted"
+        }
+      ],
+      "gold_hit": [
+        true,
+        false,
+        true
+      ]
+    },
+    {
+      "item_id": "r-en-12",
+      "lang": "en",
+      "highlights": [],
+      "omissions": [],
+      "gold_hit": []
+    },
+    {
+      "item_id": "r-es-01",
+      "lang": "es",
+      "highlights": [
+        {
+          "text": "Si",
+          "start": 0,
+          "end": 2,
+          "byte_start": 0,
+          "byte_end": 2,
+          "rule_id": "es.condition.si",
+          "review_topics": [
+            "condition"
+          ],
+          "class": "true_positive"
+        }
+      ],
+      "omissions": [
+        {
+          "span": "probablemente",
+          "start": 40,
+          "end": 53,
+          "topics": [
+            "uncertainty"
+          ],
+          "reason": "no highlight"
+        }
+      ],
+      "gold_hit": [
+        true,
+        false
+      ]
+    },
+    {
+      "item_id": "r-es-02",
+      "lang": "es",
+      "highlights": [
+        {
+          "text": "no",
+          "start": 15,
+          "end": 17,
+          "byte_start": 15,
+          "byte_end": 17,
+          "rule_id": "es.negation.no",
+          "review_topics": [
+            "negation"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "deben",
+          "start": 18,
+          "end": 23,
+          "byte_start": 18,
+          "byte_end": 23,
+          "rule_id": "es.obligation.deber",
+          "review_topics": [
+            "obligation"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "salvo",
+          "start": 46,
+          "end": 51,
+          "byte_start": 46,
+          "byte_end": 51,
+          "rule_id": "es.exception.salvo",
+          "review_topics": [
+            "exception"
+          ],
+          "class": "partial_shorter_than_gold"
+        }
+      ],
+      "omissions": [
+        {
+          "span": "salvo que",
+          "start": 46,
+          "end": 55,
+          "topics": [
+            "exception",
+            "condition"
+          ],
+          "reason": "partially or wrongly highlighted"
+        }
+      ],
+      "gold_hit": [
+        true,
+        true,
+        false
+      ]
+    },
+    {
+      "item_id": "r-es-03",
+      "lang": "es",
+      "highlights": [
+        {
+          "text": "Según",
+          "start": 0,
+          "end": 5,
+          "byte_start": 0,
+          "byte_end": 6,
+          "rule_id": "es.attribution.segun",
+          "review_topics": [
+            "attribution"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "quizás",
+          "start": 33,
+          "end": 39,
+          "byte_start": 34,
+          "byte_end": 41,
+          "rule_id": "es.uncertainty.adverb",
+          "review_topics": [
+            "uncertainty"
+          ],
+          "class": "true_positive"
+        }
+      ],
+      "omissions": [],
+      "gold_hit": [
+        true,
+        true
+      ]
+    },
+    {
+      "item_id": "r-es-04",
+      "lang": "es",
+      "highlights": [
+        {
+          "text": "excepto",
+          "start": 33,
+          "end": 40,
+          "byte_start": 33,
+          "byte_end": 40,
+          "rule_id": "es.exception.excepto",
+          "review_topics": [
+            "exception"
+          ],
+          "class": "true_positive"
+        }
+      ],
+      "omissions": [],
+      "gold_hit": [
+        true
+      ]
+    },
+    {
+      "item_id": "r-es-05",
+      "lang": "es",
+      "highlights": [
+        {
+          "text": "dice",
+          "start": 14,
+          "end": 18,
+          "byte_start": 15,
+          "byte_end": 19,
+          "rule_id": "es.attribution.verb",
+          "review_topics": [
+            "attribution"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "podría",
+          "start": 23,
+          "end": 29,
+          "byte_start": 24,
+          "byte_end": 31,
+          "rule_id": "es.uncertainty.poder",
+          "review_topics": [
+            "uncertainty"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "nadie",
+          "start": 44,
+          "end": 49,
+          "byte_start": 46,
+          "byte_end": 51,
+          "rule_id": "es.negation.pronoun",
+          "review_topics": [
+            "negation"
+          ],
+          "class": "true_positive"
+        }
+      ],
+      "omissions": [],
+      "gold_hit": [
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "item_id": "r-es-06",
+      "lang": "es",
+      "highlights": [
+        {
+          "text": "pueden",
+          "start": 13,
+          "end": 19,
+          "byte_start": 13,
+          "byte_end": 19,
+          "rule_id": "es.uncertainty.poder",
+          "review_topics": [
+            "uncertainty"
+          ],
+          "distractor_note": "permission, not a configured topic",
+          "class": "on_distractor"
+        }
+      ],
+      "omissions": [
+        {
+          "span": "siempre y cuando",
+          "start": 40,
+          "end": 56,
+          "topics": [
+            "condition"
+          ],
+          "reason": "no highlight"
+        }
+      ],
+      "gold_hit": [
+        false
+      ]
+    },
+    {
+      "item_id": "r-es-07",
+      "lang": "es",
+      "highlights": [
+        {
+          "text": "nada",
+          "start": 8,
+          "end": 12,
+          "byte_start": 9,
+          "byte_end": 13,
+          "rule_id": "es.negation.pronoun",
+          "review_topics": [
+            "negation"
+          ],
+          "distractor_note": "verb \"nadar\" (swims), not the negative pronoun",
+          "class": "on_distractor"
+        },
+        {
+          "text": "no",
+          "start": 51,
+          "end": 53,
+          "byte_start": 52,
+          "byte_end": 54,
+          "rule_id": "es.negation.no",
+          "review_topics": [
+            "negation"
+          ],
+          "class": "true_positive"
+        }
+      ],
+      "omissions": [],
+      "gold_hit": [
+        true
+      ]
+    },
+    {
+      "item_id": "r-es-08",
+      "lang": "es",
+      "highlights": [],
+      "omissions": [
+        {
+          "span": "En el supuesto de que",
+          "start": 0,
+          "end": 21,
+          "topics": [
+            "condition"
+          ],
+          "reason": "no highlight"
+        }
+      ],
+      "gold_hit": [
+        false
+      ]
+    },
+    {
+      "item_id": "r-es-09",
+      "lang": "es",
+      "highlights": [
+        {
+          "text": "Al parecer",
+          "start": 0,
+          "end": 10,
+          "byte_start": 0,
+          "byte_end": 10,
+          "rule_id": "es.uncertainty.al_parecer",
+          "review_topics": [
+            "uncertainty",
+            "attribution"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "nunca",
+          "start": 33,
+          "end": 38,
+          "byte_start": 33,
+          "byte_end": 38,
+          "rule_id": "es.negation.adverb",
+          "review_topics": [
+            "negation"
+          ],
+          "class": "true_positive"
+        }
+      ],
+      "omissions": [],
+      "gold_hit": [
+        true,
+        true
+      ]
+    },
+    {
+      "item_id": "r-es-10",
+      "lang": "es",
+      "highlights": [
+        {
+          "text": "Según",
+          "start": 0,
+          "end": 6,
+          "byte_start": 0,
+          "byte_end": 7,
+          "rule_id": "es.attribution.segun",
+          "review_topics": [
+            "attribution"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "hay que",
+          "start": 30,
+          "end": 37,
+          "byte_start": 31,
+          "byte_end": 38,
+          "rule_id": "es.obligation.hay_que",
+          "review_topics": [
+            "obligation"
+          ],
+          "class": "true_positive"
+        }
+      ],
+      "omissions": [],
+      "gold_hit": [
+        true,
+        true
+      ]
+    },
+    {
+      "item_id": "r-es-11",
+      "lang": "es",
+      "highlights": [
+        {
+          "text": "deben",
+          "start": 17,
+          "end": 22,
+          "byte_start": 17,
+          "byte_end": 22,
+          "rule_id": "es.obligation.deber",
+          "review_topics": [
+            "obligation"
+          ],
+          "class": "true_positive"
+        },
+        {
+          "text": "no",
+          "start": 44,
+          "end": 46,
+          "byte_start": 44,
+          "byte_end": 46,
+          "rule_id": "es.negation.no",
+          "review_topics": [
+            "negation"
+          ],
+          "distractor_note": "concessive connective (\"nevertheless\"), not negation",
+          "class": "on_distractor"
+        },
+        {
+          "text": "pueden",
+          "start": 71,
+          "end": 77,
+          "byte_start": 71,
+          "byte_end": 77,
+          "rule_id": "es.uncertainty.poder",
+          "review_topics": [
+            "uncertainty"
+          ],
+          "distractor_note": "permission, not a configured topic",
+          "class": "on_distractor"
+        }
+      ],
+      "omissions": [],
+      "gold_hit": [
+        true
+      ]
+    },
+    {
+      "item_id": "r-es-12",
+      "lang": "es",
+      "highlights": [],
+      "omissions": [],
+      "gold_hit": []
+    }
+  ]
+}
