@@ -10,6 +10,7 @@ from __future__ import annotations
 import bisect
 import decimal
 import io
+import re
 import sys
 import unittest
 from pathlib import Path
@@ -23,6 +24,8 @@ import review_cues  # noqa: E402
 ORIGINAL_BOUNDARY = review_cues._boundary_ok
 ORIGINAL_FIND = review_cues.find_cues
 ORIGINAL_READ = review_cues.read_request
+ORIGINAL_RENDER = review_cues.render_cues
+ORIGINAL_ERROR_OUTPUT = review_cues._error_output
 
 
 def no_boundaries(text, start, end, boundary):  # type: ignore[no-untyped-def]
@@ -94,6 +97,27 @@ def decimal_only_after_int_fails(literal):  # type: ignore[no-untyped-def]
         return decimal.Decimal(literal)
 
 
+def budgeted_render(piece_size, newline_bytes):  # type: ignore[no-untyped-def]
+    def render(text, language, ruleset=None, max_output_bytes=None):  # type: ignore[no-untyped-def]
+        if max_output_bytes is None:
+            return ORIGINAL_RENDER(text, language, ruleset)
+        review_cues._check_output_budget(max_output_bytes)
+        result = review_cues._find_cues(text, language, ruleset, max_output_bytes)
+        output, size = '', newline_bytes
+        for piece in review_cues._INDENTED.iterencode(result):
+            output += piece
+            size += piece_size(piece)
+            if size > max_output_bytes:
+                raise review_cues._too_large(max_output_bytes, size)
+        return (output + '\n').encode('utf-8')
+
+    return render
+
+
+def error_output_ignoring_budget(e, max_output_bytes):  # type: ignore[no-untyped-def]
+    return ORIGINAL_ERROR_OUTPUT(e, None)
+
+
 MUTATIONS = {
     'no token boundaries': ('_boundary_ok', no_boundaries),
     'combining marks ignored at boundaries': ('_boundary_ok', ignore_marks),
@@ -107,15 +131,25 @@ MUTATIONS = {
     'no JSON nesting limit': ('_reject_deep_nesting', no_nesting_limit),
     'JSON integers parsed with int() only': ('_parse_int', int),
     'digit threshold applied only after int() fails': ('_parse_int', decimal_only_after_int_fails),
+    'output budget ignores the final newline': ('render_cues', budgeted_render(lambda p: len(p.encode()), 0)),
+    'output budget counts code points, not bytes': ('render_cues', budgeted_render(len, 1)),
+    'no per-match floor while matching': ('_MATCH_FLOOR_BYTES', 0),
+    'overlap pairs not counted before building lists': ('_overlap_pair_count', lambda spans: 0),
+    'over-budget error message written in full': ('_error_output', error_output_ignoring_budget),
+    'budget argument with sign or leading zeros accepted': ('_OUTPUT_BUDGET_ARG', re.compile(r'[+-]?[0-9]{1,15}')),
 }
 
 
 def run_suite() -> unittest.TestResult:
+    import test_output_budget
     import test_review_cues
 
     for name in ('find_cues', '_overlap_lists'):
         setattr(test_review_cues, name, getattr(review_cues, name))
-    suite = unittest.defaultTestLoader.loadTestsFromModule(test_review_cues)
+    loader = unittest.defaultTestLoader
+    suite = unittest.TestSuite(
+        [loader.loadTestsFromModule(test_review_cues), loader.loadTestsFromModule(test_output_budget)]
+    )
     return unittest.TextTestRunner(stream=io.StringIO(), verbosity=0).run(suite)
 
 

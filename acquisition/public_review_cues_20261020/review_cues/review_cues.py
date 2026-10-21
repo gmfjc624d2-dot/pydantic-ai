@@ -1,7 +1,8 @@
 """Lexical review-cue highlighter for Spanish and English. Standard library only; Python >= 3.9.
 
 Pure function:  find_cues(text, language) -> dict          (raises CueInputError on invalid input)
-CLI:            python3 review_cues.py [--rules PATH] < request.json > response.json
+Rendering:      render_cues(text, language, max_output_bytes=None) -> bytes   (exactly what the CLI writes)
+CLI:            python3 review_cues.py [--rules PATH] [--max-output-bytes N] < request.json > response.json
                 request: {"text": "...", "language": "es" | "en" | "es+en"}, at most MAX_REQUEST_BYTES
                 exit 0 with a result, exit 2 with {"error": {...}} for invalid input.
 
@@ -24,7 +25,7 @@ from typing import Any, BinaryIO, Dict, List, Optional, Sequence, Tuple
 
 SCHEMA = 'review-cues/1'
 TOOL_NAME = 'review_cues'
-TOOL_VERSION = '1.1.1'
+TOOL_VERSION = '1.2.0'
 LANGUAGES = ('es', 'en', 'es+en')
 MAX_TEXT_CODEPOINTS = 100_000
 # The CLI never reads more than this many request bytes (+1 to detect excess). 12 bytes is the longest JSON
@@ -39,6 +40,15 @@ MAX_JSON_NESTING = 64
 # integer string-conversion limit CPython can be configured with, so int() never raises below it.
 MAX_INT_DIGITS = 640
 _JSON_STRING_OR_BRACKET = re.compile(r'"[^"\\]*(?:\\.[^"\\]*)*"?|[\[\]{}]', re.DOTALL)
+# Opt-in output budget (render_cues(max_output_bytes=N), CLI --max-output-bytes N). It counts every byte the
+# CLI writes to stdout: the UTF-8 encoding of json.dumps(obj, ensure_ascii=False, indent=2) plus one "\n".
+# MIN_OUTPUT_BYTES is the smallest accepted budget: every rejection the CLI writes under a budget fits in it.
+MIN_OUTPUT_BYTES = 512
+MAX_OUTPUT_BYTES = 10**15 - 1
+_OUTPUT_BUDGET_ARG = re.compile(r'[1-9][0-9]{0,14}')
+_OMITTED_MESSAGE = 'message omitted: the complete error does not fit max_output_bytes'
+_INDENTED = json.JSONEncoder(ensure_ascii=False, indent=2)
+CLI_USAGE = 'usage: review_cues.py [--rules PATH] [--max-output-bytes N] < request.json'
 DEFAULT_RULES_PATH = Path(__file__).resolve().with_name('rules_v1.json')
 REQUEST_FIELDS = ('text', 'language')
 
@@ -69,12 +79,13 @@ MATCHING = {
 
 
 class CueInputError(ValueError):
-    """Invalid input; `code` is a stable machine-readable reason."""
+    """Invalid input; `code` is a stable machine-readable reason, `details` extra integer fields of the error."""
 
-    def __init__(self, code: str, message: str) -> None:
+    def __init__(self, code: str, message: str, **details: int) -> None:
         super().__init__(f'{code}: {message}')
         self.code = code
         self.message = message
+        self.details = details
 
 
 class _Rule:
@@ -216,11 +227,95 @@ def _overlap_lists(spans: Sequence[Tuple[int, int]]) -> List[List[int]]:
     return lists
 
 
+def _overlap_pair_count(spans: Sequence[Tuple[int, int]]) -> int:
+    """The number of overlapping pairs _overlap_lists(spans) would record, without building the lists."""
+    starts = [start for start, _ in spans]
+    return sum(bisect.bisect_left(starts, end, i + 1) - i - 1 for i, (_, end) in enumerate(spans))
+
+
+def _compact_size(obj: Any) -> int:
+    return len(json.dumps(obj, ensure_ascii=False).encode('utf-8'))
+
+
+_BASIS = 'lexical match of a configured phrase; unvalidated as to meaning'
+# The smallest possible match object. Every real match has these keys with values that serialize to at least as
+# many bytes (strings >= "", offsets >= 0, lists >= [], the same basis), and indentation only adds bytes, so its
+# compact size is a lower bound for each match in the rendered output.
+_MATCH_TEMPLATE: Dict[str, Any] = {
+    'text': '',
+    'start': 0,
+    'end': 0,
+    'byte_start': 0,
+    'byte_end': 0,
+    'review_topics': [],
+    'rule_id': '',
+    'rule_language': '',
+    'phrase': '',
+    'matched_forms': [],
+    'uncertainty': {'basis': _BASIS, 'rule_notes': [], 'observations': []},
+    'overlaps': [],
+}
+_MATCH_FLOOR_BYTES = _compact_size(_MATCH_TEMPLATE)
+
+
+def _too_large(max_output_bytes: int, at_least: int) -> CueInputError:
+    at_least = min(at_least, MAX_OUTPUT_BYTES + 1)  # still a true lower bound, and at most 16 digits
+    return CueInputError(
+        'output_too_large',
+        f'the complete output needs at least {at_least} bytes, more than max_output_bytes ({max_output_bytes}); '
+        'no partial output is returned',
+        max_output_bytes=max_output_bytes,
+        output_bytes_at_least=at_least,
+    )
+
+
 def find_cues(text: str, language: str, ruleset: Optional[Ruleset] = None) -> Dict[str, Any]:
     """Return lexical cue candidates in `text`. Pure: same inputs -> same output; no I/O beyond the rule file."""
+    return _find_cues(text, language, ruleset, None)
+
+
+def _find_cues(text: str, language: str, ruleset: Optional[Ruleset], max_output_bytes: Optional[int]) -> Dict[str, Any]:
+    """find_cues(); with a budget, raise output_too_large as soon as a lower bound of the rendered size exceeds it.
+
+    The lower bound is the compact size of the result without matches, plus the final newline, plus
+    _MATCH_FLOOR_BYTES per match and one byte per overlap reference; it is checked while matches are found and
+    again before the overlap lists are built, so neither grows far beyond what the budget could hold.
+    """
     encoded = _validate(text, language)
     rules = ruleset or default_ruleset()
     langs = ('es', 'en') if language == 'es+en' else (language,)
+    configuration = {
+        'language': language,
+        'rule_languages_applied': list(langs),
+        'max_text_codepoints': MAX_TEXT_CODEPOINTS,
+        'unicode_database_version': unicodedata.unidata_version,
+        'matching': MATCHING,
+    }
+    identity = {
+        'schema': SCHEMA,
+        'tool_version': TOOL_VERSION,
+        'ruleset_canonical_sha256': rules.canonical_sha256,
+        'configuration': configuration,
+    }
+    result: Dict[str, Any] = {
+        'schema': SCHEMA,
+        'tool': {'name': TOOL_NAME, 'version': TOOL_VERSION},
+        'ruleset': {
+            'id': rules.data['ruleset_id'],
+            'version': rules.data['ruleset_version'],
+            'file_sha256': rules.file_sha256,
+            'canonical_sha256': rules.canonical_sha256,
+        },
+        'configuration': configuration,
+        'configuration_sha256': hashlib.sha256(
+            json.dumps(identity, sort_keys=True, ensure_ascii=False, separators=(',', ':')).encode('utf-8')
+        ).hexdigest(),
+        'input': {'sha256': hashlib.sha256(encoded).hexdigest(), 'codepoints': len(text), 'utf8_bytes': len(encoded)},
+        'match_count': 0,
+        'matches': [],
+        'notice': NOTICE,
+    }
+    floor = 0 if max_output_bytes is None else _compact_size(result) + 1
 
     byte_at = [0] * (len(text) + 1)
     for i, ch in enumerate(text):
@@ -257,47 +352,62 @@ def find_cues(text: str, language: str, ruleset: Optional[Ruleset] = None) -> Di
                     'matched_forms': list(forms),
                     '_search_string': value,
                 }
+                if max_output_bytes is not None and floor + len(found) * _MATCH_FLOOR_BYTES > max_output_bytes:
+                    raise _too_large(max_output_bytes, floor + len(found) * _MATCH_FLOOR_BYTES)
     matches = sorted(found.values(), key=lambda m: (m['start'], m['end'], m['rule_id']))
+    spans = [(m['start'], m['end']) for m in matches]
+    if max_output_bytes is not None:
+        floor += len(matches) * _MATCH_FLOOR_BYTES + 2 * _overlap_pair_count(spans)
+        if floor > max_output_bytes:
+            raise _too_large(max_output_bytes, floor)
     rules_by_id = {r.id: r for r in rules.rules}
-    for m, overlaps in zip(matches, _overlap_lists([(m['start'], m['end']) for m in matches])):
+    for m, overlaps in zip(matches, _overlap_lists(spans)):
         m['uncertainty'] = {
-            'basis': 'lexical match of a configured phrase; unvalidated as to meaning',
+            'basis': _BASIS,
             'rule_notes': list(rules_by_id[m['rule_id']].notes),
             'observations': _observations(m['text'], m['matched_forms'], m.pop('_search_string')),
         }
         m['overlaps'] = overlaps
+    result['match_count'] = len(matches)
+    result['matches'] = matches
+    return result
 
-    configuration = {
-        'language': language,
-        'rule_languages_applied': list(langs),
-        'max_text_codepoints': MAX_TEXT_CODEPOINTS,
-        'unicode_database_version': unicodedata.unidata_version,
-        'matching': MATCHING,
-    }
-    identity = {
-        'schema': SCHEMA,
-        'tool_version': TOOL_VERSION,
-        'ruleset_canonical_sha256': rules.canonical_sha256,
-        'configuration': configuration,
-    }
-    return {
-        'schema': SCHEMA,
-        'tool': {'name': TOOL_NAME, 'version': TOOL_VERSION},
-        'ruleset': {
-            'id': rules.data['ruleset_id'],
-            'version': rules.data['ruleset_version'],
-            'file_sha256': rules.file_sha256,
-            'canonical_sha256': rules.canonical_sha256,
-        },
-        'configuration': configuration,
-        'configuration_sha256': hashlib.sha256(
-            json.dumps(identity, sort_keys=True, ensure_ascii=False, separators=(',', ':')).encode('utf-8')
-        ).hexdigest(),
-        'input': {'sha256': hashlib.sha256(encoded).hexdigest(), 'codepoints': len(text), 'utf8_bytes': len(encoded)},
-        'match_count': len(matches),
-        'matches': matches,
-        'notice': NOTICE,
-    }
+
+def _check_output_budget(max_output_bytes: Any) -> None:
+    if (
+        isinstance(max_output_bytes, bool)
+        or not isinstance(max_output_bytes, int)
+        or not MIN_OUTPUT_BYTES <= max_output_bytes <= MAX_OUTPUT_BYTES
+    ):
+        raise CueInputError(
+            'invalid_output_budget',
+            f'max_output_bytes must be an integer from {MIN_OUTPUT_BYTES} to {MAX_OUTPUT_BYTES}',
+        )
+
+
+def render_cues(
+    text: str, language: str, ruleset: Optional[Ruleset] = None, max_output_bytes: Optional[int] = None
+) -> bytes:
+    """Return exactly the bytes the CLI writes for a successful request: UTF-8 JSON (indent 2) and a final "\\n".
+
+    With `max_output_bytes`, the result is either those same bytes, if they fit, or CueInputError
+    'output_too_large' (never a partial result); 'invalid_output_budget' if the budget is not an int from
+    MIN_OUTPUT_BYTES to MAX_OUTPUT_BYTES. Rendering stops at the first byte over the budget.
+    """
+    if max_output_bytes is None:
+        return (json.dumps(find_cues(text, language, ruleset), ensure_ascii=False, indent=2) + '\n').encode('utf-8')
+    _check_output_budget(max_output_bytes)
+    result = _find_cues(text, language, ruleset, max_output_bytes)
+    chunks: List[bytes] = []
+    size = 1  # the final newline
+    for piece in _INDENTED.iterencode(result):
+        chunk = piece.encode('utf-8')
+        size += len(chunk)
+        if size > max_output_bytes:
+            raise _too_large(max_output_bytes, size)
+        chunks.append(chunk)
+    chunks.append(b'\n')
+    return b''.join(chunks)
 
 
 def _reject_duplicates(pairs: List[Tuple[str, Any]]) -> Dict[str, Any]:
@@ -378,26 +488,53 @@ def parse_request(raw: bytes) -> Dict[str, Any]:
     return request
 
 
+def _error_output(e: CueInputError, max_output_bytes: Optional[int]) -> bytes:
+    """The CLI's rejection envelope; under a budget it omits a message that would not fit (MIN_OUTPUT_BYTES)."""
+    error: Dict[str, Any] = {'code': e.code, 'message': e.message, **e.details}
+    data = (json.dumps({'schema': SCHEMA, 'error': error}, ensure_ascii=False, indent=2) + '\n').encode('utf-8')
+    if max_output_bytes is not None and len(data) > max_output_bytes:
+        error['message'] = _OMITTED_MESSAGE
+        data = (json.dumps({'schema': SCHEMA, 'error': error}, ensure_ascii=False, indent=2) + '\n').encode('utf-8')
+    return data
+
+
 def main(
-    argv: Optional[Sequence[str]] = None, stdin: Optional[BinaryIO] = None, stdout: Optional[BinaryIO] = None
+    argv: Optional[Sequence[str]] = None,
+    stdin: Optional[BinaryIO] = None,
+    stdout: Optional[BinaryIO] = None,
+    stderr: Optional[BinaryIO] = None,
 ) -> int:
     args = list(sys.argv[1:] if argv is None else argv)
     in_stream = stdin if stdin is not None else sys.stdin.buffer
     out_stream = stdout if stdout is not None else sys.stdout.buffer
-    ruleset: Optional[Ruleset] = None
-    result: Dict[str, Any]
+    options = dict(zip(args[::2], args[1::2]))
+    well_formed = len(args) == 2 * len(options) and set(options) <= {'--rules', '--max-output-bytes'}
+    max_output_bytes: Optional[int] = None
+    if '--max-output-bytes' in options:
+        value = options['--max-output-bytes']
+        max_output_bytes = int(value) if _OUTPUT_BUDGET_ARG.fullmatch(value) else 0
+        if max_output_bytes < MIN_OUTPUT_BYTES:
+            # no usable budget: write nothing to stdout, so even a budget below MIN_OUTPUT_BYTES is respected
+            error = CueInputError(
+                'invalid_output_budget',
+                f'--max-output-bytes must be a decimal integer from {MIN_OUTPUT_BYTES} to {MAX_OUTPUT_BYTES} '
+                'without sign, spaces or leading zeros; nothing was written to stdout',
+            )
+            err_stream = stderr if stderr is not None else sys.stderr.buffer
+            err_stream.write(_error_output(error, None))
+            err_stream.flush()
+            return 2
     try:
-        if args[:1] == ['--rules'] and len(args) == 2:
-            ruleset = Ruleset.from_path(Path(args[1]))
-        elif args:
-            raise CueInputError('invalid_arguments', 'usage: review_cues.py [--rules PATH] < request.json')
+        if not well_formed:
+            raise CueInputError('invalid_arguments', CLI_USAGE)
+        ruleset = Ruleset.from_path(Path(options['--rules'])) if '--rules' in options else None
         request = parse_request(read_request(in_stream))
-        result = find_cues(request['text'], request['language'], ruleset)
+        output = render_cues(request['text'], request['language'], ruleset, max_output_bytes)
         status = 0
     except CueInputError as e:
-        result = {'schema': SCHEMA, 'error': {'code': e.code, 'message': e.message}}
+        output = _error_output(e, max_output_bytes)
         status = 2
-    out_stream.write((json.dumps(result, ensure_ascii=False, indent=2) + '\n').encode('utf-8'))
+    out_stream.write(output)
     out_stream.flush()
     return status
 
