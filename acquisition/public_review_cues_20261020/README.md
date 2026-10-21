@@ -1,4 +1,4 @@
-# Review-cue highlighter prototype (`public-review-cues-20261020-02`, revised in `-03`)
+# Review-cue highlighter prototype (`public-review-cues-20261020-02`, revised in `-03` and `-04`)
 
 A small, standard-library-only (Python ≥ 3.9) prototype that marks **lexical candidates** for six
 review topics — condition, exception, negation, uncertainty, attribution, obligation — in Spanish and
@@ -17,6 +17,7 @@ Earlier research on this branch (`acquisition/pydantic_evals_offline/`,
 |---|---|
 | Implemented and executed (Linux x86_64 only; CPython 3.9.25 and 3.13.16) | pure function + JSON CLI; 47-rule / 79-phrase ES/EN lexicon; dev evaluation; one reserved evaluation after the rules freeze (1.0.0) |
 | 1.1.0 and 1.1.1 (`-03`) | CLI request byte limit, JSON nesting limit and long-integer handling with structured rejections; overlap lists without pairwise scans; 35 contract tests and a 12-mutation check (all pass, every mutation rejected); output identical to 1.0.0 on all 48 fixture items apart from the version fields; baseline-vs-1.1.0 timings ([below](#110-bounded-requests-and-overlaps-without-pairwise-scans)) |
+| 1.2.0 and 1.2.1 (`-04`) | opt-in output byte budget (`render_cues(max_output_bytes=...)`, `--max-output-bytes N`) with structured rejection and early stopping; 50 contract tests and an 18-mutation check (all pass, every mutation rejected); no-budget CLI output byte-identical to 1.1.1 apart from version fields ([below](#120-opt-in-output-byte-budget--04)) |
 | Not done | macOS qualification (requester will qualify separately); any rule or matching change after the reserved run (the `n't` boundary defect is still present by instruction); validation of custom `--rules` files; any parser, model, corpus or network use |
 
 ## Timeline (commits on `claude/sweet-carson-tjohp1`)
@@ -31,32 +32,41 @@ Earlier research on this branch (`acquisition/pydantic_evals_offline/`,
    and `benchmark.py` (`-03`). Rules and fixtures unchanged.
 5. `9c23068811307bde53409f13fc40d63d0a4c97e1` — 1.1.1: long JSON integers parsed without `int()`;
    contract compatibility statement qualified (after review of commit 4). Rules and fixtures unchanged.
-6. The commit that adds this section and `results/linux-x86_64/v1.1.{0,1}/`: 1.1.0 results produced
-   from commit 4's code, 1.1.1 results from commit 5's (see each `RUN.md`).
+6. `86aa2252109a0f8b59d14f840b4c16f16d96ddf6` — `results/linux-x86_64/v1.1.{0,1}/` and the 1.1.x
+   report: 1.1.0 results produced from commit 4's code, 1.1.1 results from commit 5's.
+7. `6594a181d98f9754fd3c89f2058659bdb6474a5a` — 1.2.0: opt-in output byte budget, its tests and
+   contract, and `regression_check.py --cli-baseline-commit` (`-04`). Rules and fixtures unchanged.
+8. `23f1434472bc56d2a0d3ac4868be51ed65432bca` — 1.2.1: an accepted budgeted output is built in one
+   buffer (1.2.0 used about twice the unbudgeted memory for it; found by the measurement below).
+9. The commit that adds the 1.2.x report and `results/linux-x86_64/v1.2.{0,1}/`: 1.2.0's superseded
+   3.9 measurement, and 1.2.1 results from a clean checkout of commit 8 (see each `RUN.md`).
 
 ## Layout
 
 | Path | Contents |
 |---|---|
-| `review_cues/review_cues.py` | `find_cues()` and the CLI (standard library only) |
+| `review_cues/review_cues.py` | `find_cues()`, `render_cues()` and the CLI (standard library only) |
 | `review_cues/rules_v1.json` | the lexicon: ids, languages, topics, phrases, ambiguity notes, construction policy |
 | `fixtures/` | `ANNOTATION.md`; `reserved_source.py` → `reserved.jsonl`; `dev_source.py` → `dev.jsonl`; SHA-256 files |
-| `tests/test_review_cues.py`, `tests/mutation_check.py` | contract tests; proof that the tests reject broken variants |
+| `tests/test_review_cues.py`, `tests/test_output_budget.py`, `tests/mutation_check.py` | contract tests; output-budget tests (including real CLI subprocesses); proof that the tests reject broken variants |
 | `evaluate.py` | runs a fixture set and lists every hit, omission and distracting highlight |
 | `regression_check.py` | compares this version's output on all fixture items with the stored 1.0.0 outputs (`-03`) |
 | `benchmark.py` | times the 1.0.0 baseline (extracted from git) against this version on synthetic texts (`-03`) |
 | `results/linux-x86_64/{dev,reserved}/python3.{9,13}/` | 1.0.0: `raw_results.jsonl` (full tool output per item), `evaluation.json`, `evaluation.md`; `reserved/RUN.md`. Never modified after `-02` |
 | `results/linux-x86_64/v1.1.0/` | `RUN.md`; `regression/python3.{9,13}/regression.json`; `benchmark/python3.{9,13}/` (`measurements.jsonl`, `platform.json`, `summary.md`) |
 | `results/linux-x86_64/v1.1.1/` | `RUN.md`; `regression/python3.{9,13}/regression.json`; `int_digits/` (`measure_int_digits.py`, raw `python3.{9,13}.jsonl`) |
+| `results/linux-x86_64/v1.2.0/` | `RUN.md`; `budget/measure_budget.py` (also used for 1.2.1) and the superseded 1.2.0 measurement `budget/python3.9/` |
+| `results/linux-x86_64/v1.2.1/` | `RUN.md`; `regression/python3.{9,13}/regression.json` (with CLI byte comparison against 1.1.1); `budget/python3.{9,13}/` (`measurements.jsonl`, `platform.json`); `cli_runs.py` and raw `cli_runs-python3.{9,13}.jsonl` |
 
 ## Reproduce
 
 From `acquisition/public_review_cues_20261020/` (any CPython ≥ 3.9; no dependencies):
 
 ```bash
-python3 -m unittest discover -s tests -v          # 35 contract tests (22 in 1.0.0, 33 in 1.1.0)
-python3 tests/mutation_check.py                   # each of 12 mutations must be rejected (5 in 1.0.0)
-python3 regression_check.py "$OUT/regression"     # vs stored 1.0.0 outputs; exit 1 on any difference
+python3 -m unittest discover -s tests -v          # 50 tests (22 in 1.0.0, 35 in 1.1.1)
+python3 tests/mutation_check.py                   # each of 18 mutations must be rejected (5 in 1.0.0)
+python3 regression_check.py "$OUT/regression" --cli-baseline-commit 9c23068811307bde53409f13fc40d63d0a4c97e1
+                                                  # vs stored 1.0.0 outputs and 1.1.1 CLI bytes; needs git history
 python3 benchmark.py "$OUT/benchmark"             # 1.0.0 vs this version; needs git history; minutes
 (cd fixtures && python3 reserved_source.py && python3 dev_source.py && sha256sum -c reserved.sha256 dev.sha256)
 python3 evaluate.py dev "$OUT/dev"
@@ -69,6 +79,125 @@ printf '%s' '{"text": "Visitors must not touch the vases, unless a guide is pres
 running Python's Unicode database version, so `configuration_sha256` differs between versions by design.
 The 1.0.0 reserved evaluation was a one-time event; `regression_check.py` reuses the reserved items only
 to reproduce the stored outputs, which is not held-out evidence.
+
+## 1.2.0: opt-in output byte budget (`-04`)
+
+**Need.** A downstream reader has a fixed maximum JSON payload size, but dense input can produce output
+far larger than the input: 100 KB of `no ` under `es+en` renders to 48.8 MB, with 66,666 matches and
+33,333 overlapping pairs. **Change.** An opt-in budget that returns either the complete output or a
+structured rejection, never a partial result. Specification:
+[`CONTRACT.md`, "Output byte budget"](CONTRACT.md#output-byte-budget-opt-in-120).
+
+```bash
+printf '%s' '{"text": "Only if no, unless según dice.", "language": "es+en"}' \
+  | python3 review_cues/review_cues.py --max-output-bytes 1048576     # same bytes as without the option
+```
+
+```python
+from review_cues import render_cues, CueInputError
+data = render_cues('Only if no, unless según dice.', 'es+en', max_output_bytes=1_048_576)  # bytes, or raises
+# CueInputError: e.code == 'output_too_large', e.details == {'max_output_bytes': ..., 'output_bytes_at_least': ...}
+```
+
+| Case | Result |
+|---|---|
+| No budget (default) | as 1.1.1: CLI stdout byte-identical apart from `tool.version` and `configuration_sha256` (59 of 60 checked requests; the `invalid_arguments` usage text now names the new option) |
+| Complete output ≤ N bytes | the same bytes as without a budget; the budget is not recorded in the output |
+| Complete output > N bytes | exit 2, `output_too_large` with `max_output_bytes` and `output_bytes_at_least` (a lower bound, not the size); never a partial result |
+| Any rejection under a budget | written to stdout within N; an over-long echoed message is replaced by a fixed text; every such envelope is ≤ 322 bytes |
+| `N` malformed, or below 512 | nothing on stdout; `invalid_output_budget` envelope on stderr; exit 2 |
+
+What is counted: the UTF-8 bytes of `json.dumps(result, ensure_ascii=False, indent=2)` and the final
+`\n`, which is everything the CLI writes to stdout. These are bytes, not code points. Early stopping:
+- **While matching:** a lower bound of 305 bytes per match is counted.
+- **Before overlap lists are built:** one byte per overlap reference is added, counted by bisection
+  without building the lists.
+- **While rendering:** the exact UTF-8 bytes of `json`'s own encoder pieces are counted, and rendering
+  stops at the first byte over N.
+
+A tested property: no complete output that fits is ever rejected.
+
+**Verification** (CPython 3.9.25 and 3.13.16, Linux; tests on `6594a18` and again on `23f1434`; regression and measurements from a clean checkout of `23f1434`, i.e. 1.2.1):
+- **Tests:** 50 pass, 15 of them new in `tests/test_output_budget.py`:
+  - N−1 / N / N+1 on 202 inputs (empty, no-match, Unicode, overlaps, dev fixtures, seeded random);
+  - UTF-8 bytes versus code points;
+  - dense rejection with `_overlap_lists` and `_observations` patched to fail if called;
+  - the exact floor value at the pair-count stage;
+  - budget validation, including 16- and 100,000-digit values, signs, `_`, Arabic-Indic digits and
+    leading zeros;
+  - every rejection code's envelope at budget 512;
+  - the real CLI in subprocesses, checking exit status, empty stderr and exact stdout byte counts.
+- **Mutations:** 18 of 18 rejected. Six are new: ignoring the final newline, counting code points,
+  dropping the per-match floor, dropping the pair count, writing over-long messages in full, and
+  accepting signs or leading zeros.
+- **Regression:** `regression_check.py` shows 96 / 96 item comparisons (48 items against both stored
+  1.0.0 references) identical apart from version fields.
+  `--cli-baseline-commit 9c23068` shows 59 / 60 CLI outputs byte-identical to 1.1.1 with no budget,
+  with only the expected `invalid_arguments` message differing. A negative control (a one-byte change to
+  every match) made 46 cases differ.
+
+**Observations (Linux x86_64 container, 4 vCPU; `render_cues()` on 100,000 code points from
+`benchmark.make_text`).** Each figure is "seconds / peak RSS in MiB" over 3 fresh processes: the median
+time and the highest peak RSS (about 18 MiB before the call). Raw rows, including min/max and `tracemalloc` peaks, are in
+`results/linux-x86_64/v1.2.1/budget/`. Rows marked "rejected" returned `output_too_large` and no
+output.
+
+| Text (language), complete size | Budget | Outcome | CPython 3.9.25 | CPython 3.13.16 |
+|---|---|---|---|---|
+| `no ` repeated (es+en), 48,794,486 B | none | complete | 2.77 s / 404 | 1.05 s / 162 |
+| | 64 KiB | rejected while matching | 0.026 s / 22 | 0.020 s / 22 |
+| | 1 MiB | rejected while matching | 0.035 s / 25 | 0.031 s / 24 |
+| | 10 MiB | rejected while matching | 0.19 s / 56 | 0.13 s / 50 |
+| | 100 MiB | fits, same bytes | 3.25 s / 225 | 2.65 s / 210 |
+| `Only if ` repeated (en), 18,967,650 B | none | complete | 0.98 s / 167 | 0.45 s / 75 |
+| | 10 MiB | rejected while rendering | 0.76 s / 74 | 0.64 s / 67 |
+| | 100 MiB | fits, same bytes | 1.19 s / 99 | 0.97 s / 93 |
+| seeded ES/EN sentences (es+en), 4,729,800 B | none | complete | 0.33 s / 59 | 0.20 s / 36 |
+| | 1 MiB | rejected while matching | 0.043 s / 25 | 0.055 s / 25 |
+| | 10 MiB | fits, same bytes | 0.40 s / 42 | 0.37 s / 40 |
+| no cue (en), 2,362 B | none / any | complete | 0.046 s / 22 | 0.037 s / 22 |
+
+The stage follows from the bound's arithmetic. For example, 25,000 `Only if ` matches × 305 B plus
+25,000 overlap references is 7.65 MB, under 10 MiB. So that case passed both floor checks and was
+rejected while rendering (reported bound: budget + 22 bytes), whereas 66,666 `no ` matches × 305 B
+exceeds 10 MiB while matching. Real CLI subprocesses
+(`results/linux-x86_64/v1.2.1/cli_runs.py`, one run per case, child peak RSS):
+- **No budget, dense `no `:** exit 0, 48,794,486 stdout bytes, 3.02 s / 404 MiB on 3.9.25 and
+  1.52 s / 160 MiB on 3.13.16.
+- **1 MiB budget:** exit 2, 288 stdout bytes, empty stderr, 0.08–0.09 s / 24–25 MiB.
+- **A 6,838-byte Unicode result at budget N−1:** exit 2, 276 bytes.
+- **The same result at budget N:** exit 0, exactly 6,838 bytes.
+- **Budgets `511` and 5,000 nines:** exit 2, 0 stdout bytes, 246 stderr bytes.
+
+Before the fix in 1.2.1 (`23f1434`), 1.2.0 measured 840 MiB / 5.06 s for the "100 MiB, fits" row on
+3.9.25 (`results/linux-x86_64/v1.2.0/`).
+
+**Residual limits of the budget**
+- **Not bounded by the budget:**
+  - the request (up to 1,265,536 bytes) and its decoded text;
+  - the per-code-point byte table (100,001 Python ints);
+  - the regex scan over the whole text, which runs until the floor trips and costs the same time as
+    without a budget when matches are sparse;
+  - the compiled rules.
+- **Proportional to the budget, not to the output:** the matches held when the search stops (at most
+  about N / 305 of them) and the rendered bytes (at most N). An accepted output of N bytes needs the
+  rendered N bytes plus the result objects in memory at once.
+- **Late rejection:** when the lower bound fits but the real output does not, the rejection comes while
+  rendering, after all result objects and overlap lists are built. For example, 10 MiB for 19 MB of
+  `Only if ` took 0.64–0.76 s and 67–74 MiB.
+- **Accepted outputs on 3.13:** on CPython 3.13.16 an accepted output costs more with a budget than
+  without: 2.65 s / 210 MiB against 1.05 s / 162 MiB for 48.8 MB. There, `json.dumps(indent=2)` takes a
+  faster route than the incremental encoder the budget needs. On 3.9.25 the budgeted route uses less
+  memory (225 against 404 MiB) and is slightly slower (3.25 against 2.77 s).
+- **The lower bound is loose:** in these synthetic texts a match renders to about 700–760 bytes on
+  average, so the search may hold up to about 2.5 times the matches that could fit before it stops.
+  `output_bytes_at_least` is only a bound.
+- **Smallest result:** the empty result alone is 2,352 bytes, so a budget below about 2.4 KB can only
+  produce rejections.
+- **Not counted:** stderr (tracebacks from a malformed `--rules` file are out of scope, as is the
+  known empty-phrase hang).
+- **No guarantees:** the timings and memory figures above describe this Linux host only. They are not
+  performance guarantees, and macOS is not qualified.
 
 ## 1.1.0: bounded requests and overlaps without pairwise scans
 
@@ -218,26 +347,31 @@ which is only possible with more than 65,421 bytes of JSON whitespace, is now re
   deliberate `'` and NBSP characters in the tests and contract, so they were skipped for these files.
   The other hooks pass.
 
-### macOS qualification (one command, from the repository root)
+## macOS qualification (current version; one command from the repository root)
 
 ```bash
 cd acquisition/public_review_cues_20261020 && OUT="$(mktemp -d)" && git rev-parse HEAD && python3 -VV \
   && python3 -m unittest discover -s tests -v && python3 tests/mutation_check.py \
-  && python3 regression_check.py "$OUT/regression" && python3 benchmark.py "$OUT/benchmark" \
-  && echo "qualified; outputs in $OUT"
+  && python3 regression_check.py "$OUT/regression" --cli-baseline-commit 9c23068811307bde53409f13fc40d63d0a4c97e1 \
+  && python3 results/linux-x86_64/v1.2.0/budget/measure_budget.py "$OUT/budget" \
+  && python3 results/linux-x86_64/v1.2.1/cli_runs.py "$OUT/cli_runs.jsonl" \
+  && python3 benchmark.py "$OUT/benchmark" && echo "qualified; outputs in $OUT"
 ```
 
-Expected: 35 tests OK (including the deep-nesting and long-integer counterexamples), 12 mutations
-rejected, `"all_identical": true`, and a benchmark with "outputs identical" = yes wherever both
-versions finished. The benchmark needs the git history (it extracts 1.0.0 with `git show`) and took
-6 min 27 s (3.9.25) and 6 min 9 s (3.13.16) on this Linux host, mostly in 1.0.0 runs and timeouts.
-Timings will differ on macOS and are not comparable across machines. For the long-integer change alone:
-`python3 results/linux-x86_64/v1.1.1/int_digits/measure_int_digits.py DIR_WITH_1.1.0 OUT.jsonl`, where
-`DIR_WITH_1.1.0` holds `git show 0419f01:./review_cues/review_cues.py` and `rules_v1.json`.
-With Apple's `/usr/bin/python3` (3.9.x, Unicode 13.0.0), the unmasked `configuration` should also equal
-the stored `python3.9` one.
+Expected:
+- 50 tests OK, including the subprocess CLI tests and the deep-nesting and long-integer
+  counterexamples, and 18 mutations rejected.
+- `regression_check.py` exits 0, with `"all_identical": true` and `"unexpected_differences": []`.
+- The budget measurements complete.
+- The 1.0.0-vs-current benchmark shows "outputs identical" = yes wherever both versions finished.
 
-### Standalone relocation (runtime files and license only)
+`regression_check.py` and `benchmark.py` need the git history (`git show`). On this Linux host,
+`measure_budget.py` took 1 min 9 s (3.9.25) and 1 min 32 s (3.13.16) and `benchmark.py` about 6 minutes. Timings and
+memory will differ on macOS, where `ru_maxrss` is in bytes rather than KiB (`platform.json` records the
+unit). With Apple's `/usr/bin/python3` (3.9.x, Unicode 13.0.0), the unmasked `configuration` should also
+equal the stored `python3.9` one. Older version-specific checks are listed in the 1.1.x sections above.
+
+## Standalone relocation (runtime files and license only)
 
 ```bash
 REPO="$(git rev-parse --show-toplevel)" && DEST="$(mktemp -d)"
@@ -245,15 +379,21 @@ cp "$REPO/acquisition/public_review_cues_20261020/review_cues/review_cues.py" \
    "$REPO/acquisition/public_review_cues_20261020/review_cues/rules_v1.json" "$DEST/"
 cp "$REPO/LICENSE" "$DEST/LICENSE"      # MIT, repository root
 cd "$DEST" && ls
-printf '%s' '{"text": "Visitors must not touch the vases, unless a guide is present.", "language": "en"}' \
-  | python3 -I review_cues.py
-python3 -I -c 'import sys; sys.path.insert(0, "."); from review_cues import find_cues; print(find_cues("Si llueve, no abre.", "es")["match_count"])'
+REQ='{"text": "Visitors must not touch the vases, unless a guide is present.", "language": "en"}'
+printf '%s' "$REQ" | python3 -I review_cues.py | wc -c                              # complete output size
+printf '%s' "$REQ" | python3 -I review_cues.py --max-output-bytes 1048576 | wc -c   # same bytes
+printf '%s' "$REQ" | python3 -I review_cues.py --max-output-bytes 600; echo "exit $?" # output_too_large, exit 2
+python3 -I -c 'import sys; sys.path.insert(0, "."); from review_cues import render_cues; print(len(render_cues("Si llueve, no abre.", "es", max_output_bytes=10**6)))'
 ```
 
 `review_cues.py` finds `rules_v1.json` next to itself, imports only the standard library and needs
-nothing else. Run here with 1.1.1 (CPython 3.13.16): the directory held exactly `LICENSE`,
-`review_cues.py` and `rules_v1.json`; the CLI found `must`, `not`, `unless`, and its response was
-byte-identical to the in-repository CLI's; the import example printed `2`.
+nothing else. Run here with 1.2.1 (CPython 3.13.16):
+- the directory held exactly `LICENSE`, `review_cues.py` and `rules_v1.json`;
+- the complete output was 4,397 bytes, and the same with a 1 MiB budget (byte-identical to the
+  in-repository unbudgeted CLI);
+- budget 600 gave `output_too_large` with `output_bytes_at_least` 2,513 and exit 2. The bound is
+  well below 4,397 because the tool stopped at the first match;
+- the callable printed 3,891.
 
 ## Results (1.0.0; counts only; tiny, hand-written, non-independent items)
 

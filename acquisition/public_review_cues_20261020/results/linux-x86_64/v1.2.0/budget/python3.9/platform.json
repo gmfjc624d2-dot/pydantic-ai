@@ -1,0 +1,23 @@
+{
+  "python": "3.9.25",
+  "platform": "Linux-6.18.44-fc-v139-x86_64-with-glibc2.39",
+  "machine": "x86_64",
+  "cpu_count": 4,
+  "ru_maxrss_unit": "KiB",
+  "head_commit": "6594a181d98f9754fd3c89f2058659bdb6474a5a",
+  "working_tree_changes_in_this_directory": [
+    "?? acquisition/public_review_cues_20261020/results/linux-x86_64/v1.2.0/"
+  ],
+  "started_utc": "2026-10-21T01:59:17+00:00",
+  "loadavg_before": [
+    0.33642578125,
+    0.3310546875,
+    0.16357421875
+  ],
+  "finished_utc": "2026-10-21T02:00:48+00:00",
+  "loadavg_after": [
+    0.8544921875,
+    0.50830078125,
+    0.24462890625
+  ]
+}

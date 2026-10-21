@@ -1,0 +1,9 @@
+{"python": "3.9.25", "platform": "Linux-6.18.44-fc-v139-x86_64-with-glibc2.39", "small_n": 6838}
+{"case": "dense 100,000 code points, no budget", "request_bytes": 100033, "exit": 0, "stdout_bytes": 48794486, "stderr_bytes": 0, "error_code": null, "seconds": 3.016560317000085, "child_ru_maxrss": 414108}
+{"case": "dense, budget 1 MiB", "request_bytes": 100033, "exit": 2, "stdout_bytes": 288, "stderr_bytes": 0, "error_code": "output_too_large", "seconds": 0.08697696900003393, "child_ru_maxrss": 25284}
+{"case": "dense, budget 100 MiB", "request_bytes": 100033, "exit": 0, "stdout_bytes": 48794486, "stderr_bytes": 0, "error_code": null, "seconds": 3.418223798999861, "child_ru_maxrss": 230312}
+{"case": "small Unicode, no budget", "request_bytes": 109, "exit": 0, "stdout_bytes": 6838, "stderr_bytes": 0, "error_code": null, "seconds": 0.047602492000123675, "child_ru_maxrss": 17628}
+{"case": "small Unicode, budget N - 1", "request_bytes": 109, "exit": 2, "stdout_bytes": 276, "stderr_bytes": 0, "error_code": "output_too_large", "seconds": 0.043381659000033324, "child_ru_maxrss": 18040}
+{"case": "small Unicode, budget N", "request_bytes": 109, "exit": 0, "stdout_bytes": 6838, "stderr_bytes": 0, "error_code": null, "seconds": 0.04621152599997913, "child_ru_maxrss": 17584}
+{"case": "budget 511", "request_bytes": 109, "exit": 2, "stdout_bytes": 0, "stderr_bytes": 246, "error_code": "invalid_output_budget", "seconds": 0.03937703700012207, "child_ru_maxrss": 17596}
+{"case": "budget of 5,000 digits", "request_bytes": 109, "exit": 2, "stdout_bytes": 0, "stderr_bytes": 246, "error_code": "invalid_output_budget", "seconds": 0.042643906999956016, "child_ru_maxrss": 17484}

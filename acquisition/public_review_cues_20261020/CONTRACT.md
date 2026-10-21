@@ -194,6 +194,6 @@ version changes `configuration_sha256`.
 - 1.2.1: an accepted budgeted output is built in one `bytearray` instead of one `bytes` object per
   encoder piece. The bytes are unchanged. For the 48.8 MB output of 1.2.0's measurement (100,000
   code points of `no `, `es+en`, budget 100 MiB, CPython 3.9.25), peak RSS was 840 MiB with a budget
-  against 404 MiB without one; 1.2.1 measured 224 MiB.
+  against 404 MiB without one; 1.2.1 measured 225 MiB (highest of 3 runs).
 - Not changed: `--rules PATH` parsing, which can still raise raw Python exceptions on a malformed rule
   file and does not reject an empty phrase (with one, the search never terminates).
