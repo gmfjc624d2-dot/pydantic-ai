@@ -103,13 +103,13 @@ def budgeted_render(piece_size, newline_bytes):  # type: ignore[no-untyped-def]
             return ORIGINAL_RENDER(text, language, ruleset)
         review_cues._check_output_budget(max_output_bytes)
         result = review_cues._find_cues(text, language, ruleset, max_output_bytes)
-        output, size = '', newline_bytes
+        pieces, size = [], newline_bytes
         for piece in review_cues._INDENTED.iterencode(result):
-            output += piece
+            pieces.append(piece)
             size += piece_size(piece)
             if size > max_output_bytes:
                 raise review_cues._too_large(max_output_bytes, size)
-        return (output + '\n').encode('utf-8')
+        return (''.join(pieces) + '\n').encode('utf-8')
 
     return render
 

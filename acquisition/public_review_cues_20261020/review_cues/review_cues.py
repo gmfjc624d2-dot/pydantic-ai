@@ -25,7 +25,7 @@ from typing import Any, BinaryIO, Dict, List, Optional, Sequence, Tuple
 
 SCHEMA = 'review-cues/1'
 TOOL_NAME = 'review_cues'
-TOOL_VERSION = '1.2.0'
+TOOL_VERSION = '1.2.1'
 LANGUAGES = ('es', 'en', 'es+en')
 MAX_TEXT_CODEPOINTS = 100_000
 # The CLI never reads more than this many request bytes (+1 to detect excess). 12 bytes is the longest JSON
@@ -398,16 +398,13 @@ def render_cues(
         return (json.dumps(find_cues(text, language, ruleset), ensure_ascii=False, indent=2) + '\n').encode('utf-8')
     _check_output_budget(max_output_bytes)
     result = _find_cues(text, language, ruleset, max_output_bytes)
-    chunks: List[bytes] = []
-    size = 1  # the final newline
+    output = bytearray()  # one growing buffer: exact byte count, no object per piece
     for piece in _INDENTED.iterencode(result):
-        chunk = piece.encode('utf-8')
-        size += len(chunk)
-        if size > max_output_bytes:
-            raise _too_large(max_output_bytes, size)
-        chunks.append(chunk)
-    chunks.append(b'\n')
-    return b''.join(chunks)
+        output += piece.encode('utf-8')
+        if len(output) + 1 > max_output_bytes:  # + the final newline
+            raise _too_large(max_output_bytes, len(output) + 1)
+    output += b'\n'
+    return bytes(output)
 
 
 def _reject_duplicates(pairs: List[Tuple[str, Any]]) -> Dict[str, Any]:

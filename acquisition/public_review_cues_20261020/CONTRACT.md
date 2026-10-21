@@ -1,4 +1,4 @@
-# Contract: `review_cues` 1.2.0 (schema `review-cues/1`, ruleset `review-cues-lexicon` 1.0.0)
+# Contract: `review_cues` 1.2.1 (schema `review-cues/1`, ruleset `review-cues-lexicon` 1.0.0)
 
 ## Purpose and non-goals
 
@@ -87,7 +87,8 @@ The empty string is valid input (no matches).
      overlapping pair), counted by bisection without building lists;
   3. while rendering: the exact UTF-8 size of each piece produced by the `json` module's own encoder
      (`JSONEncoder(ensure_ascii=False, indent=2).iterencode`, which yields the same text as `json.dumps`),
-     plus the newline; rendering stops at the first piece that crosses N.
+     plus the newline, accumulated in one byte buffer; rendering stops at the first piece that
+     crosses N.
 
   L never exceeds the true size: compact JSON (separators `, ` and `: `) is never longer than the
   indented rendering of the same object; every match has the template's keys with values at least as
@@ -164,7 +165,7 @@ version changes `configuration_sha256`.
 ## Changes from 1.0.0
 
 - Output of `find_cues` for any input: unchanged except `tool.version` (`1.1.0`, then `1.1.1`, then
-  `1.2.0`) and therefore `configuration_sha256`. The lexicon, matching, offsets, notes, observations, notice and the
+  `1.2.0`, then `1.2.1`) and therefore `configuration_sha256`. The lexicon, matching, offsets, notes, observations, notice and the
   `configuration` object are unchanged byte for byte; the overlap relation and its order are the same.
 - CLI (1.1.0): two new rejections, `request_too_large` and `json_too_deep`. Requests valid under 1.0.0
   that fit the new bounds (at most 1,265,536 bytes; a valid request nests one level, so the depth bound
@@ -190,5 +191,9 @@ version changes `configuration_sha256`.
   Without a budget, CLI stdout is byte-identical to 1.1.1 apart from the tool version and
   `configuration_sha256`: 59 of 60 checked requests (all 48 fixture items, plus success and rejection
   cases). The one exception is the `invalid_arguments` message, whose usage text now names the new option.
+- 1.2.1: an accepted budgeted output is built in one `bytearray` instead of one `bytes` object per
+  encoder piece. The bytes are unchanged. For the 48.8 MB output of 1.2.0's measurement (100,000
+  code points of `no `, `es+en`, budget 100 MiB, CPython 3.9.25), peak RSS was 840 MiB with a budget
+  against 404 MiB without one; 1.2.1 measured 224 MiB.
 - Not changed: `--rules PATH` parsing, which can still raise raw Python exceptions on a malformed rule
   file and does not reject an empty phrase (with one, the search never terminates).
