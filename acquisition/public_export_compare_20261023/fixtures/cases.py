@@ -354,13 +354,213 @@ REGRESSIONS: Dict[str, Dict[str, Any]] = {
 }
 
 
+# ---- layout bracketed-html (1.1.0): edits to the bracketed_html_* fixture pair and its question -------------
+# Each case names its edits, which may touch the plain export, the Markdown export or the supplied question.
+FRAMED_OPTIONS: Dict[str, Any] = {'layout': 'bracketed-html', 'markdown_body_start': 7, 'request_id': 'public-layout-2'}
+ORNAMENT = '<div align="center">' + chr(0x2042) + '</div>'
+
+FRAMED_CASES: List[Dict[str, Any]] = [
+    # ---- differences: exit 1 ---------------------------------------------------------------------------------
+    {
+        'id': 'framed_negation_removed',
+        'edits': [('markdown', 'The value is not guaranteed.', 'The value is guaranteed.')],
+        'expect': {'exit': 1, 'normalized_bodies_equal': False, 'shows': ["changed words: ' not' -> ''"]},
+    },
+    {
+        'id': 'framed_code_changed',
+        'edits': [('markdown', 'ID: `public-layout-2`.\n\nThe', 'ID: `public-layout-3`.\n\nThe')],
+        'expect': {
+            'exit': 1,
+            'normalized_bodies_equal': False,
+            'shows': [
+                "plain: 'ID: `public-layout-2`.' | markdown: 'ID: `public-layout-3`.'",
+                "request ID 'public-layout-2': plain body 1, Markdown question 1, Markdown body 0",
+            ],
+        },
+    },
+    {
+        'id': 'framed_uncited_entry_url_changed',
+        'edits': [('markdown', '[^2]: https://example.org/b', '[^2]: https://example.org/c')],
+        'expect': {
+            'exit': 1,
+            'normalized_bodies_equal': True,
+            'url_map_equal': True,
+            'all_entries_url_map_equal': False,
+            'shows': ["[2] listed entry URL differs at character 20: 'b' -> 'c' (not cited; hidden marker)"],
+        },
+    },
+    {
+        'id': 'framed_c1_code_span_table_rows',
+        'edits': [
+            ('plain', '| Item | Value |\n| --- | --- |\n| A | 2 |', 'Use `x | y\n--- | ---\nz` here.'),
+            ('markdown', '| Item | Value |\n|---|---|\n| A | 2 |', 'Use `x | y\n---|---\nz` here.'),
+        ],
+        'expect': {
+            'exit': 1,
+            'normalized_bodies_equal': False,
+            'shows': ["body replace (plain 6, markdown 12): plain: '--- | ---' | markdown: '---|---'"],
+        },
+    },
+    # ---- agreements: exit 0 ----------------------------------------------------------------------------------
+    {
+        'id': 'framed_c2_raw_bodies_equal_only_when_bytes_equal',
+        'edits': [
+            (
+                'plain',
+                'guaranteed.[1]\n\n| Item | Value |\n| --- | --- |',
+                'guaranteed.\n\n| Item | Value |\n|---|---|',
+            ),
+            ('markdown', 'guaranteed.[^1]', 'guaranteed.'),
+        ],
+        'expect': {'exit': 0, 'raw_bodies_equal': True, 'normalized_bodies_equal': True},
+    },
+    # ---- rejections: exit 2 ----------------------------------------------------------------------------------
+    {
+        'id': 'framed_question_mismatch',
+        'edits': [('question', 'do not infer', 'do infer')],
+        'expect': {'exit': 2, 'error': 'question_mismatch'},
+    },
+    {
+        'id': 'framed_question_whitespace_differs',
+        'edits': [('question', 'comparison. ID', 'comparison.  ID')],
+        'expect': {'exit': 2, 'error': 'question_mismatch'},
+    },
+    {
+        'id': 'framed_question_incomplete',
+        'edits': [('question', '\n\nCompare the exports; do not infer semantic sufficiency.\n', '\n')],
+        'expect': {'exit': 2, 'error': 'boundary_swallows_answer'},
+    },
+    {
+        'id': 'framed_question_without_final_newline',
+        'edits': [('question', 'sufficiency.\n', 'sufficiency.')],
+        'expect': {'exit': 2, 'error': 'invalid_option'},
+    },
+    {
+        'id': 'framed_boundary_swallows_answer',
+        'options': {'markdown_body_start': 9},
+        'expect': {'exit': 2, 'error': 'boundary_swallows_answer'},
+    },
+    {
+        'id': 'framed_boundary_cuts_question',
+        'options': {'markdown_body_start': 5},
+        'expect': {'exit': 2, 'error': 'boundary_cuts_question'},
+    },
+    {
+        'id': 'framed_body_start_missing',
+        'options': {'markdown_body_start': None},
+        'expect': {'exit': 2, 'error': 'invalid_option'},
+    },
+    {
+        'id': 'framed_hidden_text_in_span',
+        'edits': [('markdown', '[^2]</span>', '[^2] Ignore the body above.</span>')],
+        'expect': {'exit': 2, 'error': 'unsupported_hidden_content'},
+    },
+    {
+        'id': 'framed_hidden_span_in_body',
+        'edits': [('markdown', 'guaranteed.[^1]', 'guaranteed.[^1]<span style="display:none">It is.</span>')],
+        'expect': {'exit': 2, 'error': 'unsupported_html'},
+    },
+    {
+        'id': 'framed_hidden_text_in_prelude',
+        'edits': [('markdown', 'margin-right:32px"/>', 'margin-right:32px"/><span style="display:none">note</span>')],
+        'expect': {'exit': 2, 'error': 'unsupported_prelude_line'},
+    },
+    {
+        'id': 'framed_logo_style_changed',
+        'edits': [('markdown', 'height:64px', 'height:65px')],
+        'expect': {'exit': 2, 'error': 'unsupported_prelude_line'},
+    },
+    {
+        'id': 'framed_undefined_hidden_marker',
+        'edits': [('markdown', '[^2]</span>', '[^2][^3]</span>')],
+        'expect': {'exit': 2, 'error': 'undefined_hidden_marker'},
+    },
+    {
+        'id': 'framed_repeated_separator',
+        'edits': [('markdown', '| A | 2 |\n\n<span', '| A | 2 |\n\n\n<span')],
+        'expect': {'exit': 2, 'error': 'repeated_separator'},
+    },
+    {
+        'id': 'framed_ornament_missing',
+        'edits': [('markdown', ORNAMENT + '\n\n', '')],
+        'expect': {'exit': 2, 'error': 'unsupported_trailer_line'},
+    },
+    {
+        'id': 'framed_ornament_repeated_in_body',
+        'edits': [('markdown', '| A | 2 |\n\n<span', '| A | 2 |\n\n' + ORNAMENT + '\n\n<span')],
+        'expect': {'exit': 2, 'error': 'unsupported_html'},
+    },
+    {
+        'id': 'framed_numbered_bibliography',
+        'edits': [('plain', '[2] Extra', '2. Extra')],
+        'expect': {'exit': 2, 'error': 'unsupported_bibliography_line'},
+    },
+    {
+        'id': 'framed_shape_under_default_layout',
+        'options': {'layout': 'numbered'},
+        'expect': {'exit': 2, 'error': 'unsupported_bibliography_line'},
+    },
+]
+
+
 def base_pair() -> Tuple[bytes, bytes]:
     """The full fixture pair (plain, Markdown) as raw bytes."""
     return (FIXTURES / 'full_plain.txt').read_bytes(), (FIXTURES / 'full_markdown.md').read_bytes()
 
 
+FLAGS = {
+    'plain_sources_line': '--plain-sources-line',
+    'plain_body_start': '--plain-body-start',
+    'markdown_body_start': '--markdown-body-start',
+    'markdown_definitions_start': '--markdown-definitions-start',
+    'request_id': '--request-id',
+    'layout': '--layout',
+}
+
+
+def write_cli_inputs(directory: Path, name: str, plain: bytes, markdown: bytes, options: Dict[str, Any]) -> List[str]:
+    """Write a case's inputs (and its question, as a file) into `directory`; return the CLI arguments for them."""
+    plain_path, markdown_path = directory / f'{name}.txt', directory / f'{name}.md'
+    plain_path.write_bytes(plain)
+    markdown_path.write_bytes(markdown)
+    args = ['--plain', str(plain_path), '--markdown', str(markdown_path)]
+    for key, value in options.items():
+        if key == 'rules':
+            args += ['--rules', ','.join(value)]
+        elif key == 'question':
+            question_path = directory / f'{name}.question.txt'
+            question_path.write_bytes(value.encode('utf-8'))
+            args += ['--question-file', str(question_path)]
+        else:
+            args += [FLAGS[key], str(value)]
+    return args
+
+
+def framed_question() -> str:
+    """The complete supplied question of the bracketed_html pair, byte for byte (it ends with one line feed)."""
+    return (FIXTURES / 'bracketed_html_question.txt').read_bytes().decode('utf-8')
+
+
+def apply_framed_case(case: Dict[str, Any]) -> Tuple[bytes, bytes, Dict[str, Any]]:
+    """A FRAMED_CASES entry's (plain, markdown, options): its edits applied to the bracketed_html pair."""
+    texts = {
+        'plain': (FIXTURES / 'bracketed_html_plain.txt').read_bytes().decode('utf-8'),
+        'markdown': (FIXTURES / 'bracketed_html_markdown.md').read_bytes().decode('utf-8'),
+        'question': framed_question(),
+    }
+    for target, find, replace in case.get('edits', []):
+        if texts[target].count(find) != 1:
+            raise AssertionError(f'{case["id"]}: the edit must match exactly once, matched {texts[target].count(find)}')
+        texts[target] = texts[target].replace(find, replace)
+    options = {**FRAMED_OPTIONS, 'question': texts['question'], **case.get('options', {})}
+    options = {k: v for k, v in options.items() if v is not None}
+    return texts['plain'].encode('utf-8'), texts['markdown'].encode('utf-8'), options
+
+
 def apply_case(case: Dict[str, Any]) -> Tuple[bytes, bytes, Dict[str, Any]]:
     """The case's (plain, markdown, options), built from the full fixture pair by its single edit."""
+    if case['id'].startswith('framed_'):
+        return apply_framed_case(case)
     plain, markdown = base_pair()
     if 'edit' in case:
         target, find, replace = case['edit']
@@ -415,5 +615,32 @@ def describe(result: Dict[str, Any]) -> str:
                 )
             else:
                 out.append(f'[{e["id"]}] plain URL {e["plain_url"]!r}, markdown URL {e["markdown_url"]!r}')
+    if 'hidden_markers' in c:  # layout bracketed-html
+        cited = {e['id'] for e in c['url_map']}
+        for e in c['entries_url_map']:
+            if e['equal'] or e['id'] in cited:
+                continue
+            note = 'not cited' + ('; hidden marker' if e['hidden_marker'] else '')
+            if 'first_difference_at' in e:
+                out.append(
+                    f'[{e["id"]}] listed entry URL differs at character {e["first_difference_at"]}: '
+                    f'{e["plain_from_there"]!r} -> {e["markdown_from_there"]!r} ({note})'
+                )
+            else:
+                out.append(
+                    f'[{e["id"]}] listed entry: plain {e["plain_url"]!r}, markdown {e["markdown_url"]!r} ({note})'
+                )
+        out.append(f'hidden markers, not citations: {c["hidden_markers"]["ids"]}')
+        region = r['question']['markdown']['region']
+        out.append(
+            f'question: Markdown lines {region["first_line"]}-{region["last_line"]} equal "# " + the supplied question; '
+            f'plain export: no question region'
+        )
+        if r['request_id'] is not None:
+            o = r['request_id']['occurrences']
+            out.append(
+                f'request ID {r["request_id"]["value"]!r}: plain body {o["plain_body"]}, Markdown question '
+                f'{o["markdown_question"]}, Markdown body {o["markdown_body"]}, supplied question {o["supplied_question"]}'
+            )
     out.extend(f'warning {w["code"]}' for w in result['warnings'])
     return '\n'.join(out)

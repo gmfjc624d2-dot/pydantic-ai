@@ -297,10 +297,10 @@ class Corrections(unittest.TestCase):
                     self.assertIn("plain: '| --- | --- |' | markdown: '|---|---|'", cases.describe(result))
 
     def test_raw_bodies_equal_is_equality_of_the_reported_body_bytes(self) -> None:
-        pairs = [cases.base_pair()] + [(p['plain'], p['markdown']) for p in cases.REGRESSIONS.values()]
-        pairs += [cases.apply_case(case)[:2] for case in cases.CASES if 'error' not in case['expect']]
-        for plain, markdown in pairs:
-            result = compare(plain, markdown)
+        pairs = [(*cases.base_pair(), {})] + [(p['plain'], p['markdown'], {}) for p in cases.REGRESSIONS.values()]
+        pairs += [cases.apply_case(case) for case in cases.CASES + cases.FRAMED_CASES if 'error' not in case['expect']]
+        for plain, markdown, options in pairs:
+            result = compare(plain, markdown, **options)
             if 'error' in result:
                 continue
             bodies = []
@@ -310,6 +310,108 @@ class Corrections(unittest.TestCase):
                 self.assertEqual(hashlib.sha256(body).hexdigest(), segment['sha256'])
                 bodies.append(body)
             self.assertEqual(result['results']['raw_bodies_equal'], bodies[0] == bodies[1])
+
+
+class BracketedHtmlLayout(unittest.TestCase):
+    """1.1.0: the explicitly selected layout pair bracketed-html, on the requester's synthetic sample pair."""
+
+    def test_sample_pair_keeps_every_field_separate(self) -> None:
+        plain, markdown, options = cases.apply_framed_case({'id': 'framed_sample'})
+        result = ec.compare_exports(plain, markdown, **options)
+        layouts, r, c = result['layouts'], result['results'], result['results']['citations']
+        self.assertEqual(
+            (layouts['plain']['layout'], layouts['markdown']['layout'], layouts['markdown']['logo_url']),
+            ('plain-bracketed-sources/1', 'markdown-html-framed/1', 'https://example.org/logo.png'),
+        )
+        for side, raw in (('plain', plain), ('markdown', markdown)):  # every byte in exactly one named segment
+            segments = layouts[side]['segments']
+            self.assertEqual(b''.join(raw[s['byte_start'] : s['byte_end']] for s in segments), raw)
+            self.assertEqual([s['byte_start'] for s in segments[1:]], [s['byte_end'] for s in segments[:-1]])
+            for s in segments:
+                self.assertEqual(hashlib.sha256(raw[s['byte_start'] : s['byte_end']]).hexdigest(), s['sha256'])
+        self.assertEqual(
+            [(s['name'], s['first_line'], s['last_line']) for s in layouts['markdown']['segments']],
+            [
+                ('logo', 1, 1),
+                ('separator_after_logo', 2, 2),
+                ('question', 3, 5),
+                ('separator_after_question', 6, 6),
+                ('body', 7, 13),
+                ('separator_before_hidden_markers', 14, 14),
+                ('hidden_markers', 15, 15),
+                ('separator_before_ornament', 16, 16),
+                ('ornament', 17, 17),
+                ('separator_before_definitions', 18, 18),
+                ('definitions', 19, 21),
+            ],
+        )
+        self.assertEqual(layouts['markdown']['segments'][-1]['separator_lines'], [20])
+        self.assertEqual(
+            [(s['name'], s['first_line'], s['last_line']) for s in layouts['plain']['segments']],
+            [('body', 1, 7), ('separator_before_sources', 8, 8), ('sources', 9, 11)],
+        )
+        self.assertEqual((r['raw_bodies_equal'], r['normalized_bodies_equal']), (False, True))
+        self.assertEqual([e['id'] for e in c['url_map']], [1])  # the body cites 1 only
+        self.assertEqual(
+            [(e['id'], e['equal'], e['cited_in_markdown_body'], e['hidden_marker']) for e in c['entries_url_map']],
+            [(1, True, True, False), (2, True, False, True)],
+        )
+        self.assertEqual(c['hidden_markers'], {'line': 15, 'ids': [2], 'cited_in_markdown_body': []})
+        self.assertEqual([(s['id'], s['title']) for s in c['plain_sources']], [(1, 'Guide'), (2, 'Extra')])
+        question = r['question']
+        self.assertEqual(question['supplied']['text'], cases.framed_question())
+        self.assertEqual((question['plain']['region'], question['plain']['literal_occurrences']), (None, 0))
+        region = question['markdown']['region']
+        self.assertEqual(
+            (region['first_line'], region['last_line'], question['markdown']['literal_occurrences']), (3, 5, 1)
+        )
+        o = r['request_id']['occurrences']
+        self.assertEqual(
+            (o['plain_document'], o['plain_body'], o['markdown_document'], o['markdown_question'], o['markdown_body']),
+            (1, 1, 2, 1, 1),
+        )
+        self.assertEqual(sum(v for k, v in o.items() if k.startswith('markdown_') and k != 'markdown_document'), 2)
+        self.assertEqual((r['semantic_judgment'], r['producer_authenticity']), ('NOT_ESTABLISHED', 'NOT_ESTABLISHED'))
+        self.assertEqual(
+            [w['code'] for w in result['warnings']],
+            ['source_titles_only_in_plain', 'uncited_entries', 'hidden_markers_not_citations', 'question_absent'],
+        )
+
+    def test_every_case_reports_what_a_reader_must_see(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            for case in cases.FRAMED_CASES:
+                with self.subTest(case=case['id']):
+                    plain, markdown, options = cases.apply_case(case)
+                    out = io.BytesIO()
+                    status = ec.main(
+                        cases.write_cli_inputs(Path(tmp), case['id'], plain, markdown, options), stdout=out
+                    )
+                    result, expect = json.loads(out.getvalue()), case['expect']
+                    self.assertEqual(status, expect['exit'])
+                    if 'error' in expect:
+                        self.assertEqual(result['error']['code'], expect['error'])
+                        continue
+                    r = result['results']
+                    for key in ('raw_bodies_equal', 'normalized_bodies_equal'):
+                        if key in expect:
+                            self.assertEqual(r[key], expect[key], key)
+                    for key in ('url_map_equal', 'all_entries_url_map_equal'):
+                        if key in expect:
+                            self.assertEqual(r['citations'][key], expect[key], key)
+                    for shown in expect.get('shows', []):
+                        self.assertIn(shown, cases.describe(result))
+
+    def test_layout_options_are_checked(self) -> None:
+        plain, markdown, options = cases.apply_framed_case({'id': 'framed_sample'})
+        for change, option in (
+            ({'layout': 'bracketed'}, 'layout'),
+            ({'question': None}, 'question'),
+            ({'plain_body_start': 1}, 'plain_body_start'),
+            ({'markdown_definitions_start': 19}, 'markdown_definitions_start'),
+        ):
+            with self.subTest(change=change):
+                error = compare(plain, markdown, **{**options, **change})['error']
+                self.assertEqual((error['code'], error['option']), ('invalid_option', option))
 
 
 class Policy(unittest.TestCase):

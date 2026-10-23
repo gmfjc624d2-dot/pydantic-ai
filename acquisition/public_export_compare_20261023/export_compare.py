@@ -2,9 +2,11 @@
 
 Function: compare_exports(plain: bytes, markdown: bytes, **options) -> dict      (raises CompareError)
 CLI:      python3 export_compare.py --plain PLAIN.txt --markdown EXPORT.md [options] > result.json
-          exit 0: normalized bodies, cited ids and their URLs agree; 1: differences; 2: rejected input.
+          exit 0: normalized bodies, cited ids and their URLs agree (with --layout bracketed-html, also every
+          listed id and URL); 1: differences; 2: rejected input.
 
-A deterministic textual aid under a narrow, stated normalization policy for two known layouts. It never
+A deterministic textual aid under a narrow, stated normalization policy for two known layout pairs: the
+default `numbered` pair and the explicitly selected `bracketed-html` pair (layout='bracketed-html'). It never
 establishes authenticity, question identity, truth, completeness of evidence or semantic equivalence:
 `semantic_judgment` is always NOT_ESTABLISHED. Inputs are read, never rewritten. See CONTRACT.md.
 """
@@ -23,7 +25,7 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 SCHEMA = 'export-compare/1'
 TOOL_NAME = 'export_compare'
-TOOL_VERSION = '1.0.1'
+TOOL_VERSION = '1.1.0'
 POLICY_ID = 'export-compare-body-policy/1'
 
 MAX_DOCUMENT_BYTES = 262_144
@@ -96,6 +98,17 @@ DEFINITION = re.compile(r'\[\^([1-9][0-9]{0,3})\]: (\S+)')
 DEFINITION_LIKE = re.compile(r' {0,3}\[\^[^\]\s]+\]:')
 SPAN_OPEN = '<span style="display:none">'
 SPAN_CLOSE = '</span>'
+# Layout pairs: name -> (plain layout id, Markdown layout id). 'numbered' is the default.
+LAYOUTS = {
+    'numbered': ('plain-numbered-sources/1', 'markdown-footnote-definitions/1'),
+    'bracketed-html': ('plain-bracketed-sources/1', 'markdown-html-framed/1'),
+}
+BRACKETED_SOURCE_ENTRY = re.compile(r'\[([1-9][0-9]{0,3})\] (\S.*?) (https?://\S+)')
+HTML_LOGO = re.compile(r'<img src="(https?://[^\s"<>]+)" style="height:64px;margin-right:32px"/>')
+HIDDEN_MARKERS = re.compile(r'<span style="display:none">((?:\[\^[1-9][0-9]{0,3}\])+)</span>')
+HIDDEN_MARKER = re.compile(r'\[\^([1-9][0-9]{0,3})\]')
+ORNAMENT = '<div align="center">' + chr(0x2042) + '</div>'
+QUESTION_FRAMING = '# '
 URL = re.compile(r'https?://\S+')
 FENCE_OPEN = re.compile(r'( {0,3})(`{3,}|~{3,})(.*)')
 FENCE_CLOSE = re.compile(r' {0,3}(`{3,}|~{3,})[ \t]*')
@@ -232,8 +245,14 @@ def _line_index(option: str, value: Any, count: int) -> int:
     return value - 1
 
 
-def _parse_plain(doc: _Document, body_start: Optional[int], sources_line: Optional[int]) -> Dict[str, Any]:
-    """Plain layout: [preamble] body, one line that is exactly "Sources", then "N. title URL" entries."""
+def _parse_plain(
+    doc: _Document, body_start: Optional[int], sources_line: Optional[int], bracketed: bool = False
+) -> Dict[str, Any]:
+    """Plain layout: [preamble] body, one line that is exactly "Sources", then "N. title URL" entries.
+
+    With `bracketed`, the entries are "[N] title URL" and blank lines among them are rejected.
+    """
+    entry_pattern, form = (BRACKETED_SOURCE_ENTRY, '[N] title URL') if bracketed else (SOURCE_ENTRY, 'N. title URL')
     n = len(doc.lines)
     first = 0 if body_start is None else _line_index('plain_body_start', body_start, n)
     if sources_line is None:
@@ -265,13 +284,13 @@ def _parse_plain(doc: _Document, body_start: Optional[int], sources_line: Option
     sources: Dict[int, Dict[str, Any]] = {}
     for i in range(k + 1, n):
         line = doc.lines[i]
-        if not line.strip():
+        if not line.strip() and not bracketed:
             continue
-        entry = SOURCE_ENTRY.fullmatch(line) if doc.kinds[i] == 'text' else None
+        entry = entry_pattern.fullmatch(line) if doc.kinds[i] == 'text' else None
         if entry is None:
             raise CompareError(
                 'unsupported_bibliography_line',
-                f'plain line {i + 1} after "Sources" is not "N. title URL"',
+                f'plain line {i + 1} after "Sources" is not "{form}"',
                 document='plain',
                 line=i + 1,
                 text=_excerpt(line),
@@ -293,6 +312,45 @@ def _parse_plain(doc: _Document, body_start: Optional[int], sources_line: Option
         doc.segment('sources', k, n, heading_line=k + 1),
     ]
     return {'body': (first, k), 'preamble': (0, first), 'sources': sources, 'segments': segments}
+
+
+def _require_separator(doc: _Document, index: int, between: str) -> None:
+    """Line `index` (0-based) must be exactly empty, and the lines on either side of it not blank."""
+    if not 0 <= index < len(doc.lines) or doc.lines[index] != '' or doc.kinds[index] != 'text':
+        raise CompareError(
+            'unsupported_separator',
+            f'{doc.name} line {index + 1} must be exactly one empty line {between}',
+            document=doc.name,
+            line=index + 1,
+            text=_excerpt(doc.lines[index]) if 0 <= index < len(doc.lines) else None,
+        )
+    for other in (index - 1, index + 1):
+        if 0 <= other < len(doc.lines) and not doc.lines[other].strip():
+            raise CompareError(
+                'repeated_separator',
+                f'{doc.name} lines {min(index, other) + 1}-{max(index, other) + 1} are both blank; exactly one '
+                f'empty line is supported {between}',
+                document=doc.name,
+                lines=[min(index, other) + 1, max(index, other) + 1],
+            )
+
+
+def _parse_plain_bracketed(doc: _Document, sources_line: Optional[int]) -> Dict[str, Any]:
+    """Plain layout plain-bracketed-sources/1: body, one empty line, "Sources", then "[N] title URL" lines."""
+    parsed = _parse_plain(doc, None, sources_line, bracketed=True)
+    k = parsed['body'][1]
+    if k < 2:
+        raise CompareError(
+            'invalid_boundary', 'the plain body is empty: "Sources" must follow body lines and one empty line'
+        )
+    _require_separator(doc, k - 1, 'between the body and "Sources"')
+    parsed['body'] = (0, k - 1)
+    parsed['segments'] = [
+        doc.segment('body', 0, k - 1),
+        doc.segment('separator_before_sources', k - 1, k),
+        doc.segment('sources', k, len(doc.lines), heading_line=k + 1),
+    ]
+    return parsed
 
 
 def _definition_block_line(line: str) -> Optional[Tuple[bool, Optional[re.Match[str]], bool]]:
@@ -375,9 +433,15 @@ def _markdown_block_start(doc: _Document, first: int, definitions_start: Optiona
                     line=k + 1,
                     text=_excerpt(lines[k]),
                 )
+    _reject_definition_lines(doc, first, block)
+    return block
+
+
+def _reject_definition_lines(doc: _Document, first: int, end: int) -> None:
+    lines, kinds = doc.lines, doc.kinds
     outside = [
         k + 1
-        for k in range(first, block)
+        for k in range(first, end)
         if kinds[k] == 'text'
         and (
             DEFINITION_LIKE.match(lines[k])
@@ -391,7 +455,6 @@ def _markdown_block_start(doc: _Document, first: int, definitions_start: Optiona
             document='markdown',
             lines=outside[:50],
         )
-    return block
 
 
 def _markdown_definitions(doc: _Document, block: int) -> Dict[int, Dict[str, Any]]:
@@ -460,6 +523,172 @@ def _parse_markdown(doc: _Document, body_start: Optional[int], definitions_start
             ),
             doc.segment('body', first, block),
             doc.segment('definitions', block, len(doc.lines)),
+        ],
+    }
+
+
+def _check_question_region(doc: _Document, first: int, end: int, question: str) -> None:
+    """Markdown lines [first, end) must be exactly "# " followed by the supplied question's bytes."""
+    region, expected = doc.segment_bytes(first, end), (QUESTION_FRAMING + question).encode('utf-8')
+    if region == expected:
+        return
+    lines = [first + 1, end]
+    if not region.startswith(QUESTION_FRAMING.encode('utf-8')):
+        raise CompareError(
+            'unsupported_question_framing',
+            f'Markdown line {first + 1} must start the question with "{QUESTION_FRAMING}"',
+            document='markdown',
+            line=first + 1,
+            text=_excerpt(doc.lines[first]),
+        )
+    if region.startswith(expected):
+        swallowed = [first + expected.count(b'\n') + 1, end]
+        raise CompareError(
+            'boundary_swallows_answer',
+            f'markdown_body_start would leave Markdown lines {swallowed[0]}-{swallowed[1]}, after the supplied '
+            'question, in the question region and out of the compared body',
+            document='markdown',
+            lines=lines,
+            swallowed_lines=swallowed,
+        )
+    if expected.startswith(region):
+        raise CompareError(
+            'boundary_cuts_question',
+            'markdown_body_start ends the question region before the supplied question ends',
+            document='markdown',
+            lines=lines,
+        )
+    index = next(i for i, (a, b) in enumerate(zip(region, expected)) if a != b)
+    raise CompareError(
+        'question_mismatch',
+        f'the Markdown question region (lines {first + 1}-{end}) without "{QUESTION_FRAMING}" differs from the '
+        f'supplied question at byte {index - len(QUESTION_FRAMING)}',
+        document='markdown',
+        lines=lines,
+        region_from_there=_excerpt(region[index:].decode('utf-8', 'replace')),
+        question_from_there=_excerpt(expected[index:].decode('utf-8', 'replace')),
+    )
+
+
+def _framed_trailer(doc: _Document, first: int) -> Tuple[int, int, int]:
+    """(body end, marker span line, definitions start), 0-based, of the fixed trailer, read from the end.
+
+    The trailer is: one empty line, the display:none marker span, one empty line, the ornament, one empty line,
+    and "[^N]: URL" definitions to the end, with at most one empty line between two definitions.
+    """
+    lines, kinds, n = doc.lines, doc.kinds, len(doc.lines)
+
+    def definition(k: int) -> bool:
+        return first <= k < n and kinds[k] == 'text' and DEFINITION.fullmatch(lines[k]) is not None
+
+    if not definition(n - 1):
+        raise CompareError(
+            'unsupported_trailer_line',
+            'the last Markdown line must be a "[^N]: URL" definition',
+            document='markdown',
+            line=n,
+            text=_excerpt(lines[n - 1]) if n else '',
+        )
+    block = n - 1
+    while True:
+        if definition(block - 1):
+            block -= 1
+        elif block - 1 > first and lines[block - 1] == '' and definition(block - 2):
+            block -= 2
+        else:
+            break
+    expected = ((block - 2, ORNAMENT, 'the ornament line'), (block - 4, None, 'the display:none marker span'))
+    _require_separator(doc, block - 1, 'before the definitions')
+    for (k, exact, what), between in zip(expected, ('before the ornament', 'between the body and the marker span')):
+        line = lines[k] if first <= k else ''
+        ok = first <= k and kinds[k] == 'text'
+        ok = ok and (line == exact if exact is not None else HIDDEN_MARKERS.fullmatch(line) is not None)
+        if not ok and exact is None and line.startswith(SPAN_OPEN) and line.endswith(SPAN_CLOSE):
+            raise CompareError(
+                'unsupported_hidden_content',
+                f'the display:none span on Markdown line {k + 1} may contain only footnote markers like [^2]',
+                document='markdown',
+                line=k + 1,
+                text=_excerpt(line),
+            )
+        if not ok:
+            raise CompareError(
+                'unsupported_trailer_line',
+                f'Markdown line {k + 1} is not {what}',
+                document='markdown',
+                line=k + 1,
+                text=_excerpt(line),
+            )
+        _require_separator(doc, k - 1, between)
+    if block - 5 <= first:
+        raise CompareError('invalid_boundary', 'the Markdown body before the trailer is empty')
+    return block - 5, block - 4, block
+
+
+def _parse_markdown_framed(doc: _Document, body_start: int, question: str) -> Dict[str, Any]:
+    """Markdown layout markdown-html-framed/1; see CONTRACT.md. Every line outside the body has a fixed role."""
+    lines, kinds, n = doc.lines, doc.kinds, len(doc.lines)
+    first = _line_index('markdown_body_start', body_start, n)
+    logo = HTML_LOGO.fullmatch(lines[0]) if n and kinds[0] == 'text' else None
+    if logo is None:
+        raise CompareError(
+            'unsupported_prelude_line',
+            'Markdown line 1 is not <img src="http(s)://..." style="height:64px;margin-right:32px"/>',
+            document='markdown',
+            line=1,
+            text=_excerpt(lines[0]),
+        )
+    if first < 4:
+        raise CompareError(
+            'invalid_boundary',
+            'markdown_body_start must leave the logo, an empty line, the question and an empty line before it',
+            option='markdown_body_start',
+        )
+    _check_question_region(doc, 2, first - 1, question)
+    _require_separator(doc, 1, 'between the logo and the question')
+    _require_separator(doc, first - 1, 'between the question and the body')
+    body_end, span, block = _framed_trailer(doc, first)
+    definitions = _markdown_definitions(doc, block)
+    _reject_definition_lines(doc, first, body_end)
+    for k in range(first, body_end):
+        if kinds[k] == 'text' and (SPAN_OPEN in lines[k] or lines[k] == ORNAMENT):
+            raise CompareError(
+                'unsupported_html',
+                f'Markdown line {k + 1} in the body holds a display:none span or the ornament, which are '
+                'supported only in the trailer',
+                document='markdown',
+                line=k + 1,
+                text=_excerpt(lines[k]),
+            )
+    hidden = [int(i) for i in HIDDEN_MARKER.findall(lines[span])]
+    duplicates = sorted({i for i in hidden if hidden.count(i) > 1})
+    undefined = [i for i in hidden if i not in definitions]
+    if duplicates or undefined:
+        raise CompareError(
+            'duplicate_hidden_marker' if duplicates else 'undefined_hidden_marker',
+            f'the display:none span on Markdown line {span + 1} repeats or names undefined footnote ids',
+            document='markdown',
+            line=span + 1,
+            ids=(duplicates or undefined)[:50],
+        )
+    return {
+        'body': (first, body_end),
+        'logo': logo.group(1),
+        'question_lines': (2, first - 1),
+        'definitions': definitions,
+        'hidden_markers': {'line': span + 1, 'ids': hidden},
+        'segments': [
+            doc.segment('logo', 0, 1, url=logo.group(1)),
+            doc.segment('separator_after_logo', 1, 2),
+            doc.segment('question', 2, first - 1, framing=QUESTION_FRAMING),
+            doc.segment('separator_after_question', first - 1, first),
+            doc.segment('body', first, body_end),
+            doc.segment('separator_before_hidden_markers', body_end, span),
+            doc.segment('hidden_markers', span, span + 1, ids=hidden),
+            doc.segment('separator_before_ornament', span + 1, span + 2),
+            doc.segment('ornament', span + 2, span + 3),
+            doc.segment('separator_before_definitions', span + 3, block),
+            doc.segment('definitions', block, n, separator_lines=[k + 1 for k in range(block, n) if not lines[k]]),
         ],
     }
 
@@ -738,31 +967,69 @@ def _request_id_occurrences(
     }
 
 
-def compare_exports(
-    plain: bytes,
-    markdown: bytes,
-    *,
-    question: Optional[str] = None,
-    request_id: Optional[str] = None,
-    plain_body_start: Optional[int] = None,
-    plain_sources_line: Optional[int] = None,
-    markdown_body_start: Optional[int] = None,
-    markdown_definitions_start: Optional[int] = None,
-    rules: Optional[Sequence[str]] = None,
+def _request_id_by_segment(
+    request_id: str, question: str, p: _Document, pl: Dict[str, Any], m: _Document, ml: Dict[str, Any]
 ) -> Dict[str, Any]:
-    """Compare two exports of one answer. Pure; raises CompareError for unsupported or ambiguous input."""
-    applied = _check_rules(rules)
-    question = _check_text('question', question, MAX_QUESTION_BYTES, single_line=False)
-    request_id = _check_text('request_id', request_id, MAX_REQUEST_ID_BYTES, single_line=True)
-    p, m = _Document('plain', plain), _Document('markdown', markdown)
-    pl = _parse_plain(p, plain_body_start, plain_sources_line)
-    ml = _parse_markdown(m, markdown_body_start, markdown_definitions_start)
-    pb, mb = _Body(p, *pl['body'], 'plain', applied), _Body(m, *ml['body'], 'markdown', applied)
-    difference_count, differences = _body_differences(pb, mb)
+    """Layout bracketed-html: literal matches of the ID per document, per reported segment and in the question."""
+    needle = request_id.encode('utf-8')
+    occurrences: Dict[str, int] = {}
+    for doc, layout in ((p, pl), (m, ml)):
+        occurrences[f'{doc.name}_document'] = doc.raw.count(needle)
+        for segment in layout['segments']:
+            occurrences[f'{doc.name}_{segment["name"]}'] = doc.raw[segment['byte_start'] : segment['byte_end']].count(
+                needle
+            )
+    occurrences['supplied_question'] = question.encode('utf-8').count(needle)
+    return {
+        'value': request_id,
+        'counting': 'non-overlapping literal matches of its UTF-8 bytes in each exact segment; no case folding or '
+        'Unicode normalization; independent of whether a question was found',
+        'occurrences': occurrences,
+        'present_in_plain_document': occurrences['plain_document'] > 0,
+        'present_in_plain_body': occurrences['plain_body'] > 0,
+        'present_in_markdown_document': occurrences['markdown_document'] > 0,
+        'present_in_markdown_question': occurrences['markdown_question'] > 0,
+        'present_in_markdown_body': occurrences['markdown_body'] > 0,
+        'present_in_supplied_question': occurrences['supplied_question'] > 0,
+    }
 
-    sources, definitions = pl['sources'], ml['definitions']
+
+def _framed_options(
+    layout: Any,
+    question: Optional[str],
+    plain_body_start: Optional[int],
+    markdown_body_start: Optional[int],
+    markdown_definitions_start: Optional[int],
+) -> Optional[Tuple[str, int]]:
+    """None for the default layout; for bracketed-html, the required question and Markdown body start."""
+    if not isinstance(layout, str) or layout not in LAYOUTS:
+        raise CompareError('invalid_option', f'layout must be one of {list(LAYOUTS)}', option='layout')
+    if layout == 'numbered':
+        return None
+    for name, value in (
+        ('plain_body_start', plain_body_start),
+        ('markdown_definitions_start', markdown_definitions_start),
+    ):
+        if value is not None:
+            raise CompareError('invalid_option', f'layout {layout} does not take {name}', option=name)
+    if question is None or markdown_body_start is None:
+        raise CompareError(
+            'invalid_option',
+            f'layout {layout} requires the complete question and an explicit markdown_body_start',
+            option='question' if question is None else 'markdown_body_start',
+        )
+    if not question.endswith('\n') or question.endswith('\n\n'):
+        raise CompareError(
+            'invalid_option',
+            f'with layout {layout} the question must be given complete, ending with exactly one line feed',
+            option='question',
+        )
+    return question, markdown_body_start
+
+
+def _citations(pb: _Body, mb: _Body, sources: Dict[int, Any], definitions: Dict[int, Any]) -> Dict[str, Any]:
     cited = sorted(set(pb.references) | set(mb.references))
-    url_map = []
+    url_map: List[Dict[str, Any]] = []
     for number in cited:
         a = sources.get(number, {}).get('url')
         b = definitions.get(number, {}).get('url')
@@ -777,18 +1044,17 @@ def compare_exports(
         if a is not None and b is not None and a != b:
             entry.update(_url_difference(a, b))
         url_map.append(entry)
-    undefined = {
-        'plain': sorted(set(pb.references) - set(sources)),
-        'markdown': sorted(set(mb.references) - set(definitions)),
-    }
-    citations = {
+    return {
         'referenced_ids_equal': set(pb.references) == set(mb.references),
         'reference_counts_equal': pb.references == mb.references,
         'url_map_equal': all(e['equal'] for e in url_map),
         'url_map': url_map,
         'all_entries_url_map_equal': set(sources) == set(definitions)
         and all(_same_url(sources[k]['url'], definitions[k]['url']) for k in sources),
-        'undefined_references': undefined,
+        'undefined_references': {
+            'plain': sorted(set(pb.references) - set(sources)),
+            'markdown': sorted(set(mb.references) - set(definitions)),
+        },
         'plain_listed_not_cited': [
             {'id': k, 'title': v['title'], 'url': v['url']}
             for k, v in sorted(sources.items())
@@ -803,21 +1069,42 @@ def compare_exports(
         'markdown_definitions': [{'id': k, **v} for k, v in sorted(definitions.items())],
     }
 
-    plain_question_source = 'preamble' if pl['preamble'][1] > 0 else ('supplied' if question is not None else 'absent')
-    question_result: Dict[str, Any] = {
-        'plain': {
-            'source': plain_question_source,
-            'preamble_text': p.text(*pl['preamble']) if pl['preamble'][1] > 0 else None,
-            'supplied_text': question,
-        },
-        'markdown': {'source': 'heading' if ml['question'] is not None else 'absent', 'text': ml['question']},
-        'supplied_equals_markdown_heading': None
-        if question is None or ml['question'] is None
-        else question == ml['question'],
-    }
-    request_id_result = None if request_id is None else _request_id_occurrences(request_id, question, p, pl, m, ml)
 
+def _entries_url_map(
+    pb: _Body, mb: _Body, sources: Dict[int, Any], definitions: Dict[int, Any], hidden: Sequence[int]
+) -> List[Dict[str, Any]]:
+    """Layout bracketed-html: every listed or defined id, cited or not, with both URLs compared exactly."""
+    entries: List[Dict[str, Any]] = []
+    for number in sorted(set(sources) | set(definitions)):
+        a = sources.get(number, {}).get('url')
+        b = definitions.get(number, {}).get('url')
+        entry: Dict[str, Any] = {
+            'id': number,
+            'plain_url': a,
+            'markdown_url': b,
+            'equal': _same_url(a, b),
+            'cited_in_plain_body': number in pb.references,
+            'cited_in_markdown_body': number in mb.references,
+            'hidden_marker': number in hidden,
+        }
+        if a is not None and b is not None and a != b:
+            entry.update(_url_difference(a, b))
+        entries.append(entry)
+    return entries
+
+
+def _warnings(
+    pb: _Body,
+    mb: _Body,
+    p: _Document,
+    m: _Document,
+    citations: Dict[str, Any],
+    question_absent: bool,
+    difference_count: int,
+    applied: Sequence[str],
+) -> List[Dict[str, Any]]:
     warnings: List[Dict[str, Any]] = []
+    undefined = citations['undefined_references']
     titled = [s['id'] for s in citations['plain_sources'] if s['title']]
     if titled:
         warnings.append(
@@ -836,11 +1123,20 @@ def compare_exports(
                 'markdown': [e['id'] for e in citations['markdown_defined_not_referenced']],
             }
         )
+    if 'hidden_markers' in citations:
+        warnings.append(
+            {
+                'code': 'hidden_markers_not_citations',
+                'message': 'footnote markers inside the display:none span are not body citations and are not '
+                'evidence that a source was read; their entries are still compared',
+                'ids': citations['hidden_markers']['ids'],
+            }
+        )
     if undefined['plain'] or undefined['markdown']:
         warnings.append(
             {'code': 'undefined_references', 'message': 'a body cites an id with no source or definition', **undefined}
         )
-    if question_result['plain']['source'] == 'absent' or question_result['markdown']['source'] == 'absent':
+    if question_absent:
         warnings.append(
             {
                 'code': 'question_absent',
@@ -884,6 +1180,85 @@ def compare_exports(
                 'disabled': [r for r in POLICY_RULES if r not in applied],
             }
         )
+    return warnings
+
+
+def compare_exports(
+    plain: bytes,
+    markdown: bytes,
+    *,
+    question: Optional[str] = None,
+    request_id: Optional[str] = None,
+    plain_body_start: Optional[int] = None,
+    plain_sources_line: Optional[int] = None,
+    markdown_body_start: Optional[int] = None,
+    markdown_definitions_start: Optional[int] = None,
+    rules: Optional[Sequence[str]] = None,
+    layout: str = 'numbered',
+) -> Dict[str, Any]:
+    """Compare two exports of one answer. Pure; raises CompareError for unsupported or ambiguous input.
+
+    `layout` selects the layout pair: 'numbered' (the default) or 'bracketed-html', which requires the complete
+    `question` (ending with one line feed) and `markdown_body_start`. See CONTRACT.md.
+    """
+    applied = _check_rules(rules)
+    question = _check_text('question', question, MAX_QUESTION_BYTES, single_line=False)
+    request_id = _check_text('request_id', request_id, MAX_REQUEST_ID_BYTES, single_line=True)
+    framed = _framed_options(layout, question, plain_body_start, markdown_body_start, markdown_definitions_start)
+    p, m = _Document('plain', plain), _Document('markdown', markdown)
+    if framed is None:
+        pl = _parse_plain(p, plain_body_start, plain_sources_line)
+        ml = _parse_markdown(m, markdown_body_start, markdown_definitions_start)
+    else:
+        pl = _parse_plain_bracketed(p, plain_sources_line)
+        ml = _parse_markdown_framed(m, framed[1], framed[0])
+    pb, mb = _Body(p, *pl['body'], 'plain', applied), _Body(m, *ml['body'], 'markdown', applied)
+    difference_count, differences = _body_differences(pb, mb)
+    citations = _citations(pb, mb, pl['sources'], ml['definitions'])
+
+    if framed is None:
+        plain_question_source = (
+            'preamble' if pl['preamble'][1] > 0 else ('supplied' if question is not None else 'absent')
+        )
+        question_result: Dict[str, Any] = {
+            'plain': {
+                'source': plain_question_source,
+                'preamble_text': p.text(*pl['preamble']) if pl['preamble'][1] > 0 else None,
+                'supplied_text': question,
+            },
+            'markdown': {'source': 'heading' if ml['question'] is not None else 'absent', 'text': ml['question']},
+            'supplied_equals_markdown_heading': None
+            if question is None or ml['question'] is None
+            else question == ml['question'],
+        }
+        question_absent = plain_question_source == 'absent' or ml['question'] is None
+        request_id_result = None if request_id is None else _request_id_occurrences(request_id, question, p, pl, m, ml)
+    else:
+        needle = framed[0].encode('utf-8')
+        q_first, q_end = ml['question_lines']
+        question_result = {
+            'supplied': {'bytes': len(needle), 'sha256': _sha256(needle), 'text': framed[0]},
+            'plain': {'region': None, 'literal_occurrences': p.raw.count(needle)},
+            'markdown': {
+                'region': {
+                    'first_line': q_first + 1,
+                    'last_line': q_end,
+                    'framing': QUESTION_FRAMING,
+                    'equals_supplied_after_framing': True,
+                },
+                'literal_occurrences': m.raw.count(needle),
+            },
+        }
+        question_absent = True  # the plain layout carries no question
+        request_id_result = None if request_id is None else _request_id_by_segment(request_id, framed[0], p, pl, m, ml)
+        hidden = ml['hidden_markers']
+        citations['hidden_markers'] = {
+            'line': hidden['line'],
+            'ids': hidden['ids'],
+            'cited_in_markdown_body': [i for i in hidden['ids'] if i in mb.references],
+        }
+        citations['entries_url_map'] = _entries_url_map(pb, mb, pl['sources'], ml['definitions'], hidden['ids'])
+    plain_layout, markdown_layout = LAYOUTS[layout]
 
     return {
         'schema': SCHEMA,
@@ -898,9 +1273,9 @@ def compare_exports(
             for doc in (p, m)
         },
         'layouts': {
-            'plain': {'layout': 'plain-numbered-sources/1', 'segments': pl['segments']},
+            'plain': {'layout': plain_layout, 'segments': pl['segments']},
             'markdown': {
-                'layout': 'markdown-footnote-definitions/1',
+                'layout': markdown_layout,
                 'logo_url': ml['logo'],
                 'segments': ml['segments'],
             },
@@ -933,7 +1308,7 @@ def compare_exports(
             'producer_authenticity': 'NOT_ESTABLISHED',
         },
         'not_established': NOT_ESTABLISHED,
-        'warnings': warnings,
+        'warnings': _warnings(pb, mb, p, m, citations, question_absent, difference_count, applied),
         'notice': NOTICE,
     }
 
@@ -982,6 +1357,7 @@ def main(argv: Optional[Sequence[str]] = None, stdout: Optional[Any] = None) -> 
     ):
         parser.add_argument(option, type=_line_number)
     parser.add_argument('--rules', help='comma-separated subset of the policy rules; empty for none')
+    parser.add_argument('--layout', default='numbered', help=f'one of {list(LAYOUTS)}; default numbered')
     try:
         args = parser.parse_args(list(sys.argv[1:] if argv is None else argv))
         question = args.question
@@ -991,7 +1367,8 @@ def main(argv: Optional[Sequence[str]] = None, stdout: Optional[Any] = None) -> 
                 question = data.decode('utf-8', 'strict')
             except UnicodeDecodeError:
                 raise CompareError('not_utf8', '--question-file is not valid UTF-8', option='--question-file') from None
-            question = question[:-1] if question.endswith('\n') else question
+            if args.layout == 'numbered':  # the heading text has no line feed; bracketed-html uses the exact bytes
+                question = question[:-1] if question.endswith('\n') else question
         rules = None if args.rules is None else [r for r in args.rules.split(',') if r]
         result = compare_exports(
             _read(args.plain, MAX_DOCUMENT_BYTES, '--plain'),
@@ -1003,6 +1380,7 @@ def main(argv: Optional[Sequence[str]] = None, stdout: Optional[Any] = None) -> 
             markdown_body_start=args.markdown_body_start,
             markdown_definitions_start=args.markdown_definitions_start,
             rules=rules,
+            layout=args.layout,
         )
         data = (json.dumps(result, ensure_ascii=False, indent=2) + '\n').encode('utf-8')
         if len(data) > MAX_OUTPUT_BYTES:
@@ -1014,6 +1392,7 @@ def main(argv: Optional[Sequence[str]] = None, stdout: Optional[Any] = None) -> 
             and c['referenced_ids_equal']
             and c['url_map_equal']
             and not (c['undefined_references']['plain'] or c['undefined_references']['markdown'])
+            and (args.layout == 'numbered' or c['all_entries_url_map_equal'])
         )
         status = 0 if agree else 1
     except CompareError as e:

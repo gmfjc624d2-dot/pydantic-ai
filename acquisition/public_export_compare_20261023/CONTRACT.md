@@ -1,4 +1,4 @@
-# Contract: `export_compare` 1.0.1 (schema `export-compare/1`, policy `export-compare-body-policy/1`)
+# Contract: `export_compare` 1.1.0 (schema `export-compare/1`, policy `export-compare-body-policy/1`)
 
 ## Purpose and non-goals
 
@@ -18,17 +18,25 @@ only textual agreement under the policy. Inputs are read, never rewritten. There
 ## Interfaces
 
 - `compare_exports(plain: bytes, markdown: bytes, *, question=None, request_id=None, plain_body_start=None,
-  plain_sources_line=None, markdown_body_start=None, markdown_definitions_start=None, rules=None) -> dict`.
-  It is pure and raises `CompareError` (`code`, `message`, `details`) for rejected input.
+  plain_sources_line=None, markdown_body_start=None, markdown_definitions_start=None, rules=None,
+  layout='numbered') -> dict`. It is pure and raises `CompareError` (`code`, `message`, `details`) for
+  rejected input.
 - `python3 export_compare.py --plain FILE --markdown FILE [--question TEXT | --question-file FILE]
   [--request-id ID] [--plain-body-start N] [--plain-sources-line N] [--markdown-body-start N]
-  [--markdown-definitions-start N] [--rules R1,R2]`.
+  [--markdown-definitions-start N] [--rules R1,R2] [--layout numbered|bracketed-html]`.
   - It writes one UTF-8 JSON document and a final `\n` to stdout. Nothing goes to stderr.
   - Exit status 0: normalized bodies equal, the same ids cited, every cited id's URL equal, and no
-    undefined citation.
+    undefined citation. With `--layout bracketed-html`, also every listed and defined id and URL equal
+    (`all_entries_url_map_equal`).
   - Exit status 1: any of those differ; the document lists what differs.
   - Exit status 2: rejected, with `{"schema", "error": {"code", "message", ...}}`.
-  - A question file loses one trailing `\n`, if present; nothing else is changed.
+  - Exit status 0 is not a substitute for reading the fields. Raw equality, uncited entries, hidden
+    markers, titles that exist only in the plain export, and warnings are reported, not folded into the
+    status.
+  - With the default layout, a question file loses one trailing `\n`, if present, and nothing else is
+    changed. With `bracketed-html`, the file's bytes are used exactly.
+- `layout` selects the layout pair. `numbered` (the default) is described below, unchanged since 1.0.0.
+  `bracketed-html` must be selected explicitly; see its own section.
 - Standard library only; CPython ≥ 3.9 (run on 3.9.25 and 3.13.16, Linux only).
 
 ## Supported layouts (anything else is rejected, not guessed)
@@ -76,6 +84,98 @@ start at a line that is not indented. Indented lines directly after such a line 
 as in CommonMark, where an indented line cannot interrupt a paragraph. So a code span may cross them, but
 they remain code and are compared literally. Headings, list items and table rows are not split apart from
 the lines around them. Code-span matching is therefore an approximation of CommonMark, not a parser.
+
+## Layout pair `bracketed-html` (1.1.0; explicit selection only)
+
+This pair fits one export shape. Nothing about the default layout changed for it, and nothing in it is
+inferred. It needs the complete question and an explicit Markdown body start, and it takes neither
+`plain_body_start` nor `markdown_definitions_start`. Any other variation is rejected rather than accepted
+by widening a rule. HTML is never interpreted, and the logo URL is never fetched. Both inputs are read as
+the original bytes.
+
+**Question.** `question` is the complete question, ending with exactly one `\n`. The CLI reads
+`--question-file` byte for byte. The Markdown question region runs from line 3 to the line before the
+separator that precedes `markdown_body_start`. Its raw bytes must equal `# ` followed by the question's
+UTF-8 bytes. Only that leading `# ` is removed: no whitespace is trimmed, and no boundary is located by
+searching for the question or the request ID. Mismatches are rejected:
+
+| Code | Meaning |
+|---|---|
+| `unsupported_question_framing` | the region does not start with `# ` |
+| `boundary_swallows_answer` | the region is the question followed by more lines, which would then be neither question nor compared body (`swallowed_lines`) |
+| `boundary_cuts_question` | the region ends inside the question |
+| `question_mismatch` | the bytes differ, with the first differing byte and excerpts |
+
+**Plain, `plain-bracketed-sources/1`.** The segments are `body` from line 1, then
+`separator_before_sources`, then `sources`:
+- `body` starts at line 1; there is no preamble.
+- `separator_before_sources` is exactly one empty line.
+- `sources` is one line that is exactly `Sources`, then one or more `[N] title URL` lines with no blank lines
+  between them. N is 1–9999 without a leading zero, the title is kept verbatim, and the URL is
+  `http(s)://…`.
+- `Sources` is found as in the default layout, or given by `plain_sources_line`.
+
+**Markdown, `markdown-html-framed/1`.** Every line outside the body has a fixed role, and each role is a
+segment:
+
+| Segment | Exact form |
+|---|---|
+| `logo` | line 1, exactly `<img src="URL" style="height:64px;margin-right:32px"/>`; URL `http(s)://` without whitespace, `"`, `<` or `>` |
+| `separator_after_logo` | line 2, exactly one empty line |
+| `question` | from line 3: `# ` and the supplied question (above) |
+| `separator_after_question` | exactly one empty line, directly before `markdown_body_start` |
+| `body` | from `markdown_body_start` to the line before the next separator |
+| `separator_before_hidden_markers` | exactly one empty line |
+| `hidden_markers` | exactly `<span style="display:none">[^A][^B]…</span>`: one or more markers, nothing else, each id unique and defined |
+| `separator_before_ornament` | exactly one empty line |
+| `ornament` | exactly `<div align="center">⁂</div>` (U+2042) |
+| `separator_before_definitions` | exactly one empty line |
+| `definitions` | `[^N]: URL` lines to the end of the file. Between two definitions there may be zero or one empty line, the only optional separator; these lines stay in this segment and are listed in its `separator_lines` |
+
+**Separators.**
+- Every separator above is required and is exactly one empty line: no spaces, and not inside code.
+- A missing or whitespace-only separator is `unsupported_separator`.
+- A blank line next to a separator is `repeated_separator`.
+- The body's first and last lines are therefore never blank.
+
+**Rejected inside the body (outside code):**
+- a `display:none` span opener anywhere on a line, or an ornament line (`unsupported_html`);
+- footnote definition lines (`definition_outside_block`).
+
+**Other rejections:**
+- a different logo or prelude line: `unsupported_prelude_line`;
+- a trailer line that is not the expected element: `unsupported_trailer_line`;
+- non-marker text in the hidden span: `unsupported_hidden_content`;
+- a repeated hidden id: `duplicate_hidden_marker`;
+- an undefined hidden id: `undefined_hidden_marker`.
+
+**Results specific to this pair.** Body comparison, policy, protection and raw/normalized equality are those
+of the default layout, applied to the two `body` segments. `raw_bodies_equal` therefore compares the bodies
+without their separators. The pair adds or changes these fields:
+- `results.question`:
+  - `supplied` (text, byte count, SHA-256);
+  - per export, `region` (`null` for plain, which has no question region; for Markdown its lines, its
+    framing, and `equals_supplied_after_framing`);
+  - `literal_occurrences`, the count of the question's exact bytes in each whole document.
+
+  Question presence in a document is reported separately from the supplied context, and the plain export's
+  missing region gives the `question_absent` warning.
+- `results.request_id.occurrences`: literal counts in each whole document, in each named segment
+  (`plain_body`, `markdown_question`, `markdown_body` and so on) and in the supplied question. There are
+  `present_in_*` booleans for both documents, both bodies, the Markdown question and the supplied question.
+  Counts never depend on whether a question was found.
+- `results.citations.hidden_markers`: the span's line and ids, and which of them the Markdown body also
+  cites. Hidden markers are not body citations and not evidence that anything was read; the
+  `hidden_markers_not_citations` warning says so.
+- `results.citations.entries_url_map`: every listed or defined id, cited or not. Each entry has both URLs,
+  exact equality, whether either body cites it, and whether it is a hidden marker.
+- `uncited_entries`, `source_titles_only_in_plain` and `all_entries_url_map_equal` are as in the default
+  layout.
+- `semantic_judgment` and `producer_authenticity` remain `NOT_ESTABLISHED`.
+
+Consumers must tell the pairs apart by `layouts.plain.layout` and `layouts.markdown.layout`. The default
+layout's output is unchanged: the 1.0.0 and 1.0.1 recorded outputs are reproduced byte for byte apart from
+`tool.version`.
 
 ## Normalization policy `export-compare-body-policy/1` (bodies only)
 
@@ -169,6 +269,10 @@ Excerpts of offending lines in errors are at most 200 characters.
 `definition_outside_block`, `duplicate_definition`, `unsupported_html`, `invalid_option`,
 `unsafe_normalization`, `unknown_normalization`, `invalid_arguments`, `input_unreadable`,
 `output_too_large`.
+
+Only with `bracketed-html`: `unsupported_separator`, `repeated_separator`, `unsupported_question_framing`,
+`boundary_swallows_answer`, `boundary_cuts_question`, `question_mismatch`, `unsupported_trailer_line`,
+`unsupported_hidden_content`, `duplicate_hidden_marker`, `undefined_hidden_marker`.
 
 ## Corrections from 1.0.0
 

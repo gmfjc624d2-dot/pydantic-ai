@@ -3,12 +3,14 @@
 Run: python3 tests/mutation_check.py   (from acquisition/public_export_compare_20261023)
 
 Each mutation replaces one module or class attribute in memory, reruns the unittest suite, and must make it fail;
-the failing tests are listed. The last three restore the 1.0.0 behaviour that 1.0.1 corrects.
+the failing tests are listed. Three restore the 1.0.0 behaviour that 1.0.1 corrects; the last four loosen the
+bracketed-html layout of 1.1.0.
 """
 
 from __future__ import annotations
 
 import io
+import re
 import sys
 import unittest
 from pathlib import Path
@@ -24,6 +26,9 @@ ORIGINAL_CLASSIFY = ec._classify_lines
 ORIGINAL_SPANS = ec._protected_spans
 ORIGINAL_BLOCK_LINE = ec._definition_block_line
 ORIGINAL_REQUEST_ID = ec._request_id_occurrences
+ORIGINAL_QUESTION = ec._check_question_region
+ORIGINAL_SEPARATOR = ec._require_separator
+ORIGINAL_ENTRIES = ec._entries_url_map
 
 
 def everything_is_prose(name, lines):  # type: ignore[no-untyped-def]
@@ -64,6 +69,21 @@ def indented_lines_end_paragraphs(name, lines):  # type: ignore[no-untyped-def]
     return ['code' if kind == 'indented' else kind for kind in ORIGINAL_CLASSIFY(name, lines)]
 
 
+def question_whitespace_insensitive(doc, first, end, question):  # type: ignore[no-untyped-def]
+    if doc.segment_bytes(first, end).decode('utf-8').split() != ('# ' + question).split():
+        ORIGINAL_QUESTION(doc, first, end, question)
+
+
+def blank_lines_accepted_as_separators(doc, index, between):  # type: ignore[no-untyped-def]
+    if not (0 <= index < len(doc.lines) and not doc.lines[index].strip()):
+        ORIGINAL_SEPARATOR(doc, index, between)
+
+
+def only_cited_entries_compared(pb, mb, sources, definitions, hidden):  # type: ignore[no-untyped-def]
+    entries = ORIGINAL_ENTRIES(pb, mb, sources, definitions, hidden)
+    return [e for e in entries if e['cited_in_plain_body'] or e['cited_in_markdown_body']]
+
+
 MUTATIONS = {
     'code normalized like prose': (ec, '_classify_lines', everything_is_prose),
     'URLs not protected from normalization': (ec, '_protected_spans', urls_unprotected),
@@ -73,6 +93,22 @@ MUTATIONS = {
     '1.0.0: table rule ignores code spans (C1)': (ec, '_overlaps', nothing_overlaps),
     '1.0.0: segment bytes rebuilt from lines (C2)': (ec._Document, 'segment_bytes', bytes_rebuilt_from_lines),
     '1.0.0: an indented line ends the paragraph': (ec, '_classify_lines', indented_lines_end_paragraphs),
+    'bracketed-html: question compared ignoring whitespace': (
+        ec,
+        '_check_question_region',
+        question_whitespace_insensitive,
+    ),
+    'bracketed-html: any blank lines accepted as a separator': (
+        ec,
+        '_require_separator',
+        blank_lines_accepted_as_separators,
+    ),
+    'bracketed-html: hidden span may hold any text': (
+        ec,
+        'HIDDEN_MARKERS',
+        re.compile(r'<span style="display:none">(.*)</span>'),
+    ),
+    'bracketed-html: uncited entries not compared': (ec, '_entries_url_map', only_cited_entries_compared),
 }
 
 

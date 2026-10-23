@@ -1,0 +1,3 @@
+Public source comparison. ID: public-layout-2.
+
+Compare the exports; do not infer semantic sufficiency.

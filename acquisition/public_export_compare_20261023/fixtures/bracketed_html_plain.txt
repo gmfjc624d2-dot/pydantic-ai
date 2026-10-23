@@ -1,0 +1,11 @@
+ID: `public-layout-2`.
+
+The value is not guaranteed.[1]
+
+| Item | Value |
+| --- | --- |
+| A | 2 |
+
+Sources
+[1] Guide https://example.org/a
+[2] Extra https://example.org/b

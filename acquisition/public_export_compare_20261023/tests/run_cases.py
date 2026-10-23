@@ -3,9 +3,9 @@
 Usage (from acquisition/public_export_compare_20261023):  python3 tests/run_cases.py OUT_DIR
 
 Writes, for the running interpreter:
-- OUT_DIR/cases.jsonl: per run (positive pairs, single-edit cases, then the 1.0.1 regression pairs), the exit
-  status, stdout/stderr byte counts, the stdout SHA-256, whether the exit status was the expected one, and the
-  error code or key result fields;
+- OUT_DIR/cases.jsonl: per run (positive pairs, single-edit cases, bracketed-html cases, then the 1.0.1
+  regression pairs), the exit status, stdout/stderr byte counts, the stdout SHA-256, whether the exit status
+  was the expected one, and the error code or key result fields;
 - OUT_DIR/cases.md: what a reader sees for each case;
 - OUT_DIR/positive_<pair>.json: full results of the positive pairs;
 - OUT_DIR/timings.jsonl: worst-case shapes, one subprocess each, 120 s timeout.
@@ -21,6 +21,7 @@ import sys
 import tempfile
 import time
 from pathlib import Path
+from typing import Iterator, List, Tuple
 
 ROOT = Path(__file__).resolve().parent.parent
 SCRIPT = ROOT / 'export_compare.py'
@@ -28,13 +29,6 @@ FIXTURES = ROOT / 'fixtures'
 sys.path.insert(0, str(FIXTURES))
 import cases  # noqa: E402
 
-FLAGS = {
-    'plain_sources_line': '--plain-sources-line',
-    'plain_body_start': '--plain-body-start',
-    'markdown_body_start': '--markdown-body-start',
-    'markdown_definitions_start': '--markdown-definitions-start',
-    'request_id': '--request-id',
-}
 POSITIVE = {
     'full': (
         'full_plain.txt',
@@ -43,6 +37,12 @@ POSITIVE = {
     ),
     'minimal': ('minimal_plain.txt', 'minimal_markdown.md', []),
     'id_in_body': ('id_in_body_plain.txt', 'id_in_body_markdown.md', ['--request-id', 'public-example-1']),
+    'bracketed_html': (
+        'bracketed_html_plain.txt',
+        'bracketed_html_markdown.md',
+        ['--layout', 'bracketed-html', '--question-file', str(FIXTURES / 'bracketed_html_question.txt')]
+        + ['--markdown-body-start', '7', '--request-id', 'public-layout-2'],
+    ),
 }
 TIMING_SHAPES = {
     'all_lines_differ_2000': (
@@ -92,6 +92,30 @@ def run_cli(args, cwd=None):
     return proc.returncode, proc.stdout, proc.stderr
 
 
+def cli_runs(directory: Path) -> Iterator[Tuple[str, List[str], int, str]]:
+    """(name, CLI arguments, expected exit status, what was changed) for every pair and case, inputs in directory."""
+    for name, (plain, markdown, extra) in POSITIVE.items():
+        yield (
+            f'positive:{name}',
+            ['--plain', str(FIXTURES / plain), '--markdown', str(FIXTURES / markdown), *extra],
+            0,
+            '',
+        )
+    for case in cases.CASES + cases.FRAMED_CASES:
+        plain, markdown, options = cases.apply_case(case)
+        args = cases.write_cli_inputs(directory, case['id'], plain, markdown, options)
+        change = case.get('edit', case.get('edits', case.get('special', case.get('options'))))
+        yield case['id'], args, case['expect']['exit'], f'Edit: `{change!r}`'
+    for name, pair in cases.REGRESSIONS.items():
+        args = cases.write_cli_inputs(directory, name, pair['plain'], pair['markdown'], {})
+        yield (
+            f'regression:{name}',
+            args,
+            pair['expect']['exit'],
+            f'Plain: `{pair["plain"]!r}`\n\nMarkdown: `{pair["markdown"]!r}`',
+        )
+
+
 def summary(stdout: bytes):
     document = json.loads(stdout)
     if 'error' in document:
@@ -119,85 +143,26 @@ def main() -> None:
     out = Path(sys.argv[1])
     out.mkdir(parents=True, exist_ok=True)
     rows, md = [], [f'# Cases through the CLI (Python {platform.python_version()}, {platform.platform()})', '']
-    for name, (plain, markdown, extra) in POSITIVE.items():
-        status, stdout, stderr = run_cli(
-            ['--plain', str(FIXTURES / plain), '--markdown', str(FIXTURES / markdown), *extra]
-        )
-        document, fields = summary(stdout)
-        (out / f'positive_{name}.json').write_bytes(stdout)
-        rows.append(
-            {
-                'case': f'positive:{name}',
-                'exit': status,
-                'expected_exit': 0,
-                'stdout_bytes': len(stdout),
-                'stderr_bytes': len(stderr),
-                'stdout_sha256': hashlib.sha256(stdout).hexdigest(),
-                **fields,
-            }
-        )
-        md += [f'## positive: {name} (exit {status})', '', '```', cases.describe(document), '```', '']
     with tempfile.TemporaryDirectory() as tmp:
-        for case in cases.CASES:
-            plain, markdown, options = cases.apply_case(case)
-            (Path(tmp) / 'plain.txt').write_bytes(plain)
-            (Path(tmp) / 'markdown.md').write_bytes(markdown)
-            args = ['--plain', str(Path(tmp) / 'plain.txt'), '--markdown', str(Path(tmp) / 'markdown.md')]
-            for key, value in options.items():
-                args += ['--rules', ','.join(value)] if key == 'rules' else [FLAGS[key], str(value)]
+        for name, args, expected, change in cli_runs(Path(tmp)):
             status, stdout, stderr = run_cli(args)
             document, fields = summary(stdout)
+            if name.startswith('positive:'):
+                (out / f'positive_{name.split(":", 1)[1]}.json').write_bytes(stdout)
             rows.append(
                 {
-                    'case': case['id'],
+                    'case': name,
                     'exit': status,
-                    'expected_exit': case['expect']['exit'],
+                    'expected_exit': expected,
                     'stdout_bytes': len(stdout),
                     'stderr_bytes': len(stderr),
                     'stdout_sha256': hashlib.sha256(stdout).hexdigest(),
                     **fields,
                 }
             )
-            md += [
-                f'## {case["id"]} (exit {status}, expected {case["expect"]["exit"]})',
-                '',
-                f'Edit: `{case.get("edit", case.get("special", case.get("options")))!r}`',
-                '',
-                '```',
-                cases.describe(document),
-                '```',
-                '',
-            ]
-        for name, pair in cases.REGRESSIONS.items():
-            (Path(tmp) / 'plain.txt').write_bytes(pair['plain'])
-            (Path(tmp) / 'markdown.md').write_bytes(pair['markdown'])
-            status, stdout, stderr = run_cli(
-                ['--plain', str(Path(tmp) / 'plain.txt'), '--markdown', str(Path(tmp) / 'markdown.md')]
-            )
-            document, fields = summary(stdout)
-            rows.append(
-                {
-                    'case': f'regression:{name}',
-                    'exit': status,
-                    'expected_exit': pair['expect']['exit'],
-                    'stdout_bytes': len(stdout),
-                    'stderr_bytes': len(stderr),
-                    'stdout_sha256': hashlib.sha256(stdout).hexdigest(),
-                    **fields,
-                }
-            )
-            md += [
-                f'## regression: {name} (exit {status}, expected {pair["expect"]["exit"]})',
-                '',
-                f'Plain: `{pair["plain"]!r}`',
-                '',
-                f'Markdown: `{pair["markdown"]!r}`',
-                '',
-                '```',
-                cases.describe(document),
-                '```',
-                '',
-            ]
+            md += [f'## {name} (exit {status}, expected {expected})', '']
+            md += [change, ''] if change else []
+            md += ['```', cases.describe(document), '```', '']
     with (out / 'cases.jsonl').open('w', encoding='utf-8') as f:
         f.write(json.dumps({'python': platform.python_version(), 'platform': platform.platform()}) + '\n')
         for row in rows:
