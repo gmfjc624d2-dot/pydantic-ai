@@ -1,4 +1,4 @@
-# Contract: `export_compare` 1.1.0 (schema `export-compare/1`, policy `export-compare-body-policy/1`)
+# Contract: `export_compare` 1.2.0 (schema `export-compare/1`, policy `export-compare-body-policy/1`)
 
 ## Purpose and non-goals
 
@@ -85,7 +85,7 @@ as in CommonMark, where an indented line cannot interrupt a paragraph. So a code
 they remain code and are compared literally. Headings, list items and table rows are not split apart from
 the lines around them. Code-span matching is therefore an approximation of CommonMark, not a parser.
 
-## Layout pair `bracketed-html` (1.1.0; explicit selection only)
+## Layout pair `bracketed-html` (1.1.0, final empty line since 1.2.0; explicit selection only)
 
 This pair fits one export shape. Nothing about the default layout changed for it, and nothing in it is
 inferred. It needs the complete question and an explicit Markdown body start, and it takes neither
@@ -130,12 +130,18 @@ segment:
 | `separator_before_ornament` | exactly one empty line |
 | `ornament` | exactly `<div align="center">⁂</div>` (U+2042) |
 | `separator_before_definitions` | exactly one empty line |
-| `definitions` | `[^N]: URL` lines to the end of the file. Between two definitions there may be zero or one empty line, the only optional separator; these lines stay in this segment and are listed in its `separator_lines` |
+| `definitions` | `[^N]: URL` lines up to the final definition. Between two definitions there may be zero or one empty line; these lines stay in this segment and are listed in its `separator_lines` |
+| `separator_after_definitions` | since 1.2.0, optional: present only when the file ends with exactly one empty line after the final definition (the single byte `\n`). It is its own segment and is never part of `definitions` or its `separator_lines`; without it, the output is as in 1.1.0 |
 
 **Separators.**
 - Every separator above is required and is exactly one empty line: no spaces, and not inside code.
-- A missing or whitespace-only separator is `unsupported_separator`.
-- A blank line next to a separator is `repeated_separator`.
+- There are two optional separators, each at most one exactly empty line: between two definitions, and
+  after the final definition (`separator_after_definitions`).
+- A missing or whitespace-only separator is `unsupported_separator`. This includes a final line that holds
+  only spaces or tabs, with or without its line feed.
+- A blank line next to a separator is `repeated_separator`. This includes two or more blank lines after the
+  final definition.
+- Non-blank text after the final definition is `unsupported_trailer_line`.
 - The body's first and last lines are therefore never blank.
 
 **Rejected inside the body (outside code):**
@@ -176,6 +182,13 @@ without their separators. The pair adds or changes these fields:
 Consumers must tell the pairs apart by `layouts.plain.layout` and `layouts.markdown.layout`. The default
 layout's output is unchanged: the 1.0.0 and 1.0.1 recorded outputs are reproduced byte for byte apart from
 `tool.version`.
+
+**Change in 1.2.0.** 1.1.0 rejected a final empty line after the definitions as `unsupported_trailer_line`.
+Since 1.2.0, `bracketed-html` accepts exactly one such line and reports it as `separator_after_definitions`.
+- **Request IDs.** The segment then also has its count, `request_id.occurrences.markdown_separator_after_definitions`.
+- **Unchanged.** Nothing else changed: the plain layout, the other separators, the question, body and
+  hidden-marker checks, every comparison field, and the default layout. All recorded 1.0.0, 1.0.1 and
+  1.1.0 outputs are reproduced byte for byte apart from `tool.version`.
 
 ## Normalization policy `export-compare-body-policy/1` (bodies only)
 

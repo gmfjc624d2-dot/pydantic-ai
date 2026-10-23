@@ -25,7 +25,7 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 SCHEMA = 'export-compare/1'
 TOOL_NAME = 'export_compare'
-TOOL_VERSION = '1.1.0'
+TOOL_VERSION = '1.2.0'
 POLICY_ID = 'export-compare-body-policy/1'
 
 MAX_DOCUMENT_BYTES = 262_144
@@ -457,11 +457,12 @@ def _reject_definition_lines(doc: _Document, first: int, end: int) -> None:
         )
 
 
-def _markdown_definitions(doc: _Document, block: int) -> Dict[int, Dict[str, Any]]:
-    """Definitions from the block, each with its URL, line and whether it sits inside a display:none span."""
+def _markdown_definitions(doc: _Document, block: int, end: Optional[int] = None) -> Dict[int, Dict[str, Any]]:
+    """Definitions from lines [block, end) (to the last line by default), each with its URL, line and whether
+    it sits inside a display:none span."""
     definitions: Dict[int, Dict[str, Any]] = {}
     hidden = False
-    for k in range(block, len(doc.lines)):
+    for k in range(block, len(doc.lines) if end is None else end):
         parsed = _definition_block_line(doc.lines[k])
         assert parsed is not None
         opens, definition, closes = parsed
@@ -570,26 +571,55 @@ def _check_question_region(doc: _Document, first: int, end: int, question: str) 
     )
 
 
-def _framed_trailer(doc: _Document, first: int) -> Tuple[int, int, int]:
-    """(body end, marker span line, definitions start), 0-based, of the fixed trailer, read from the end.
+def _final_separator(doc: _Document) -> int:
+    """Where the definitions end: the last line, or the line before one exactly empty final line (b'\\n').
 
-    The trailer is: one empty line, the display:none marker span, one empty line, the ornament, one empty line,
-    and "[^N]: URL" definitions to the end, with at most one empty line between two definitions.
+    A final line that is whitespace only, or a second blank line before it, is rejected here; any other final
+    line is left to the trailer check, which requires a definition.
     """
-    lines, kinds, n = doc.lines, doc.kinds, len(doc.lines)
-
-    def definition(k: int) -> bool:
-        return first <= k < n and kinds[k] == 'text' and DEFINITION.fullmatch(lines[k]) is not None
-
-    if not definition(n - 1):
+    lines, n = doc.lines, len(doc.lines)
+    if not n or lines[n - 1].strip():
+        return n
+    if lines[n - 1] != '':
         raise CompareError(
-            'unsupported_trailer_line',
-            'the last Markdown line must be a "[^N]: URL" definition',
+            'unsupported_separator',
+            f'Markdown line {n} after the final definition is whitespace only; it may only be exactly empty',
             document='markdown',
             line=n,
-            text=_excerpt(lines[n - 1]) if n else '',
+            text=_excerpt(lines[n - 1]),
         )
-    block = n - 1
+    if n >= 2 and not lines[n - 2].strip():
+        raise CompareError(
+            'repeated_separator',
+            f'Markdown lines {n - 1}-{n} are both blank; at most one empty line may follow the final definition',
+            document='markdown',
+            lines=[n - 1, n],
+        )
+    return n - 1
+
+
+def _framed_trailer(doc: _Document, first: int) -> Tuple[int, int, int, int]:
+    """(body end, marker span line, definitions start, definitions end), 0-based, of the fixed trailer.
+
+    The trailer is: one empty line, the display:none marker span, one empty line, the ornament, one empty line,
+    "[^N]: URL" definitions with at most one empty line between two of them, and at most one exactly empty
+    final line. It is read from the end.
+    """
+    lines, kinds = doc.lines, doc.kinds
+    end = _final_separator(doc)
+
+    def definition(k: int) -> bool:
+        return first <= k < end and kinds[k] == 'text' and DEFINITION.fullmatch(lines[k]) is not None
+
+    if not definition(end - 1):
+        raise CompareError(
+            'unsupported_trailer_line',
+            'the last Markdown line must be a "[^N]: URL" definition, optionally followed by one empty line',
+            document='markdown',
+            line=end,
+            text=_excerpt(lines[end - 1]) if end else '',
+        )
+    block = end - 1
     while True:
         if definition(block - 1):
             block -= 1
@@ -622,7 +652,7 @@ def _framed_trailer(doc: _Document, first: int) -> Tuple[int, int, int]:
         _require_separator(doc, k - 1, between)
     if block - 5 <= first:
         raise CompareError('invalid_boundary', 'the Markdown body before the trailer is empty')
-    return block - 5, block - 4, block
+    return block - 5, block - 4, block, end
 
 
 def _parse_markdown_framed(doc: _Document, body_start: int, question: str) -> Dict[str, Any]:
@@ -647,8 +677,8 @@ def _parse_markdown_framed(doc: _Document, body_start: int, question: str) -> Di
     _check_question_region(doc, 2, first - 1, question)
     _require_separator(doc, 1, 'between the logo and the question')
     _require_separator(doc, first - 1, 'between the question and the body')
-    body_end, span, block = _framed_trailer(doc, first)
-    definitions = _markdown_definitions(doc, block)
+    body_end, span, block, end = _framed_trailer(doc, first)
+    definitions = _markdown_definitions(doc, block, end)
     _reject_definition_lines(doc, first, body_end)
     for k in range(first, body_end):
         if kinds[k] == 'text' and (SPAN_OPEN in lines[k] or lines[k] == ORNAMENT):
@@ -688,7 +718,8 @@ def _parse_markdown_framed(doc: _Document, body_start: int, question: str) -> Di
             doc.segment('separator_before_ornament', span + 1, span + 2),
             doc.segment('ornament', span + 2, span + 3),
             doc.segment('separator_before_definitions', span + 3, block),
-            doc.segment('definitions', block, n, separator_lines=[k + 1 for k in range(block, n) if not lines[k]]),
+            doc.segment('definitions', block, end, separator_lines=[k + 1 for k in range(block, end) if not lines[k]]),
+            *([doc.segment('separator_after_definitions', end, n)] if end < n else []),
         ],
     }
 

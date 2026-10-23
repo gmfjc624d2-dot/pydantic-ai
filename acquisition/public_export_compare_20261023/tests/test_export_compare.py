@@ -401,6 +401,40 @@ class BracketedHtmlLayout(unittest.TestCase):
                     for shown in expect.get('shows', []):
                         self.assertIn(shown, cases.describe(result))
 
+    def test_final_empty_line_is_one_separate_segment(self) -> None:
+        """1.2.0: b'\\n' appended after the final definition is in exactly one segment of its own; nothing else moves."""
+        plain, markdown, options = cases.apply_framed_case({'id': 'framed_sample'})
+        base = ec.compare_exports(plain, markdown, **options)
+        result = ec.compare_exports(plain, markdown + b'\n', **options)
+        segments = result['layouts']['markdown']['segments']
+        self.assertEqual(segments[:-1], base['layouts']['markdown']['segments'])
+        self.assertEqual(
+            segments[-1],
+            {
+                'name': 'separator_after_definitions',
+                'first_line': 22,
+                'last_line': 22,
+                'byte_start': len(markdown),
+                'byte_end': len(markdown) + 1,
+                'sha256': hashlib.sha256(b'\n').hexdigest(),
+            },
+        )
+        self.assertEqual(
+            b''.join((markdown + b'\n')[s['byte_start'] : s['byte_end']] for s in segments), markdown + b'\n'
+        )
+        self.assertEqual(result['layouts']['plain'], base['layouts']['plain'])
+        for key in ('raw_bodies_equal', 'normalized_bodies_equal', 'body_differences', 'citations', 'question'):
+            self.assertEqual(result['results'][key], base['results'][key], key)
+        self.assertEqual((result['normalization'], result['warnings']), (base['normalization'], base['warnings']))
+        request_id, base_request_id = dict(result['results']['request_id']), dict(base['results']['request_id'])
+        occurrences = dict(request_id.pop('occurrences'))
+        self.assertEqual(occurrences.pop('markdown_separator_after_definitions'), 0)
+        self.assertEqual((occurrences, request_id), (base_request_id.pop('occurrences'), base_request_id))
+        self.assertEqual(
+            (result['results']['semantic_judgment'], result['results']['producer_authenticity']),
+            ('NOT_ESTABLISHED', 'NOT_ESTABLISHED'),
+        )
+
     def test_layout_options_are_checked(self) -> None:
         plain, markdown, options = cases.apply_framed_case({'id': 'framed_sample'})
         for change, option in (

@@ -414,7 +414,37 @@ FRAMED_CASES: List[Dict[str, Any]] = [
         ],
         'expect': {'exit': 0, 'raw_bodies_equal': True, 'normalized_bodies_equal': True},
     },
+    {
+        'id': 'framed_final_empty_line',  # 1.2.0: the public fixture with exactly b'\n' appended
+        'edits': [('markdown', '[^2]: https://example.org/b\n', '[^2]: https://example.org/b\n\n')],
+        'expect': {
+            'exit': 0,
+            'raw_bodies_equal': False,
+            'normalized_bodies_equal': True,
+            'all_entries_url_map_equal': True,
+        },
+    },
     # ---- rejections: exit 2 ----------------------------------------------------------------------------------
+    {
+        'id': 'framed_two_final_empty_lines',
+        'edits': [('markdown', '[^2]: https://example.org/b\n', '[^2]: https://example.org/b\n\n\n')],
+        'expect': {'exit': 2, 'error': 'repeated_separator'},
+    },
+    {
+        'id': 'framed_final_space_line',
+        'edits': [('markdown', '[^2]: https://example.org/b\n', '[^2]: https://example.org/b\n \n')],
+        'expect': {'exit': 2, 'error': 'unsupported_separator'},
+    },
+    {
+        'id': 'framed_final_tab_line',
+        'edits': [('markdown', '[^2]: https://example.org/b\n', '[^2]: https://example.org/b\n\t\n')],
+        'expect': {'exit': 2, 'error': 'unsupported_separator'},
+    },
+    {
+        'id': 'framed_final_text_line',
+        'edits': [('markdown', '[^2]: https://example.org/b\n', '[^2]: https://example.org/b\n\nEnd.\n')],
+        'expect': {'exit': 2, 'error': 'unsupported_trailer_line'},
+    },
     {
         'id': 'framed_question_mismatch',
         'edits': [('question', 'do not infer', 'do infer')],

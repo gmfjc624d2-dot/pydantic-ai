@@ -3,8 +3,9 @@
 Run: python3 tests/mutation_check.py   (from acquisition/public_export_compare_20261023)
 
 Each mutation replaces one module or class attribute in memory, reruns the unittest suite, and must make it fail;
-the failing tests are listed. Three restore the 1.0.0 behaviour that 1.0.1 corrects; the last four loosen the
-bracketed-html layout of 1.1.0.
+the failing tests are listed. Three restore the 1.0.0 behaviour that 1.0.1 corrects; four loosen the
+bracketed-html layout of 1.1.0; the last four get the final empty line of 1.2.0 wrong (rejected as in 1.1.0,
+over-accepted, counted twice, or counted nowhere).
 """
 
 from __future__ import annotations
@@ -29,6 +30,7 @@ ORIGINAL_REQUEST_ID = ec._request_id_occurrences
 ORIGINAL_QUESTION = ec._check_question_region
 ORIGINAL_SEPARATOR = ec._require_separator
 ORIGINAL_ENTRIES = ec._entries_url_map
+ORIGINAL_FRAMED = ec._parse_markdown_framed
 
 
 def everything_is_prose(name, lines):  # type: ignore[no-untyped-def]
@@ -84,6 +86,32 @@ def only_cited_entries_compared(pb, mb, sources, definitions, hidden):  # type: 
     return [e for e in entries if e['cited_in_plain_body'] or e['cited_in_markdown_body']]
 
 
+def no_final_empty_line(doc):  # type: ignore[no-untyped-def]
+    return len(doc.lines)
+
+
+def any_trailing_blank_lines(doc):  # type: ignore[no-untyped-def]
+    end = len(doc.lines)
+    while end and not doc.lines[end - 1].strip():
+        end -= 1
+    return end
+
+
+def final_line_also_in_definitions(doc, body_start, question):  # type: ignore[no-untyped-def]
+    parsed = ORIGINAL_FRAMED(doc, body_start, question)
+    if parsed['segments'][-1]['name'] == 'separator_after_definitions':
+        first, n = parsed['segments'][-2]['first_line'] - 1, len(doc.lines)
+        separators = [k + 1 for k in range(first, n) if not doc.lines[k]]
+        parsed['segments'][-2] = doc.segment('definitions', first, n, separator_lines=separators)
+    return parsed
+
+
+def final_line_in_no_segment(doc, body_start, question):  # type: ignore[no-untyped-def]
+    parsed = ORIGINAL_FRAMED(doc, body_start, question)
+    parsed['segments'] = [s for s in parsed['segments'] if s['name'] != 'separator_after_definitions']
+    return parsed
+
+
 MUTATIONS = {
     'code normalized like prose': (ec, '_classify_lines', everything_is_prose),
     'URLs not protected from normalization': (ec, '_protected_spans', urls_unprotected),
@@ -109,6 +137,10 @@ MUTATIONS = {
         re.compile(r'<span style="display:none">(.*)</span>'),
     ),
     'bracketed-html: uncited entries not compared': (ec, '_entries_url_map', only_cited_entries_compared),
+    '1.1.0: final empty line rejected': (ec, '_final_separator', no_final_empty_line),
+    'final empty line: any trailing blank lines accepted': (ec, '_final_separator', any_trailing_blank_lines),
+    'final empty line: also counted in the definitions': (ec, '_parse_markdown_framed', final_line_also_in_definitions),
+    'final empty line: in no segment': (ec, '_parse_markdown_framed', final_line_in_no_segment),
 }
 
 
