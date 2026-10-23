@@ -1,0 +1,5 @@
+{"shape": "all_lines_differ_2000", "outcome": "compared", "differences": 1, "output_bytes": 744687, "seconds": 0.03017194299991388, "plain_bytes": 221701, "markdown_bytes": 227657, "process_seconds": 0.06828110899982676}
+{"shape": "repeated_identical_lines_sparse_changes", "outcome": "compared", "differences": 21, "output_bytes": 43536, "seconds": 3.601119742000037, "plain_bytes": 27935, "markdown_bytes": 29874, "process_seconds": 3.636575012999856}
+{"shape": "one_long_line_one_char_differs", "outcome": "compared", "differences": 1, "output_bytes": 447121, "seconds": 0.024983991999988575, "plain_bytes": 220045, "markdown_bytes": 220035, "process_seconds": 0.05964078000010886}
+{"shape": "many_markers", "outcome": "compared", "differences": 1, "output_bytes": 1327112, "seconds": 0.09555528400005642, "plain_bytes": 180041, "markdown_bytes": 200030, "process_seconds": 0.1334818020000057}
+{"shape": "many_backtick_runs", "outcome": "compared", "differences": 1, "output_bytes": 429601, "seconds": 0.03819933399995534, "plain_bytes": 180038, "markdown_bytes": 200027, "process_seconds": 0.0812643310000567}

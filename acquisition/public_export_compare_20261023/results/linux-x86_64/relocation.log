@@ -1,0 +1,15 @@
+# fresh-directory run of commit 4cdf0017b1e10c229e39057b497e80e9606f6cfc, 2026-10-23T04:51:19Z
+## Python 3.9.25 in a fresh directory containing: LICENSE export.md export_compare.py plain.txt 
+exit 0
+True True NOT_ESTABLISHED NOT_ESTABLISHED
+after editing the Markdown copy: exit 1
+[{'op': 'replace', 'plain': 'from', 'markdown': 'for'}]
+3cec54d6ab26a11efaa6feae49b6d7979b23b84fb2a65ebdc07bd51166bdc680  plain.txt
+27179b6f310b8dc4fbf4933e4accfeb147b5ee33d39fe23ee7c6050a06ea9cb3  export_compare.py
+## Python 3.13.16 in a fresh directory containing: LICENSE export.md export_compare.py plain.txt 
+exit 0
+True True NOT_ESTABLISHED NOT_ESTABLISHED
+after editing the Markdown copy: exit 1
+[{'op': 'replace', 'plain': 'from', 'markdown': 'for'}]
+3cec54d6ab26a11efaa6feae49b6d7979b23b84fb2a65ebdc07bd51166bdc680  plain.txt
+27179b6f310b8dc4fbf4933e4accfeb147b5ee33d39fe23ee7c6050a06ea9cb3  export_compare.py

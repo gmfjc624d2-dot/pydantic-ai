@@ -1,0 +1,327 @@
+{
+  "schema": "export-compare/1",
+  "tool": {
+    "name": "export_compare",
+    "version": "1.0.0"
+  },
+  "inputs": {
+    "plain": {
+      "sha256": "a399d0ddefe7dcfae84e4e33d325ea8968e01ebb2b8a8c0cc63393d8f300dc7b",
+      "bytes": 928,
+      "lines": 28,
+      "final_newline": true
+    },
+    "markdown": {
+      "sha256": "f79cbfa27797e2f57aabcf527f635c3d0d0ca866667ffe00280676552961e685",
+      "bytes": 1087,
+      "lines": 34,
+      "final_newline": true
+    }
+  },
+  "layouts": {
+    "plain": {
+      "layout": "plain-numbered-sources/1",
+      "segments": [
+        {
+          "name": "preamble",
+          "first_line": null,
+          "last_line": null,
+          "byte_start": 0,
+          "byte_end": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "body",
+          "first_line": 1,
+          "last_line": 23,
+          "byte_start": 0,
+          "byte_end": 660,
+          "sha256": "639a145a6d3c224e8b1bd0812795369b55647de4d4b0c9922436c9141a1e1c07"
+        },
+        {
+          "name": "sources",
+          "first_line": 24,
+          "last_line": 28,
+          "byte_start": 660,
+          "byte_end": 928,
+          "sha256": "33654732214ff538c78a15a5a36c3c53843526c65dc01dfe0ab4a70ae04e11d7",
+          "heading_line": 24
+        }
+      ]
+    },
+    "markdown": {
+      "layout": "markdown-footnote-definitions/1",
+      "logo_url": "https://example.org/static/logo.png",
+      "segments": [
+        {
+          "name": "prelude",
+          "first_line": 1,
+          "last_line": 3,
+          "byte_start": 0,
+          "byte_end": 151,
+          "sha256": "6d310444b9ddfa349f589345ac85d8a3af5bf26e9127c5bdfaf284d18a8c5b0b",
+          "logo_line": 1,
+          "question_line": 3
+        },
+        {
+          "name": "body",
+          "first_line": 4,
+          "last_line": 28,
+          "byte_start": 151,
+          "byte_end": 829,
+          "sha256": "aafb0ac6f9a796b2a85b4ebe3f44ca92605b2d21000339be844bfd0cb3fc6d2b"
+        },
+        {
+          "name": "definitions",
+          "first_line": 29,
+          "last_line": 34,
+          "byte_start": 829,
+          "byte_end": 1087,
+          "sha256": "32f9dfea85a54613dab28435a1c041a2fce8840159009054cdfea82ee8bc7fab"
+        }
+      ]
+    },
+    "boundaries": {
+      "plain_body_start": null,
+      "plain_sources_line": null,
+      "markdown_body_start": null,
+      "markdown_definitions_start": null
+    }
+  },
+  "normalization": {
+    "policy": "export-compare-body-policy/1",
+    "rules_applied": [
+      "citation_markers",
+      "escaped_hash",
+      "table_separator_rows",
+      "blank_lines"
+    ],
+    "rules": {
+      "citation_markers": "outside protected text, \"[N]\" in the plain body and \"[^N]\" not followed by \":\" in the Markdown body (N = 1..9999 without leading zeros, not preceded by a backslash, plain form not followed by \"(\") both become one citation token for N",
+      "escaped_hash": "outside protected text, \"\\#\" in the Markdown body becomes \"#\"",
+      "table_separator_rows": "the delimiter row directly under a table header row (same cell count) becomes \"|---|\" form, keeping alignment colons; header and data rows are not changed",
+      "blank_lines": "outside code, whitespace-only lines are blank; a run of blank lines becomes one empty line and blank lines at the start and end of the body are dropped"
+    },
+    "never_applied_to": [
+      "fenced code blocks (``` or ~~~ fences, fence lines included)",
+      "lines indented by 4 spaces or a tab (treated as code wherever they occur)",
+      "inline code spans (matching backtick runs, also across lines of one paragraph)",
+      "URLs: \"http://\" or \"https://\" up to the next whitespace",
+      "everything outside the two body segments (preamble, question, logo, sources, definitions)"
+    ],
+    "counts": {
+      "plain": {
+        "citation_markers": 9,
+        "escaped_hash": 0,
+        "table_separator_rows": 1,
+        "blank_lines_removed": 1
+      },
+      "markdown": {
+        "citation_markers": 9,
+        "escaped_hash": 1,
+        "table_separator_rows": 1,
+        "blank_lines_removed": 3
+      }
+    },
+    "normalized_body_sha256": {
+      "plain": "67960387fc350748decdbb51656bab4ecc2ce737e59292d9e04863659dc4983f",
+      "markdown": "67960387fc350748decdbb51656bab4ecc2ce737e59292d9e04863659dc4983f"
+    },
+    "normalized_body_lines": {
+      "plain": 22,
+      "markdown": 22
+    }
+  },
+  "results": {
+    "raw_documents_equal": false,
+    "raw_bodies_equal": false,
+    "normalized_bodies_equal": true,
+    "body_difference_count": 0,
+    "body_differences": [],
+    "citations": {
+      "referenced_ids_equal": true,
+      "reference_counts_equal": true,
+      "url_map_equal": true,
+      "url_map": [
+        {
+          "id": 1,
+          "plain_url": "https://example.org/guide/verify?version=1",
+          "markdown_url": "https://example.org/guide/verify?version=1",
+          "equal": true,
+          "plain_references": 4,
+          "markdown_references": 4
+        },
+        {
+          "id": 2,
+          "plain_url": "https://example.org/permissions#read",
+          "markdown_url": "https://example.org/permissions#read",
+          "equal": true,
+          "plain_references": 4,
+          "markdown_references": 4
+        },
+        {
+          "id": 3,
+          "plain_url": "https://example.org/languages/csharp",
+          "markdown_url": "https://example.org/languages/csharp",
+          "equal": true,
+          "plain_references": 1,
+          "markdown_references": 1
+        }
+      ],
+      "all_entries_url_map_equal": false,
+      "undefined_references": {
+        "plain": [],
+        "markdown": []
+      },
+      "plain_listed_not_cited": [
+        {
+          "id": 4,
+          "title": "Archived background page",
+          "url": "https://example.org/archive/background"
+        }
+      ],
+      "markdown_defined_not_referenced": [
+        {
+          "id": 4,
+          "url": "https://example.org/archive/background",
+          "hidden": true
+        },
+        {
+          "id": 5,
+          "url": "https://example.org/archive/unlisted",
+          "hidden": true
+        }
+      ],
+      "plain_sources": [
+        {
+          "id": 1,
+          "title": "Verification guide",
+          "url": "https://example.org/guide/verify?version=1",
+          "line": 25
+        },
+        {
+          "id": 2,
+          "title": "Permission model overview",
+          "url": "https://example.org/permissions#read",
+          "line": 26
+        },
+        {
+          "id": 3,
+          "title": "Language notes for C#",
+          "url": "https://example.org/languages/csharp",
+          "line": 27
+        },
+        {
+          "id": 4,
+          "title": "Archived background page",
+          "url": "https://example.org/archive/background",
+          "line": 28
+        }
+      ],
+      "markdown_definitions": [
+        {
+          "id": 1,
+          "url": "https://example.org/guide/verify?version=1",
+          "hidden": false,
+          "line": 29
+        },
+        {
+          "id": 2,
+          "url": "https://example.org/permissions#read",
+          "hidden": false,
+          "line": 30
+        },
+        {
+          "id": 3,
+          "url": "https://example.org/languages/csharp",
+          "hidden": false,
+          "line": 31
+        },
+        {
+          "id": 4,
+          "url": "https://example.org/archive/background",
+          "hidden": true,
+          "line": 33
+        },
+        {
+          "id": 5,
+          "url": "https://example.org/archive/unlisted",
+          "hidden": true,
+          "line": 34
+        }
+      ]
+    },
+    "question": {
+      "plain": {
+        "source": "supplied",
+        "preamble_text": null,
+        "supplied_text": "Which conditions apply before running the export check?"
+      },
+      "markdown": {
+        "source": "heading",
+        "text": "Which conditions apply before running the export check? Request ID: req-20261023-0001"
+      },
+      "supplied_equals_markdown_heading": false
+    },
+    "request_id": {
+      "value": "req-20261023-0001",
+      "counting": "non-overlapping literal matches of its UTF-8 bytes; no case folding or Unicode normalization",
+      "occurrences": {
+        "plain_document": 0,
+        "plain_preamble": 0,
+        "plain_body": 0,
+        "plain_sources": 0,
+        "markdown_document": 1,
+        "markdown_prelude": 1,
+        "markdown_question_heading": 1,
+        "markdown_body": 0,
+        "markdown_definitions": 0,
+        "supplied_question": 0
+      },
+      "present_in_plain_document": false,
+      "present_in_plain_body": false,
+      "present_in_markdown_document": true,
+      "present_in_markdown_body": false,
+      "present_in_markdown_question_heading": true
+    },
+    "semantic_judgment": "NOT_ESTABLISHED",
+    "producer_authenticity": "NOT_ESTABLISHED"
+  },
+  "not_established": [
+    "semantic equivalence",
+    "producer authenticity",
+    "question identity",
+    "truth",
+    "completeness of evidence"
+  ],
+  "warnings": [
+    {
+      "code": "source_titles_only_in_plain",
+      "message": "the plain export gives a title for each source; the Markdown definitions carry URLs only, so titles cannot be compared",
+      "ids": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "code": "uncited_entries",
+      "message": "some listed sources or definitions are not referenced in the body; they are not cited evidence",
+      "plain": [
+        4
+      ],
+      "markdown": [
+        4,
+        5
+      ]
+    },
+    {
+      "code": "markers_in_code_not_counted",
+      "message": "marker-like text inside code was compared literally and not counted as a citation",
+      "plain": 4,
+      "markdown": 4
+    }
+  ],
+  "notice": "Equal normalized bodies and URL maps are a textual agreement under the stated policy. They do not establish authenticity, that both exports answer the same question, truth, or that the evidence is complete. Source titles exist only in the plain export, and listed or defined entries are not evidence that anything cites them."
+}

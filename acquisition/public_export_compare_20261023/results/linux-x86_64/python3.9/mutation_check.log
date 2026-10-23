@@ -1,0 +1,7 @@
+unmutated: 18 tests, 0 failing
+code normalized like prose: 9 failing test(s) -> rejected
+URLs not protected from normalization: 8 failing test(s) -> rejected
+URL comparison ignores query and case: 1 failing test(s) -> rejected
+display:none span ignored (hidden flag lost): 3 failing test(s) -> rejected
+request ID counted only when a question exists: 1 failing test(s) -> rejected
+exit=0

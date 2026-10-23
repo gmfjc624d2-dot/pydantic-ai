@@ -22,7 +22,7 @@ nothing about authenticity, question identity, truth or completeness of evidence
 | Repository / branch | `gmfjc624d2-dot/pydantic-ai`, `claude/sweet-carson-tjohp1` (public research fork) |
 | Base commit | `ed6e9b152beeb3a6a9f1c2f419fda940318ca554`: the tip of the earlier, completed review-cue work, unchanged |
 | Scope | only `acquisition/public_export_compare_20261023/`; earlier acquisitions are not touched |
-| Result commits | recorded in `results/linux-x86_64/RUN.md` and below once pushed |
+| Result commits | code `4cdf0017b1e10c229e39057b497e80e9606f6cfc`; this report and `results/` in the commit after it (its ID is given in the hand-off message and by `git log`) |
 
 **Interruption (2026-10-23).** The first read-only environment listing of this operation kept showing as
 running in the requester's view and was stopped by the requester. That listing was `ls`, `python3 -VV`,
@@ -130,10 +130,58 @@ python3 -I -c 'import json; r = json.load(open("result.json"))["results"]; print
 
 Expected: `exit 0`, then `True True NOT_ESTABLISHED NOT_ESTABLISHED`.
 
-## Results
+## Results (Linux x86_64 only; clean checkout of `4cdf001`)
 
-Linux x86_64 only. Raw outputs and the run record are in `results/linux-x86_64/`; the summary is added with
-them.
+Full record: [`results/linux-x86_64/RUN.md`](results/linux-x86_64/RUN.md).
+- **Tests:** on CPython 3.9.25 and 3.13.16, 18 / 18 tests pass and 5 / 5 mutations are rejected.
+- **CLI:** all 38 runs (3 positive pairs and 35 single-edit cases) gave their expected exit status
+  (0: 5, 1: 17, 2: 16) with empty stderr. Their stdout was byte-identical between the two interpreters.
+- **Relocation:** the fresh-directory commands above gave `exit 0` and then, after a one-word edit,
+  `exit 1` with `'from' -> 'for'`.
+
+What a reader sees (from `results/linux-x86_64/python3.13/cases.md`):
+
+```
+negation_removed (exit 1)
+  normalized bodies equal: False; cited URL map equal: True; semantic judgment: NOT_ESTABLISHED
+  body replace (plain 1, markdown 5): ... 'Do not infer permission ...' | ... 'Do infer permission ...'
+  changed words: 'not ' -> ''
+querystring_changed (exit 1)
+  normalized bodies equal: True; cited URL map equal: False
+  [1] URL differs at character 41: '1' -> '2'
+marker_in_code_rewritten (exit 1)
+  body replace (plain 14, markdown 19): plain: 'print(refs[1])' | markdown: 'print(refs[^1])'
+unicode_identifier (exit 1)
+  changed words: 'source' -> 'sоurce'
+title_changed_only_in_plain (exit 0)
+  normalized bodies equal: True; cited URL map equal: True; warning source_titles_only_in_plain
+ambiguous_sources_boundary (exit 2)
+  REJECTED ambiguous_boundary: the plain export has more than one "Sources" line outside code
+```
+
+The ID-in-body control (`fixtures/id_in_body_*`, `--request-id public-example-1`) shows that a missing
+question does not hide the ID:
+- the plain question is `absent` and the Markdown question is a `heading`;
+- the ID is still counted in the plain body (`present_in_plain_body: true`, plain document 1) and in the
+  Markdown heading and body (Markdown document 2);
+- `semantic_judgment` and `producer_authenticity` are `NOT_ESTABLISHED`;
+- the exit status is 0, because the bodies and cited URLs agree.
+
+Worst measured time: 3.6 s, for 1,989 mostly identical lines with sparse changes (difflib is near-quadratic
+there; the 2,000-line limit bounds it). All other worst-case shapes took 0.03–0.1 s.
+
+**macOS qualification (not done here):** on the Mac, `git fetch` and check out the result commit, then from
+`acquisition/public_export_compare_20261023/` run:
+
+```bash
+git rev-parse HEAD && python3 -VV && python3 -m unittest discover -s tests -v && python3 tests/mutation_check.py \
+  && OUT="$(mktemp -d)" && python3 tests/run_cases.py "$OUT" && echo "outputs in $OUT"
+```
+
+Then run the fresh-directory commands above. Expected: 18 tests OK, 5 mutations rejected, and
+`unexpected exit status or stderr output: []`. The `stdout_sha256` values in `$OUT/cases.jsonl` should
+match `results/linux-x86_64/python3.*/cases.jsonl`. Apple's `/usr/bin/python3` is 3.9.x; any CPython
+≥ 3.9 works. Timings will differ.
 
 ## Residual limits
 
@@ -155,4 +203,11 @@ them.
   evidence.
 - **Rejected by design (tested):** CRLF and BOM inputs are rejected rather than converted, and so are
   inputs above 256 KiB or 2,000 lines.
+- **Time:** comparing many repeated identical lines is near-quadratic (3.6 s measured at the line limit);
+  there is no time limit other than the size limits.
+- **Unicode version:**
+  - Blank-line detection (`str.strip`), the `\s`/`\S` patterns and word tokenization follow the running
+    Python's Unicode database.
+  - Unicode 13.0.0 (3.9.25) and 15.1.0 (3.13.16) gave byte-identical outputs in all 38 runs here.
+  - A character whose whitespace status differs between Unicode versions could still change a verdict.
 - **Platform:** macOS is not qualified; the commands above are the handoff.
