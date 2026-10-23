@@ -1,0 +1,6 @@
+Python 3.13.16: module 1.2.0 against 1.0.0 results/linux-x86_64/python3.13/cases.jsonl
+38 recorded runs; identical apart from the version: 38; differ: []; no longer defined: []
+Python 3.13.16: module 1.2.0 against 1.0.1 results/linux-x86_64/v1.0.1/python3.13/cases.jsonl
+47 recorded runs; identical apart from the version: 47; differ: []; no longer defined: []
+Python 3.13.16: module 1.2.0 against 1.1.0 results/linux-x86_64/v1.1.0/python3.13/cases.jsonl
+70 recorded runs; identical apart from the version: 70; differ: []; no longer defined: []

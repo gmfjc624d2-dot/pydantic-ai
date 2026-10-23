@@ -1,0 +1,51 @@
+# fresh-directory relocation of the README default-layout commands, export_compare 1.2.0 (commit f3aca4e62eddda13e3b81eca20d8f70f53b5ec31), 2026-10-23T05:47:40Z
+## Python 3.9.25
+LICENSE
+export.md
+export_compare.py
+plain.txt
+exit 0
+1.2.0 True True NOT_ESTABLISHED NOT_ESTABLISHED
+exit 1 after a one-word edit
+[{'op': 'replace', 'plain': 'from', 'markdown': 'for'}]
+## Python 3.13.16
+LICENSE
+export.md
+export_compare.py
+plain.txt
+exit 0
+1.2.0 True True NOT_ESTABLISHED NOT_ESTABLISHED
+exit 1 after a one-word edit
+[{'op': 'replace', 'plain': 'from', 'markdown': 'for'}]
+# isolated fresh-directory run of the README bracketed-html command, export_compare 1.2.0 (commit f3aca4e62eddda13e3b81eca20d8f70f53b5ec31), 2026-10-23T05:47:29Z
+# run once per interpreter, with python3 on PATH pointing at it; mktemp directories under the session scratch area
+## Python 3.9.25
+question.txt 5e87f555f327
+plain.txt fe9fc4f85122
+markdown.md c8735a8afe2f
+LICENSE
+export_compare.py
+markdown.md
+plain.txt
+question.txt
+exit 0
+1.2.0 False True [1] [1, 2] [2] 1 1 1 2 NOT_ESTABLISHED NOT_ESTABLISHED
+exit 2 boundary_swallows_answer
+exit 0
+1.2.0 [('definitions', 19, 355, 412), ('separator_after_definitions', 22, 412, 413)] True [1, 2] 0
+exit 2 repeated_separator
+## Python 3.13.16
+question.txt 5e87f555f327
+plain.txt fe9fc4f85122
+markdown.md c8735a8afe2f
+LICENSE
+export_compare.py
+markdown.md
+plain.txt
+question.txt
+exit 0
+1.2.0 False True [1] [1, 2] [2] 1 1 1 2 NOT_ESTABLISHED NOT_ESTABLISHED
+exit 2 boundary_swallows_answer
+exit 0
+1.2.0 [('definitions', 19, 355, 412), ('separator_after_definitions', 22, 412, 413)] True [1, 2] 0
+exit 2 repeated_separator

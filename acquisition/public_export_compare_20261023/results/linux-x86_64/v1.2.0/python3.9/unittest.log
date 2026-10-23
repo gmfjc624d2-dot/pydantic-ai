@@ -1,0 +1,31 @@
+test_every_case_reports_what_a_reader_must_see (test_export_compare.AdversarialCases) ... ok
+test_rejections_name_the_place (test_export_compare.AdversarialCases) ... ok
+test_every_case_reports_what_a_reader_must_see (test_export_compare.BracketedHtmlLayout) ... ok
+test_final_empty_line_is_one_separate_segment (test_export_compare.BracketedHtmlLayout)
+1.2.0: b'\n' appended after the final definition is in exactly one segment of its own; nothing else moves. ... ok
+test_layout_options_are_checked (test_export_compare.BracketedHtmlLayout) ... ok
+test_sample_pair_keeps_every_field_separate (test_export_compare.BracketedHtmlLayout) ... ok
+test_statuses_and_untouched_inputs (test_export_compare.Cli) ... ok
+test_raw_bodies_equal_is_equality_of_the_reported_body_bytes (test_export_compare.Corrections) ... ok
+test_regression_pairs_report_what_a_reader_must_see (test_export_compare.Corrections) ... ok
+test_rows_inside_a_code_span_are_never_a_table (test_export_compare.Corrections) ... ok
+test_explicit_boundaries_equal_to_the_recognized_ones_change_nothing (test_export_compare.KnownLayouts) ... ok
+test_full_pair_agrees_only_where_the_policy_says (test_export_compare.KnownLayouts) ... ok
+test_minimal_pair_without_any_question (test_export_compare.KnownLayouts) ... ok
+test_missing_question_does_not_hide_an_id_in_the_body (test_export_compare.KnownLayouts) ... ok
+test_question_and_request_id_are_separate_fields (test_export_compare.KnownLayouts) ... ok
+test_segments_partition_each_input_exactly (test_export_compare.KnownLayouts) ... ok
+test_document_byte_limit_is_exact (test_export_compare.Limits) ... ok
+test_largest_inputs_stay_within_the_output_limit (test_export_compare.Limits) ... ok
+test_line_limit_is_exact (test_export_compare.Limits) ... ok
+test_question_and_request_id_limits (test_export_compare.Limits) ... ok
+test_disabling_a_rule_only_adds_differences (test_export_compare.Policy) ... ok
+test_unsafe_normalizations_are_refused_with_a_reason (test_export_compare.Policy) ... ok
+test_heuristic_global_rewrite_accepts_what_this_tool_reports (test_export_compare.RejectedDesign) ... ok
+test_heuristic_sources_split_silently_truncates (test_export_compare.RejectedDesign) ... ok
+test_report_records_operation_and_base (test_export_compare.Report) ... ok
+
+----------------------------------------------------------------------
+Ran 25 tests in 0.496s
+
+OK

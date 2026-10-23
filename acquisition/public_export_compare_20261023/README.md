@@ -26,7 +26,8 @@ nothing about authenticity, question identity, truth or completeness of evidence
 | Scope | only `acquisition/public_export_compare_20261023/`; earlier acquisitions are not touched |
 | Result commits | 1.0.0: code `4cdf0017b1e10c229e39057b497e80e9606f6cfc`, report and `results/` `4d35b65f82ca9795adbe2df9d58026879836b61c` |
 | | 1.0.1 (correction): code `4ed30a0ed684dfa5e32b9d91ae2f556c1af64498`, report and `results/linux-x86_64/v1.0.1/` `545c79db5d018351f7ba0d2269a8f139c0fb3ddf` |
-| | 1.1.0 (`bracketed-html` layout): code `1f13d341a9e43c107b161e56aed0deb6dca9c823`; this report and `results/linux-x86_64/v1.1.0/` in the commit after it (its ID is given in the hand-off message and by `git log`) |
+| | 1.1.0 (`bracketed-html` layout): code `1f13d341a9e43c107b161e56aed0deb6dca9c823`, report and `results/linux-x86_64/v1.1.0/` `8a5d69476ddaa2bc8f18f93218671c8ddcbaf950` |
+| | 1.2.0 (final empty line in `bracketed-html`): code `f3aca4e62eddda13e3b81eca20d8f70f53b5ec31`; this report and `results/linux-x86_64/v1.2.0/` in the commit after it (its ID is given in the hand-off message and by `git log`) |
 
 **Interruption (2026-10-23).** The first read-only environment listing of this operation kept showing as
 running in the requester's view and was stopped by the requester. That listing was `ls`, `python3 -VV`,
@@ -142,6 +143,51 @@ Two parallel recognizer functions were added beside the default ones. A wider pa
 given shape and rejects every variation tested. That does not show that the consumer's real exports always
 take this shape.
 
+## Final empty line in `bracketed-html` (1.2.0)
+
+**Requester's report (their observation, not a run here).**
+- **Fixture:** 1.1.0 accepted the exact public `bracketed_html` fixture in a fresh directory on macOS with
+  CPython 3.9.6 (exit 0).
+- **Consumer original:** 1.1.0 rejected it with `unsupported_trailer_line`. It has one extra empty line after
+  its final footnote definition. This was an unsupported variation, not a false agreement.
+- **Reproducer:** fully public; it is `fixtures/bracketed_html_markdown.md` with exactly `b'\n'` appended.
+  The consumer export was neither requested nor transmitted.
+
+**Change.**
+- **Accepted:** only in `bracketed-html`, the Markdown file may end with zero or one exactly empty line after
+  the final definition.
+- **Reporting:** when that line is present it is its own segment, `separator_after_definitions` (for the
+  reproducer: line 22, bytes 412–413). It is not part of `definitions` or its `separator_lines`, and it
+  gets its own request-ID count.
+- **No rewriting:** nothing is stripped or rewritten.
+- **Still rejected:**
+  - two or more final blank lines: `repeated_separator`;
+  - a final line of spaces or tabs: `unsupported_separator`;
+  - trailing text: `unsupported_trailer_line`.
+- **Unchanged:**
+  - the plain bibliography, for which there is no evidence;
+  - every other separator check, and the question, body and hidden-marker checks;
+  - the public API and the default layout.
+- **Recorded outputs:** all 1.0.0, 1.0.1 and 1.1.0 outputs are reproduced byte for byte apart from the
+  version.
+- **Kept evidence:** the 1.1.0 rejection of the reproducer is kept in
+  `results/linux-x86_64/v1.2.0/final_empty_line.log`.
+
+**Coverage.**
+- **Five cases:** the reproducer, two final empty lines, a space line, a tab line and trailing text.
+- **One test** shows that the added byte is in exactly one segment. Everything else, including URL maps,
+  literal ID counts, warnings and the `NOT_ESTABLISHED` fields, equals the result for the unchanged fixture.
+- **Four mutations** must each fail the tests: the 1.1.0 rejection, over-acceptance of trailing blank lines,
+  the line counted twice, and the line counted nowhere.
+
+**Requester's earlier macOS observations (attribution only).** With 1.0.1 on CPython 3.9.6, in a fresh
+directory, they report:
+- 21 unit tests passed and 8 mutations were detected;
+- 38 old-output comparisons matched;
+- the C1/C2 repairs held on the focal cases.
+
+These are their observations, not macOS runs made here, and they do not qualify 1.2.0.
+
 ## Design
 
 **Explicit boundaries and a strict recognizer, rather than heuristic extraction.** Each export is split
@@ -201,12 +247,12 @@ This tool reports each of these as a difference.
 | `export_compare.py` | the module and CLI (the only runtime file) |
 | `LICENSE` | MIT, copied from the repository root |
 | `CONTRACT.md` | interfaces, layouts, policy, result fields, limits, rejection codes |
-| `fixtures/` | synthetic example.org pairs: `full_*` (logo, question with request ID, table, code with literal markers, escaped `#`, hidden definitions), `minimal_*`, `id_in_body_*` (`public-example-1` in the copied body without a question), `bracketed_html_*` (the requester's 1.1.0 sample: plain, Markdown and complete question, byte for byte); `cases.py` (35 single-edit default cases, 22 `FRAMED_CASES` for `bracketed-html`, 9 exact-byte `REGRESSIONS` pairs from 1.0.1, `write_cli_inputs()` and `describe()`) |
+| `fixtures/` | synthetic example.org pairs: `full_*` (logo, question with request ID, table, code with literal markers, escaped `#`, hidden definitions), `minimal_*`, `id_in_body_*` (`public-example-1` in the copied body without a question), `bracketed_html_*` (the requester's 1.1.0 sample: plain, Markdown and complete question, byte for byte); `cases.py` (35 single-edit default cases, 27 `FRAMED_CASES` for `bracketed-html`, 9 exact-byte `REGRESSIONS` pairs from 1.0.1, `write_cli_inputs()` and `describe()`) |
 | `tests/test_export_compare.py` | unit tests, including CLI subprocesses, the rejected design, the 1.0.1 `Corrections` and `BracketedHtmlLayout` |
-| `tests/mutation_check.py` | each of 12 broken variants must fail the tests (3 restore 1.0.0 behaviours, 4 loosen `bracketed-html`); lists the failing tests |
+| `tests/mutation_check.py` | each of 16 broken variants must fail the tests (3 restore 1.0.0 behaviours, 4 loosen `bracketed-html`, 4 mishandle the 1.2.0 final empty line); lists the failing tests |
 | `tests/run_cases.py` | runs every pair, case and regression pair through the real CLI, and times worst-case shapes |
-| `tests/check_recorded_outputs.py` | checks that the module reproduces a recorded run set (1.0.0 or 1.0.1) apart from the version; it replaces 1.0.1's `check_1_0_0_outputs.py` |
-| `results/linux-x86_64/` | 1.0.0 raw outputs and `RUN.md`; `v1.0.1/` (the 1.0.0 failures and the 1.0.1 results); `v1.1.0/` (Linux only) |
+| `tests/check_recorded_outputs.py` | checks that the module reproduces a recorded run set (1.0.0, 1.0.1 or 1.1.0) apart from the version; it replaces 1.0.1's `check_1_0_0_outputs.py` |
+| `results/linux-x86_64/` | 1.0.0 raw outputs and `RUN.md`; `v1.0.1/` (the 1.0.0 failures and the 1.0.1 results); `v1.1.0/`; `v1.2.0/` (Linux only) |
 
 ## Commands
 
@@ -243,7 +289,7 @@ Expected: `exit 0`, then `True True NOT_ESTABLISHED NOT_ESTABLISHED`.
 requester's three synthetic files byte for byte, with no checkout on the path):
 
 ```bash
-SRC=acquisition/public_export_compare_20261023          # in a checkout of the 1.1.0 code commit
+SRC=acquisition/public_export_compare_20261023          # in a checkout of the 1.2.0 code commit
 DEST="$(mktemp -d)"
 cp "$SRC/export_compare.py" "$SRC/LICENSE" "$DEST/" && cd "$DEST" || exit 1
 python3 -I - <<'PY'
@@ -268,20 +314,45 @@ ARGS="--layout bracketed-html --plain plain.txt --markdown markdown.md --questio
 python3 -I export_compare.py $ARGS --markdown-body-start 7 > result.json; echo "exit $?"
 python3 -I -c 'import json; r = json.load(open("result.json")); x = r["results"]; c = x["citations"]; o = x["request_id"]["occurrences"]; print(r["tool"]["version"], x["raw_bodies_equal"], x["normalized_bodies_equal"], [e["id"] for e in c["url_map"]], [e["id"] for e in c["entries_url_map"]], c["hidden_markers"]["ids"], o["plain_body"], o["markdown_question"], o["markdown_body"], o["markdown_document"], x["semantic_judgment"], x["producer_authenticity"])'
 python3 -I export_compare.py $ARGS --markdown-body-start 9 > rejected.json; echo "exit $? $(python3 -I -c 'import json; print(json.load(open("rejected.json"))["error"]["code"])')"
+python3 -I -c 'open("markdown.md", "ab").write(b"\n")'     # the public reproducer: exactly one final empty line
+python3 -I export_compare.py $ARGS --markdown-body-start 7 > result2.json; echo "exit $?"
+python3 -I -c 'import json; r = json.load(open("result2.json")); x = r["results"]; s = r["layouts"]["markdown"]["segments"]; print(r["tool"]["version"], [(t["name"], t["first_line"], t["byte_start"], t["byte_end"]) for t in s[-2:]], x["normalized_bodies_equal"], [e["id"] for e in x["citations"]["entries_url_map"]], x["request_id"]["occurrences"]["markdown_separator_after_definitions"])'
+python3 -I -c 'open("markdown.md", "ab").write(b"\n")'     # a second final empty line stays rejected
+python3 -I export_compare.py $ARGS --markdown-body-start 7 > rejected2.json; echo "exit $? $(python3 -I -c 'import json; print(json.load(open("rejected2.json"))["error"]["code"])')"
 ```
 
-Expected output:
+Expected output with 1.2.0:
 - the hashes `5e87f555f327`, `fe9fc4f85122` and `c8735a8afe2f`;
-- `exit 0`, then `1.1.0 False True [1] [1, 2] [2] 1 1 1 2 NOT_ESTABLISHED NOT_ESTABLISHED`;
-- `exit 2 boundary_swallows_answer`.
+- `exit 0`, then `1.2.0 False True [1] [1, 2] [2] 1 1 1 2 NOT_ESTABLISHED NOT_ESTABLISHED`;
+- `exit 2 boundary_swallows_answer`;
+- after one final empty line is appended: `exit 0`, then
+  `1.2.0 [('definitions', 19, 355, 412), ('separator_after_definitions', 22, 412, 413)] True [1, 2] 0`;
+- after a second one: `exit 2 repeated_separator`.
 
-The `1.1.0 …` line gives, in order:
+With 1.1.0, the first three lines are the same apart from the version, and the appended empty line gives
+`exit 2` (`unsupported_trailer_line`).
+
+The first `1.2.0 …` line gives, in order:
 - the version;
 - raw, then normalized, body equality;
 - the cited ids, then all entry ids, then the hidden-marker ids;
 - request-ID counts in the plain body, the Markdown question, the Markdown body and the whole Markdown
   document;
 - the semantic judgment and the producer authenticity.
+
+## Results 1.2.0 (Linux x86_64 only; clean worktree of `f3aca4e`)
+
+Full record: [`results/linux-x86_64/v1.2.0/RUN.md`](results/linux-x86_64/v1.2.0/RUN.md).
+- **Tests:** on CPython 3.9.25 and 3.13.16, 25 / 25 tests pass and 16 / 16 mutations are rejected.
+- **CLI:** all 75 runs gave their expected exit status with empty stderr (0: 12, 1: 26, 2: 37). Their stdout
+  was byte-identical between the two interpreters.
+- **Recorded outputs:** reproduced byte for byte apart from the version: 1.0.0 (38), 1.0.1 (47) and
+  1.1.0 (70).
+- **Reproducer** (the fixture plus `b'\n'`), in fresh directories:
+  - 1.1.0 gives `exit 2` (`unsupported_trailer_line`);
+  - 1.2.0 gives `exit 0`, with fields identical to the unchanged fixture plus the separate segment.
+  - With 1.2.0, `\n\n`, a space line, a tab line and trailing text give `exit 2`.
+- **Isolated check:** the output above, on both interpreters.
 
 ## Results 1.1.0 (Linux x86_64 only; clean worktree of `1f13d34`)
 
@@ -368,17 +439,20 @@ git rev-parse HEAD && python3 -VV && python3 -m unittest discover -s tests -v &&
   && OUT="$(mktemp -d)" && python3 tests/run_cases.py "$OUT" && echo "outputs in $OUT"
 ```
 
-Then run `python3 tests/check_recorded_outputs.py results/linux-x86_64 1.0.0`,
-`python3 tests/check_recorded_outputs.py results/linux-x86_64/v1.0.1 1.0.1`, and both fresh-directory commands
-above (the default one and the isolated `bracketed-html` check).
+Then run:
+- `python3 tests/check_recorded_outputs.py results/linux-x86_64 1.0.0`;
+- `python3 tests/check_recorded_outputs.py results/linux-x86_64/v1.0.1 1.0.1`;
+- `python3 tests/check_recorded_outputs.py results/linux-x86_64/v1.1.0 1.1.0`;
+- both fresh-directory commands above: the default one and the isolated `bracketed-html` check.
 
-Expected for 1.1.0:
-- 24 tests OK, 12 mutations rejected, and `70 CLI runs; unexpected exit status or stderr output: []`;
-- `identical apart from the version: 38` and `: 47`;
-- the `stdout_sha256` values in `$OUT/cases.jsonl` match `results/linux-x86_64/v1.1.0/python3.*/cases.jsonl`;
+Expected for 1.2.0:
+- 25 tests OK, 16 mutations rejected, and `75 CLI runs; unexpected exit status or stderr output: []`;
+- `identical apart from the version: 38`, then `: 47`, then `: 70`;
+- the `stdout_sha256` values in `$OUT/cases.jsonl` match `results/linux-x86_64/v1.2.0/python3.*/cases.jsonl`;
 - the isolated check prints what is listed above.
 
-The requester's focal macOS observations (C1 and C2 on 1.0.0) are not a qualification of 1.0.1 or 1.1.0.
+The requester's macOS observations do not qualify any version here: C1/C2 on 1.0.0, the 1.0.1 suite, and
+the 1.1.0 fixture and consumer runs.
 
 Apple's `/usr/bin/python3` is 3.9.x; any CPython ≥ 3.9 works. Timings will differ.
 
@@ -390,7 +464,8 @@ Apple's `/usr/bin/python3` is 3.9.x; any CPython ≥ 3.9 works. Timings will dif
   - `[N] title URL` entries are accepted only with `bracketed-html`. That mode's title is everything
     before the URL, so `[1] Title - URL` has the title `Title -`.
   - `bracketed-html` takes one fixed shape: one logo style, one ornament, one hidden span, and single empty
-    separators. Real exports that vary are rejected; this needs a contract change, not a looser rule.
+    separators. Since 1.2.0, one exactly empty final line is also accepted. Real exports that vary in other
+    ways are rejected; this needs a contract change, not a looser rule.
   - In `bracketed-html`, a `display:none` opener anywhere on a body text line is rejected, even inside
     inline code (over-rejection).
   - The question's `literal_occurrences` counts the whole question's bytes in each whole document; it

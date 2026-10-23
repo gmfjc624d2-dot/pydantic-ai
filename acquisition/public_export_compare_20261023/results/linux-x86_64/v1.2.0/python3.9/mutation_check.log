@@ -1,0 +1,86 @@
+unmutated: 25 tests, 0 failing
+code normalized like prose: 10 failing test(s) -> rejected
+    AdversarialCases.test_every_case_reports_what_a_reader_must_see (case='list_reordered')
+    AdversarialCases.test_every_case_reports_what_a_reader_must_see (case='marker_in_code_rewritten')
+    AdversarialCases.test_every_case_reports_what_a_reader_must_see (case='querystring_changed')
+    AdversarialCases.test_every_case_reports_what_a_reader_must_see (case='title_changed_only_in_plain')
+    AdversarialCases.test_every_case_reports_what_a_reader_must_see (case='unclosed_code_fence')
+    AdversarialCases.test_every_case_reports_what_a_reader_must_see (case='url_mapping_changed')
+    Cli.test_statuses_and_untouched_inputs
+    Corrections.test_regression_pairs_report_what_a_reader_must_see (case='indented_continuation_stays_literal')
+    KnownLayouts.test_full_pair_agrees_only_where_the_policy_says
+    Policy.test_disabling_a_rule_only_adds_differences
+URLs not protected from normalization: 8 failing test(s) -> rejected
+    AdversarialCases.test_every_case_reports_what_a_reader_must_see (case='list_reordered')
+    AdversarialCases.test_every_case_reports_what_a_reader_must_see (case='marker_in_code_rewritten')
+    AdversarialCases.test_every_case_reports_what_a_reader_must_see (case='querystring_changed')
+    AdversarialCases.test_every_case_reports_what_a_reader_must_see (case='title_changed_only_in_plain')
+    AdversarialCases.test_every_case_reports_what_a_reader_must_see (case='url_mapping_changed')
+    Cli.test_statuses_and_untouched_inputs
+    KnownLayouts.test_full_pair_agrees_only_where_the_policy_says
+    Policy.test_disabling_a_rule_only_adds_differences
+URL comparison ignores query and case: 1 failing test(s) -> rejected
+    AdversarialCases.test_every_case_reports_what_a_reader_must_see (case='querystring_changed')
+display:none span ignored (hidden flag lost): 3 failing test(s) -> rejected
+    AdversarialCases.test_every_case_reports_what_a_reader_must_see (case='hidden_span_unclosed')
+    Cli.test_statuses_and_untouched_inputs
+    KnownLayouts.test_full_pair_agrees_only_where_the_policy_says
+request ID counted only when a question exists: 1 failing test(s) -> rejected
+    KnownLayouts.test_missing_question_does_not_hide_an_id_in_the_body
+1.0.0: table rule ignores code spans (C1): 8 failing test(s) -> rejected
+    BracketedHtmlLayout.test_every_case_reports_what_a_reader_must_see (case='framed_c1_code_span_table_rows')
+    Corrections.test_regression_pairs_report_what_a_reader_must_see (case='c1_code_span_contains_table_like_rows')
+    Corrections.test_regression_pairs_report_what_a_reader_must_see (case='code_span_opens_before_table_header')
+    Corrections.test_regression_pairs_report_what_a_reader_must_see (case='code_span_opens_in_table_header')
+    Corrections.test_regression_pairs_report_what_a_reader_must_see (case='indented_continuation_stays_literal')
+    Corrections.test_rows_inside_a_code_span_are_never_a_table (layout='span closes in the header')
+    Corrections.test_rows_inside_a_code_span_are_never_a_table (layout='span opens before the header')
+    Corrections.test_rows_inside_a_code_span_are_never_a_table (layout='span opens in the header')
+1.0.0: segment bytes rebuilt from lines (C2): 22 failing test(s) -> rejected
+    BracketedHtmlLayout.test_every_case_reports_what_a_reader_must_see (case='framed_c1_code_span_table_rows')
+    BracketedHtmlLayout.test_every_case_reports_what_a_reader_must_see (case='framed_c2_raw_bodies_equal_only_when_bytes_equal')
+    BracketedHtmlLayout.test_every_case_reports_what_a_reader_must_see (case='framed_code_changed')
+    BracketedHtmlLayout.test_every_case_reports_what_a_reader_must_see (case='framed_final_empty_line')
+    BracketedHtmlLayout.test_every_case_reports_what_a_reader_must_see (case='framed_final_space_line')
+    BracketedHtmlLayout.test_every_case_reports_what_a_reader_must_see (case='framed_final_tab_line')
+    BracketedHtmlLayout.test_every_case_reports_what_a_reader_must_see (case='framed_final_text_line')
+    BracketedHtmlLayout.test_every_case_reports_what_a_reader_must_see (case='framed_hidden_span_in_body')
+    BracketedHtmlLayout.test_every_case_reports_what_a_reader_must_see (case='framed_hidden_text_in_span')
+    BracketedHtmlLayout.test_every_case_reports_what_a_reader_must_see (case='framed_negation_removed')
+    BracketedHtmlLayout.test_every_case_reports_what_a_reader_must_see (case='framed_ornament_missing')
+    BracketedHtmlLayout.test_every_case_reports_what_a_reader_must_see (case='framed_ornament_repeated_in_body')
+    BracketedHtmlLayout.test_every_case_reports_what_a_reader_must_see (case='framed_repeated_separator')
+    BracketedHtmlLayout.test_every_case_reports_what_a_reader_must_see (case='framed_two_final_empty_lines')
+    BracketedHtmlLayout.test_every_case_reports_what_a_reader_must_see (case='framed_uncited_entry_url_changed')
+    BracketedHtmlLayout.test_every_case_reports_what_a_reader_must_see (case='framed_undefined_hidden_marker')
+    BracketedHtmlLayout.test_final_empty_line_is_one_separate_segment
+    BracketedHtmlLayout.test_sample_pair_keeps_every_field_separate
+    Cli.test_statuses_and_untouched_inputs
+    Corrections.test_raw_bodies_equal_is_equality_of_the_reported_body_bytes
+    Corrections.test_regression_pairs_report_what_a_reader_must_see (case='c2_body_segments_differ_by_final_newline')
+    KnownLayouts.test_segments_partition_each_input_exactly
+1.0.0: an indented line ends the paragraph: 1 failing test(s) -> rejected
+    Corrections.test_regression_pairs_report_what_a_reader_must_see (case='code_span_across_indented_continuation')
+bracketed-html: question compared ignoring whitespace: 1 failing test(s) -> rejected
+    BracketedHtmlLayout.test_every_case_reports_what_a_reader_must_see (case='framed_question_whitespace_differs')
+bracketed-html: any blank lines accepted as a separator: 1 failing test(s) -> rejected
+    BracketedHtmlLayout.test_every_case_reports_what_a_reader_must_see (case='framed_repeated_separator')
+bracketed-html: hidden span may hold any text: 1 failing test(s) -> rejected
+    BracketedHtmlLayout.test_every_case_reports_what_a_reader_must_see (case='framed_hidden_text_in_span')
+bracketed-html: uncited entries not compared: 2 failing test(s) -> rejected
+    BracketedHtmlLayout.test_every_case_reports_what_a_reader_must_see (case='framed_uncited_entry_url_changed')
+    BracketedHtmlLayout.test_sample_pair_keeps_every_field_separate
+1.1.0: final empty line rejected: 5 failing test(s) -> rejected
+    BracketedHtmlLayout.test_every_case_reports_what_a_reader_must_see (case='framed_final_empty_line')
+    BracketedHtmlLayout.test_every_case_reports_what_a_reader_must_see (case='framed_final_space_line')
+    BracketedHtmlLayout.test_every_case_reports_what_a_reader_must_see (case='framed_final_tab_line')
+    BracketedHtmlLayout.test_every_case_reports_what_a_reader_must_see (case='framed_two_final_empty_lines')
+    BracketedHtmlLayout.test_final_empty_line_is_one_separate_segment
+final empty line: any trailing blank lines accepted: 3 failing test(s) -> rejected
+    BracketedHtmlLayout.test_every_case_reports_what_a_reader_must_see (case='framed_final_space_line')
+    BracketedHtmlLayout.test_every_case_reports_what_a_reader_must_see (case='framed_final_tab_line')
+    BracketedHtmlLayout.test_every_case_reports_what_a_reader_must_see (case='framed_two_final_empty_lines')
+final empty line: also counted in the definitions: 1 failing test(s) -> rejected
+    BracketedHtmlLayout.test_final_empty_line_is_one_separate_segment
+final empty line: in no segment: 1 failing test(s) -> rejected
+    BracketedHtmlLayout.test_final_empty_line_is_one_separate_segment
