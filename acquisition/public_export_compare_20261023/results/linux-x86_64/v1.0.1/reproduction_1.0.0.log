@@ -1,0 +1,10 @@
+# reproduction against export_compare 1.0.0 from commit 4cdf0017b1e10c229e39057b497e80e9606f6cfc, 2026-10-23T05:02:37Z
+# module sha256: 27179b6f310b8dc4fbf4933e4accfeb147b5ee33d39fe23ee7c6050a06ea9cb3
+## Python 3.9.25 in a fresh directory containing: LICENSE c1_markdown.md c1_plain.txt c2_markdown.md c2_plain.txt export_compare.py 
+c1 rules=default rc=0 raw_bodies_equal=False normalized_bodies_equal=True table_separator_rows=1/1 body segments={'plain': [('body', 0, 34, '8cd3825d923e')], 'markdown': [('body', 0, 32, 'e8c8e6a1c2b4')]}
+c1 rules=citation_markers,escaped_hash,blank_lines rc=1 raw_bodies_equal=False normalized_bodies_equal=False table_separator_rows=0/0 body segments={'plain': [('body', 0, 34, '8cd3825d923e')], 'markdown': [('body', 0, 32, 'e8c8e6a1c2b4')]}
+c2 rules=default rc=0 raw_bodies_equal=True normalized_bodies_equal=True table_separator_rows=0/0 body segments={'plain': [('body', 0, 6, '44261ce242e1')], 'markdown': [('body', 0, 5, '521b25cc4586')]}
+## Python 3.13.16 in a fresh directory containing: LICENSE c1_markdown.md c1_plain.txt c2_markdown.md c2_plain.txt export_compare.py 
+c1 rules=default rc=0 raw_bodies_equal=False normalized_bodies_equal=True table_separator_rows=1/1 body segments={'plain': [('body', 0, 34, '8cd3825d923e')], 'markdown': [('body', 0, 32, 'e8c8e6a1c2b4')]}
+c1 rules=citation_markers,escaped_hash,blank_lines rc=1 raw_bodies_equal=False normalized_bodies_equal=False table_separator_rows=0/0 body segments={'plain': [('body', 0, 34, '8cd3825d923e')], 'markdown': [('body', 0, 32, 'e8c8e6a1c2b4')]}
+c2 rules=default rc=0 raw_bodies_equal=True normalized_bodies_equal=True table_separator_rows=0/0 body segments={'plain': [('body', 0, 6, '44261ce242e1')], 'markdown': [('body', 0, 5, '521b25cc4586')]}

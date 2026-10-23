@@ -1,0 +1,19 @@
+# fresh-directory relocation of export_compare 1.0.1 (commit 4ed30a0ed684dfa5e32b9d91ae2f556c1af64498), 2026-10-23T05:16:59Z; README commands, run with each interpreter
+## Python 3.9.25
+LICENSE
+export.md
+export_compare.py
+plain.txt
+exit 0
+1.0.1 True True NOT_ESTABLISHED NOT_ESTABLISHED
+exit 1 after a one-word edit
+[{'op': 'replace', 'plain': 'from', 'markdown': 'for'}]
+## Python 3.13.16
+LICENSE
+export.md
+export_compare.py
+plain.txt
+exit 0
+1.0.1 True True NOT_ESTABLISHED NOT_ESTABLISHED
+exit 1 after a one-word edit
+[{'op': 'replace', 'plain': 'from', 'markdown': 'for'}]

@@ -22,7 +22,8 @@ nothing about authenticity, question identity, truth or completeness of evidence
 | Repository / branch | `gmfjc624d2-dot/pydantic-ai`, `claude/sweet-carson-tjohp1` (public research fork) |
 | Base commit | `ed6e9b152beeb3a6a9f1c2f419fda940318ca554`: the tip of the earlier, completed review-cue work, unchanged |
 | Scope | only `acquisition/public_export_compare_20261023/`; earlier acquisitions are not touched |
-| Result commits | code `4cdf0017b1e10c229e39057b497e80e9606f6cfc`; this report and `results/` in the commit after it (its ID is given in the hand-off message and by `git log`) |
+| Result commits | 1.0.0: code `4cdf0017b1e10c229e39057b497e80e9606f6cfc`, report and `results/` `4d35b65f82ca9795adbe2df9d58026879836b61c` |
+| | 1.0.1 (correction): code `4ed30a0ed684dfa5e32b9d91ae2f556c1af64498`; this report and `results/linux-x86_64/v1.0.1/` in the commit after it (its ID is given in the hand-off message and by `git log`) |
 
 **Interruption (2026-10-23).** The first read-only environment listing of this operation kept showing as
 running in the requester's view and was stopped by the requester. That listing was `ls`, `python3 -VV`,
@@ -36,6 +37,54 @@ time-bounded commands:
   13.0.0) and `/usr/bin/python3` reported 3.13.16 (Unicode 15.1.0).
 
 The broad `uv` listing was not run again. The interruption caused no file or git change.
+
+## Corrections (1.0.1)
+
+**Who found what.** After 1.0.0 was pushed, the requester reported two counterexamples to its contract. They
+reproduced both themselves on macOS arm64 with CPython 3.9.6, in a fresh directory holding only
+`export_compare.py` and `LICENSE`. Both reproduce byte for byte on Linux with CPython 3.9.25 and 3.13.16. A
+third defect of the same kind was found here while reproducing the first.
+
+| | Input (plain / Markdown) | 1.0.0 | 1.0.1 |
+|---|---|---|---|
+| C1 (requester) | ``Value `x \| y⏎--- \| ---⏎z` stays.`` / the same with `---\|---` | exit 0, `normalized_bodies_equal` true, `table_separator_rows` 1/1 | exit 1, the delimiter rows differ, 0/0 |
+| C2 (requester) | `b'Body.\nSources\n'` / `b'Body.'` | exit 0, `raw_bodies_equal` **true** | exit 0, `raw_bodies_equal` false, `normalized_bodies_equal` true |
+| sibling (found here) | ``See `refs[1]⏎    more` here.`` / the `[^1]` form | exit 0, id 1 counted as cited | exit 1, nothing cited |
+
+**Causes.**
+- **C1:** `_Body._paragraph` normalized delimiter rows in a second pass over the joined paragraph lines, and
+  that pass ignored the protected spans that the inline pass respected.
+- **Sibling:** a paragraph ended at an indented line. So a code span opened before the indented line and
+  closed after it was never matched, and the marker inside it was normalized and cited.
+- **C2:** `raw_bodies_equal` compared `'\n'.join(lines)`, which loses the final line ending of a segment.
+
+**Fixes** (`4ed30a0`; contract 1.0.1, section "Corrections from 1.0.0").
+- **One set of protected spans per paragraph.** It holds the code spans, the URLs and the indented lines,
+  and binds every rule, the table rule included.
+- **Narrowed table rule.** A delimiter row is normalized only if the line break before its header row, the
+  line break before the delimiter row, and the delimiter row itself are all unprotected.
+- **Paragraphs** run on through indented lines, as in CommonMark, and those lines stay literal.
+- **Raw equality.** `raw_bodies_equal` is the equality of the exact bytes of the two reported `body`
+  segments.
+
+No field, rule text, policy ID or rejection changed. Legitimate tables still normalize, including tables
+with a code span inside a header cell or after a closed span. The 38 recorded 1.0.0 runs give byte-identical
+stdout apart from the version (`tests/check_1_0_0_outputs.py`).
+
+**Which 1.0.0 statements were wrong.**
+- Two statements were wrong in general, though not for any of the 38 recorded runs:
+  - "Code (fenced or indented), inline code spans and URLs are never touched";
+  - "`raw_bodies_equal` (body segments before normalization)".
+- The 1.0.0 results below and in `results/linux-x86_64/RUN.md` are kept as recorded. That file now opens
+  with a correction note.
+
+**Evidence of the old failures.** `results/linux-x86_64/v1.0.1/` holds:
+- `reproduction_1.0.0.log`, made before the fix;
+- `regressions_on_1.0.0.log`;
+- `suite_on_1.0.0.log`, in which only the new `Corrections` tests fail.
+
+**Not shown by this repair.** It does not show that any other export layout is supported, nor that the
+narrow layouts fit a given consumer. That remains a separate question.
 
 ## Design
 
@@ -96,11 +145,12 @@ This tool reports each of these as a difference.
 | `export_compare.py` | the module and CLI (the only runtime file) |
 | `LICENSE` | MIT, copied from the repository root |
 | `CONTRACT.md` | interfaces, layouts, policy, result fields, limits, rejection codes |
-| `fixtures/` | synthetic example.org pairs: `full_*` (logo, question with request ID, table, code with literal markers, escaped `#`, hidden definitions), `minimal_*`, `id_in_body_*` (`public-example-1` in the copied body without a question); `cases.py` (35 single-edit adversarial cases and `describe()`) |
-| `tests/test_export_compare.py` | unit tests, including CLI subprocesses and the rejected design |
-| `tests/mutation_check.py` | each of 5 broken variants must fail the tests |
-| `tests/run_cases.py` | runs every pair and case through the real CLI, and times worst-case shapes |
-| `results/linux-x86_64/` | raw outputs and `RUN.md` (Linux only) |
+| `fixtures/` | synthetic example.org pairs: `full_*` (logo, question with request ID, table, code with literal markers, escaped `#`, hidden definitions), `minimal_*`, `id_in_body_*` (`public-example-1` in the copied body without a question); `cases.py` (35 single-edit adversarial cases, 9 exact-byte `REGRESSIONS` pairs added in 1.0.1, and `describe()`) |
+| `tests/test_export_compare.py` | unit tests, including CLI subprocesses, the rejected design and the 1.0.1 `Corrections` |
+| `tests/mutation_check.py` | each of 8 broken variants (3 of them the 1.0.0 behaviours) must fail the tests; lists the failing tests |
+| `tests/run_cases.py` | runs every pair, case and regression pair through the real CLI, and times worst-case shapes |
+| `tests/check_1_0_0_outputs.py` | checks that the module reproduces the recorded 1.0.0 outputs apart from the version |
+| `results/linux-x86_64/` | 1.0.0 raw outputs and `RUN.md`; `v1.0.1/` with the 1.0.0 failures and the 1.0.1 results (Linux only) |
 
 ## Commands
 
@@ -130,7 +180,17 @@ python3 -I -c 'import json; r = json.load(open("result.json"))["results"]; print
 
 Expected: `exit 0`, then `True True NOT_ESTABLISHED NOT_ESTABLISHED`.
 
-## Results (Linux x86_64 only; clean checkout of `4cdf001`)
+## Results 1.0.1 (Linux x86_64 only; clean worktree of `4ed30a0`)
+
+Full record: [`results/linux-x86_64/v1.0.1/RUN.md`](results/linux-x86_64/v1.0.1/RUN.md).
+- **Tests:** on CPython 3.9.25 and 3.13.16, 21 / 21 tests pass and 8 / 8 mutations are rejected.
+- **CLI:** all 47 runs gave their expected exit status with empty stderr: 3 positive pairs, 35 single-edit
+  cases and 9 regression pairs (0: 9, 1: 22, 2: 16). Their stdout was byte-identical between the two
+  interpreters.
+- **1.0.0 outputs:** all 38 are reproduced byte for byte apart from the version.
+- **Relocation:** the fresh-directory commands below gave `exit 0`, then `exit 1` with `'from' -> 'for'`.
+
+## Results 1.0.0 (Linux x86_64 only; clean checkout of `4cdf001`; see Corrections above)
 
 Full record: [`results/linux-x86_64/RUN.md`](results/linux-x86_64/RUN.md).
 - **Tests:** on CPython 3.9.25 and 3.13.16, 18 / 18 tests pass and 5 / 5 mutations are rejected.
@@ -178,10 +238,14 @@ git rev-parse HEAD && python3 -VV && python3 -m unittest discover -s tests -v &&
   && OUT="$(mktemp -d)" && python3 tests/run_cases.py "$OUT" && echo "outputs in $OUT"
 ```
 
-Then run the fresh-directory commands above. Expected: 18 tests OK, 5 mutations rejected, and
-`unexpected exit status or stderr output: []`. The `stdout_sha256` values in `$OUT/cases.jsonl` should
-match `results/linux-x86_64/python3.*/cases.jsonl`. Apple's `/usr/bin/python3` is 3.9.x; any CPython
-≥ 3.9 works. Timings will differ.
+Then run `python3 tests/check_1_0_0_outputs.py` and the fresh-directory commands above.
+
+Expected for 1.0.1:
+- 21 tests OK, 8 mutations rejected, and `47 CLI runs; unexpected exit status or stderr output: []`;
+- `identical apart from the version: 38`;
+- the `stdout_sha256` values in `$OUT/cases.jsonl` match `results/linux-x86_64/v1.0.1/python3.*/cases.jsonl`.
+
+Apple's `/usr/bin/python3` is 3.9.x; any CPython ≥ 3.9 works. Timings will differ.
 
 ## Residual limits
 
@@ -191,6 +255,11 @@ match `results/linux-x86_64/python3.*/cases.jsonl`. Apple's `/usr/bin/python3` i
   - A Markdown answer that itself starts with a `# ` heading is read as having that heading as its
     question, so the comparison reports it as a body difference. Pass `--markdown-body-start 1` to include
     it in the body.
+- **Code spans are matched approximately.**
+  - A paragraph here does not separate headings, list items or table rows from the lines next to them, so
+    backtick pairing can differ from CommonMark's.
+  - GitHub-flavored Markdown finds tables before code spans, so rows that this tool keeps literal inside a
+    span (and reports as a difference) may render as a table there.
 - **Lines are compared, not paragraphs.** A soft line break inside a paragraph in one export only is a
   difference, though Markdown renders both the same.
 - **Over-protection.** A citation marker attached to a URL with no space (`https://example.org/a[1]`) is

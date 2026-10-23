@@ -1,0 +1,44 @@
+# the 1.0.1 test suite (tests/ and fixtures/ at 4ed30a0) run against export_compare.py 1.0.0 from 4cdf0017b1e10c229e39057b497e80e9606f6cfc, 2026-10-23T05:16:47Z
+# expected: only the Corrections tests fail
+## Python 3.9.25
+FAIL: test_raw_bodies_equal_is_equality_of_the_reported_body_bytes (test_export_compare.Corrections)
+AssertionError: True != False
+FAIL: test_regression_pairs_report_what_a_reader_must_see (test_export_compare.Corrections) (case='c1_code_span_contains_table_like_rows')
+AssertionError: 0 != 1
+FAIL: test_regression_pairs_report_what_a_reader_must_see (test_export_compare.Corrections) (case='c2_body_segments_differ_by_final_newline')
+AssertionError: True != False
+FAIL: test_regression_pairs_report_what_a_reader_must_see (test_export_compare.Corrections) (case='code_span_opens_before_table_header')
+AssertionError: 0 != 1
+FAIL: test_regression_pairs_report_what_a_reader_must_see (test_export_compare.Corrections) (case='code_span_opens_in_table_header')
+AssertionError: 0 != 1
+FAIL: test_regression_pairs_report_what_a_reader_must_see (test_export_compare.Corrections) (case='code_span_across_indented_continuation')
+AssertionError: 0 != 1
+FAIL: test_rows_inside_a_code_span_are_never_a_table (test_export_compare.Corrections) (layout='span opens before the header')
+AssertionError: True != False
+FAIL: test_rows_inside_a_code_span_are_never_a_table (test_export_compare.Corrections) (layout='span opens in the header')
+AssertionError: True != False
+FAIL: test_rows_inside_a_code_span_are_never_a_table (test_export_compare.Corrections) (layout='span closes in the header')
+AssertionError: True != False
+Ran 21 tests in 0.434s
+FAILED (failures=9)
+## Python 3.13.16
+FAIL: test_raw_bodies_equal_is_equality_of_the_reported_body_bytes (test_export_compare.Corrections.test_raw_bodies_equal_is_equality_of_the_reported_body_bytes)
+AssertionError: True != False
+FAIL: test_regression_pairs_report_what_a_reader_must_see (test_export_compare.Corrections.test_regression_pairs_report_what_a_reader_must_see) (case='c1_code_span_contains_table_like_rows')
+AssertionError: 0 != 1
+FAIL: test_regression_pairs_report_what_a_reader_must_see (test_export_compare.Corrections.test_regression_pairs_report_what_a_reader_must_see) (case='c2_body_segments_differ_by_final_newline')
+AssertionError: True != False
+FAIL: test_regression_pairs_report_what_a_reader_must_see (test_export_compare.Corrections.test_regression_pairs_report_what_a_reader_must_see) (case='code_span_opens_before_table_header')
+AssertionError: 0 != 1
+FAIL: test_regression_pairs_report_what_a_reader_must_see (test_export_compare.Corrections.test_regression_pairs_report_what_a_reader_must_see) (case='code_span_opens_in_table_header')
+AssertionError: 0 != 1
+FAIL: test_regression_pairs_report_what_a_reader_must_see (test_export_compare.Corrections.test_regression_pairs_report_what_a_reader_must_see) (case='code_span_across_indented_continuation')
+AssertionError: 0 != 1
+FAIL: test_rows_inside_a_code_span_are_never_a_table (test_export_compare.Corrections.test_rows_inside_a_code_span_are_never_a_table) (layout='span opens before the header')
+AssertionError: True != False
+FAIL: test_rows_inside_a_code_span_are_never_a_table (test_export_compare.Corrections.test_rows_inside_a_code_span_are_never_a_table) (layout='span opens in the header')
+AssertionError: True != False
+FAIL: test_rows_inside_a_code_span_are_never_a_table (test_export_compare.Corrections.test_rows_inside_a_code_span_are_never_a_table) (layout='span closes in the header')
+AssertionError: True != False
+Ran 21 tests in 0.452s
+FAILED (failures=9)

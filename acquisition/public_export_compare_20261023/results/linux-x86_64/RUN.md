@@ -1,5 +1,22 @@
 # Run record (Linux only; operation `public-export-comparison-20261023-01`)
 
+> **Correction, added with 1.0.1 (2026-10-23).** The data below is unchanged.
+>
+> - **Reported defects.** The requester reported two counterexamples to the 1.0.0 contract. They observed
+>   both on macOS arm64 with CPython 3.9.6, in a fresh directory holding only the module and `LICENSE`.
+>   Both are reproduced here on Linux.
+>   - **C1:** table-like rows inside a multi-line code span were normalized, so two different code spans
+>     were reported equal (exit 0).
+>   - **C2:** `raw_bodies_equal` was true for body segments that differ only in the final line ending.
+> - **Sibling defect.** A third defect of the same kind was found here: a code span that crosses an
+>   indented line.
+> - **Effect on this record.** None of the 38 runs below used such inputs. 1.0.1 reproduces all 38 stdout
+>   documents byte for byte, apart from the version.
+> - **What was wrong.** The 1.0.0 claims that code is never normalized, and that `raw_bodies_equal`
+>   compares the body segments, were wrong in general, though not for these runs.
+>
+> The failures, the fix and the 1.0.1 results are in [`v1.0.1/RUN.md`](v1.0.1/RUN.md).
+
 - Date: 2026-10-23 (UTC). Host: Linux x86_64 cloud container. **Not a macOS result.**
 - Repository and branch: `gmfjc624d2-dot/pydantic-ai`, `claude/sweet-carson-tjohp1`. Base
   `ed6e9b152beeb3a6a9f1c2f419fda940318ca554`.

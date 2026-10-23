@@ -1,0 +1,44 @@
+unmutated: 21 tests, 0 failing
+code normalized like prose: 10 failing test(s) -> rejected
+    AdversarialCases.test_every_case_reports_what_a_reader_must_see (case='list_reordered')
+    AdversarialCases.test_every_case_reports_what_a_reader_must_see (case='marker_in_code_rewritten')
+    AdversarialCases.test_every_case_reports_what_a_reader_must_see (case='querystring_changed')
+    AdversarialCases.test_every_case_reports_what_a_reader_must_see (case='title_changed_only_in_plain')
+    AdversarialCases.test_every_case_reports_what_a_reader_must_see (case='unclosed_code_fence')
+    AdversarialCases.test_every_case_reports_what_a_reader_must_see (case='url_mapping_changed')
+    Cli.test_statuses_and_untouched_inputs
+    Corrections.test_regression_pairs_report_what_a_reader_must_see (case='indented_continuation_stays_literal')
+    KnownLayouts.test_full_pair_agrees_only_where_the_policy_says
+    Policy.test_disabling_a_rule_only_adds_differences
+URLs not protected from normalization: 8 failing test(s) -> rejected
+    AdversarialCases.test_every_case_reports_what_a_reader_must_see (case='list_reordered')
+    AdversarialCases.test_every_case_reports_what_a_reader_must_see (case='marker_in_code_rewritten')
+    AdversarialCases.test_every_case_reports_what_a_reader_must_see (case='querystring_changed')
+    AdversarialCases.test_every_case_reports_what_a_reader_must_see (case='title_changed_only_in_plain')
+    AdversarialCases.test_every_case_reports_what_a_reader_must_see (case='url_mapping_changed')
+    Cli.test_statuses_and_untouched_inputs
+    KnownLayouts.test_full_pair_agrees_only_where_the_policy_says
+    Policy.test_disabling_a_rule_only_adds_differences
+URL comparison ignores query and case: 1 failing test(s) -> rejected
+    AdversarialCases.test_every_case_reports_what_a_reader_must_see (case='querystring_changed')
+display:none span ignored (hidden flag lost): 3 failing test(s) -> rejected
+    AdversarialCases.test_every_case_reports_what_a_reader_must_see (case='hidden_span_unclosed')
+    Cli.test_statuses_and_untouched_inputs
+    KnownLayouts.test_full_pair_agrees_only_where_the_policy_says
+request ID counted only when a question exists: 1 failing test(s) -> rejected
+    KnownLayouts.test_missing_question_does_not_hide_an_id_in_the_body
+1.0.0: table rule ignores code spans (C1): 7 failing test(s) -> rejected
+    Corrections.test_regression_pairs_report_what_a_reader_must_see (case='c1_code_span_contains_table_like_rows')
+    Corrections.test_regression_pairs_report_what_a_reader_must_see (case='code_span_opens_before_table_header')
+    Corrections.test_regression_pairs_report_what_a_reader_must_see (case='code_span_opens_in_table_header')
+    Corrections.test_regression_pairs_report_what_a_reader_must_see (case='indented_continuation_stays_literal')
+    Corrections.test_rows_inside_a_code_span_are_never_a_table (layout='span closes in the header')
+    Corrections.test_rows_inside_a_code_span_are_never_a_table (layout='span opens before the header')
+    Corrections.test_rows_inside_a_code_span_are_never_a_table (layout='span opens in the header')
+1.0.0: segment bytes rebuilt from lines (C2): 4 failing test(s) -> rejected
+    Cli.test_statuses_and_untouched_inputs
+    Corrections.test_raw_bodies_equal_is_equality_of_the_reported_body_bytes
+    Corrections.test_regression_pairs_report_what_a_reader_must_see (case='c2_body_segments_differ_by_final_newline')
+    KnownLayouts.test_segments_partition_each_input_exactly
+1.0.0: an indented line ends the paragraph: 1 failing test(s) -> rejected
+    Corrections.test_regression_pairs_report_what_a_reader_must_see (case='code_span_across_indented_continuation')
