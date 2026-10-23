@@ -247,6 +247,71 @@ class AdversarialCases(unittest.TestCase):
         self.assertEqual(compare(plain, markdown)['error']['near_miss_lines'], [24])
 
 
+def cli_status(plain: bytes, markdown: bytes) -> int:
+    with tempfile.TemporaryDirectory() as tmp:
+        (Path(tmp) / 'p.txt').write_bytes(plain)
+        (Path(tmp) / 'm.md').write_bytes(markdown)
+        return ec.main(
+            ['--plain', str(Path(tmp) / 'p.txt'), '--markdown', str(Path(tmp) / 'm.md')], stdout=io.BytesIO()
+        )
+
+
+class Corrections(unittest.TestCase):
+    """1.0.1: code-span protection holds through every rule (C1 and siblings); raw body equality is exact (C2)."""
+
+    def test_regression_pairs_report_what_a_reader_must_see(self) -> None:
+        for name, pair in cases.REGRESSIONS.items():
+            with self.subTest(case=name):
+                expect = pair['expect']
+                result = ec.compare_exports(pair['plain'], pair['markdown'])
+                r, counts = result['results'], result['normalization']['counts']
+                self.assertEqual(cli_status(pair['plain'], pair['markdown']), expect['exit'])
+                self.assertEqual(r['normalized_bodies_equal'], expect['normalized_bodies_equal'])
+                if 'raw_bodies_equal' in expect:
+                    self.assertEqual(r['raw_bodies_equal'], expect['raw_bodies_equal'])
+                if 'table_separator_rows' in expect:
+                    rows = [counts[side]['table_separator_rows'] for side in ('plain', 'markdown')]
+                    self.assertEqual(rows, expect['table_separator_rows'])
+                if 'referenced_ids' in expect:
+                    self.assertEqual([e['id'] for e in r['citations']['url_map']], expect['referenced_ids'])
+                text = cases.describe(result)
+                for shown in expect.get('shows', []):
+                    self.assertIn(shown, text)
+
+    def test_rows_inside_a_code_span_are_never_a_table(self) -> None:
+        # The same table rows with code spans that open or close at different places; {} is the delimiter row.
+        layouts = {
+            'span opens before the header': ('x `y\n| a | b |\n{}\n| c | d |\nz` w.', False),
+            'span opens in the header': ('| `a | b |\n{}\n| c` | d |', False),
+            'span closes in the header': ('x `y\n| a` | b |\n{}\n| c | d |', False),
+            'span closed before the header': ('x `y` z\n| a | b |\n{}\n| c | d |', True),
+            'span inside a header cell': ('| `a` | b |\n{}\n| c | d |', True),
+        }
+        for name, (template, table) in layouts.items():
+            with self.subTest(layout=name):
+                plain = template.format('| --- | --- |').encode() + cases.SOURCES_TAIL
+                markdown = template.format('|---|---|').encode() + cases.DEFINITION_TAIL
+                result = ec.compare_exports(plain, markdown)
+                self.assertEqual(result['results']['normalized_bodies_equal'], table)
+                if not table:
+                    self.assertIn("plain: '| --- | --- |' | markdown: '|---|---|'", cases.describe(result))
+
+    def test_raw_bodies_equal_is_equality_of_the_reported_body_bytes(self) -> None:
+        pairs = [cases.base_pair()] + [(p['plain'], p['markdown']) for p in cases.REGRESSIONS.values()]
+        pairs += [cases.apply_case(case)[:2] for case in cases.CASES if 'error' not in case['expect']]
+        for plain, markdown in pairs:
+            result = compare(plain, markdown)
+            if 'error' in result:
+                continue
+            bodies = []
+            for side, raw in (('plain', plain), ('markdown', markdown)):
+                segment = next(s for s in result['layouts'][side]['segments'] if s['name'] == 'body')
+                body = raw[segment['byte_start'] : segment['byte_end']]
+                self.assertEqual(hashlib.sha256(body).hexdigest(), segment['sha256'])
+                bodies.append(body)
+            self.assertEqual(result['results']['raw_bodies_equal'], bodies[0] == bodies[1])
+
+
 class Policy(unittest.TestCase):
     def test_unsafe_normalizations_are_refused_with_a_reason(self) -> None:
         plain, markdown = full_pair()

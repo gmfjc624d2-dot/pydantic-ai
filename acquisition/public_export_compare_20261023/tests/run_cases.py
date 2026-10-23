@@ -3,8 +3,9 @@
 Usage (from acquisition/public_export_compare_20261023):  python3 tests/run_cases.py OUT_DIR
 
 Writes, for the running interpreter:
-- OUT_DIR/cases.jsonl: per run, the exit status, stdout/stderr byte counts, the stdout SHA-256, whether the
-  exit status was the expected one, and the error code or key result fields;
+- OUT_DIR/cases.jsonl: per run (positive pairs, single-edit cases, then the 1.0.1 regression pairs), the exit
+  status, stdout/stderr byte counts, the stdout SHA-256, whether the exit status was the expected one, and the
+  error code or key result fields;
 - OUT_DIR/cases.md: what a reader sees for each case;
 - OUT_DIR/positive_<pair>.json: full results of the positive pairs;
 - OUT_DIR/timings.jsonl: worst-case shapes, one subprocess each, 120 s timeout.
@@ -99,6 +100,7 @@ def summary(stdout: bytes):
     c = r['citations']
     return document, {
         'raw_documents_equal': r['raw_documents_equal'],
+        'raw_bodies_equal': r['raw_bodies_equal'],
         'normalized_bodies_equal': r['normalized_bodies_equal'],
         'body_difference_count': r['body_difference_count'],
         'url_map_equal': c['url_map_equal'],
@@ -160,6 +162,36 @@ def main() -> None:
                 f'## {case["id"]} (exit {status}, expected {case["expect"]["exit"]})',
                 '',
                 f'Edit: `{case.get("edit", case.get("special", case.get("options")))!r}`',
+                '',
+                '```',
+                cases.describe(document),
+                '```',
+                '',
+            ]
+        for name, pair in cases.REGRESSIONS.items():
+            (Path(tmp) / 'plain.txt').write_bytes(pair['plain'])
+            (Path(tmp) / 'markdown.md').write_bytes(pair['markdown'])
+            status, stdout, stderr = run_cli(
+                ['--plain', str(Path(tmp) / 'plain.txt'), '--markdown', str(Path(tmp) / 'markdown.md')]
+            )
+            document, fields = summary(stdout)
+            rows.append(
+                {
+                    'case': f'regression:{name}',
+                    'exit': status,
+                    'expected_exit': pair['expect']['exit'],
+                    'stdout_bytes': len(stdout),
+                    'stderr_bytes': len(stderr),
+                    'stdout_sha256': hashlib.sha256(stdout).hexdigest(),
+                    **fields,
+                }
+            )
+            md += [
+                f'## regression: {name} (exit {status}, expected {pair["expect"]["exit"]})',
+                '',
+                f'Plain: `{pair["plain"]!r}`',
+                '',
+                f'Markdown: `{pair["markdown"]!r}`',
                 '',
                 '```',
                 cases.describe(document),

@@ -2,7 +2,8 @@
 
 Run: python3 tests/mutation_check.py   (from acquisition/public_export_compare_20261023)
 
-Each mutation replaces one module attribute in memory, reruns the unittest suite, and must make it fail.
+Each mutation replaces one module or class attribute in memory, reruns the unittest suite, and must make it fail;
+the failing tests are listed. The last three restore the 1.0.0 behaviour that 1.0.1 corrects.
 """
 
 from __future__ import annotations
@@ -19,6 +20,7 @@ sys.path.insert(0, str(ROOT / 'fixtures'))
 
 import export_compare as ec  # noqa: E402
 
+ORIGINAL_CLASSIFY = ec._classify_lines
 ORIGINAL_SPANS = ec._protected_spans
 ORIGINAL_BLOCK_LINE = ec._definition_block_line
 ORIGINAL_REQUEST_ID = ec._request_id_occurrences
@@ -50,12 +52,27 @@ def id_only_with_question(request_id, question, p, pl, m, ml):  # type: ignore[n
     return result
 
 
+def nothing_overlaps(spans, starts, low, high):  # type: ignore[no-untyped-def]
+    return False
+
+
+def bytes_rebuilt_from_lines(self, first, end):  # type: ignore[no-untyped-def]
+    return '\n'.join(self.lines[first:end]).encode('utf-8')
+
+
+def indented_lines_end_paragraphs(name, lines):  # type: ignore[no-untyped-def]
+    return ['code' if kind == 'indented' else kind for kind in ORIGINAL_CLASSIFY(name, lines)]
+
+
 MUTATIONS = {
-    'code normalized like prose': ('_classify_lines', everything_is_prose),
-    'URLs not protected from normalization': ('_protected_spans', urls_unprotected),
-    'URL comparison ignores query and case': ('_same_url', url_without_query_or_case),
-    'display:none span ignored (hidden flag lost)': ('_definition_block_line', span_ignored),
-    'request ID counted only when a question exists': ('_request_id_occurrences', id_only_with_question),
+    'code normalized like prose': (ec, '_classify_lines', everything_is_prose),
+    'URLs not protected from normalization': (ec, '_protected_spans', urls_unprotected),
+    'URL comparison ignores query and case': (ec, '_same_url', url_without_query_or_case),
+    'display:none span ignored (hidden flag lost)': (ec, '_definition_block_line', span_ignored),
+    'request ID counted only when a question exists': (ec, '_request_id_occurrences', id_only_with_question),
+    '1.0.0: table rule ignores code spans (C1)': (ec, '_overlaps', nothing_overlaps),
+    '1.0.0: segment bytes rebuilt from lines (C2)': (ec._Document, 'segment_bytes', bytes_rebuilt_from_lines),
+    '1.0.0: an indented line ends the paragraph': (ec, '_classify_lines', indented_lines_end_paragraphs),
 }
 
 
@@ -70,16 +87,18 @@ def main() -> int:
     baseline = run_suite()
     print(f'unmutated: {baseline.testsRun} tests, {len(baseline.failures) + len(baseline.errors)} failing')
     ok = baseline.wasSuccessful()
-    for label, (attr, replacement) in MUTATIONS.items():
-        original = getattr(ec, attr)
-        setattr(ec, attr, replacement)
+    for label, (owner, attr, replacement) in MUTATIONS.items():
+        original = getattr(owner, attr)
+        setattr(owner, attr, replacement)
         try:
             result = run_suite()
         finally:
-            setattr(ec, attr, original)
-        failing = len(result.failures) + len(result.errors)
-        print(f'{label}: {failing} failing test(s) -> {"rejected" if failing else "NOT DETECTED"}')
-        ok = ok and failing > 0
+            setattr(owner, attr, original)
+        failing = sorted(test.id().split('.', 1)[1] for test, _ in result.failures + result.errors)
+        print(f'{label}: {len(failing)} failing test(s) -> {"rejected" if failing else "NOT DETECTED"}')
+        for name in failing:
+            print(f'    {name}')
+        ok = ok and bool(failing)
     return 0 if ok else 1
 
 

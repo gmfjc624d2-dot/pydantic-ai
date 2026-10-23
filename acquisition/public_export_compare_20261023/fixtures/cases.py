@@ -271,6 +271,89 @@ CASES: List[Dict[str, Any]] = [
 ]
 
 
+SOURCES_TAIL = b'\n\nSources\n1. Guide https://example.org/a\n'
+DEFINITION_TAIL = b'\n\n[^1]: https://example.org/a\n'
+
+# Standalone exact-byte pairs added in 1.0.1 (not edits of the full pair). C1 and C2 are the requester's
+# counterexamples to 1.0.0, byte for byte; the others vary how a code span meets a table or an indented line.
+# Kept here rather than as files so that no editor or hook can add or remove a final newline.
+REGRESSIONS: Dict[str, Dict[str, Any]] = {
+    'c1_code_span_contains_table_like_rows': {
+        'plain': b'Value `x | y\n--- | ---\nz` stays.\n\nSources\n1. Guide https://example.org/a\n',
+        'markdown': b'Value `x | y\n---|---\nz` stays.\n\n[^1]: https://example.org/a\n',
+        'expect': {
+            'exit': 1,
+            'raw_bodies_equal': False,
+            'normalized_bodies_equal': False,
+            'table_separator_rows': [0, 0],
+            'shows': ["body replace (plain 2, markdown 2): plain: '--- | ---' | markdown: '---|---'"],
+        },
+    },
+    'c2_body_segments_differ_by_final_newline': {
+        'plain': b'Body.\nSources\n',
+        'markdown': b'Body.',
+        'expect': {'exit': 0, 'raw_bodies_equal': False, 'normalized_bodies_equal': True},
+    },
+    'c2_control_equal_body_segments': {
+        'plain': b'Body.\nSources\n',
+        'markdown': b'Body.\n',
+        'expect': {'exit': 0, 'raw_bodies_equal': True, 'normalized_bodies_equal': True},
+    },
+    'code_span_opens_before_table_header': {
+        'plain': b'Text `x\n| a | b |\n| --- | --- |\ny` end.' + SOURCES_TAIL,
+        'markdown': b'Text `x\n| a | b |\n|---|---|\ny` end.' + DEFINITION_TAIL,
+        'expect': {'exit': 1, 'normalized_bodies_equal': False, 'table_separator_rows': [0, 0]},
+    },
+    'code_span_opens_in_table_header': {
+        'plain': b'| `a | b |\n| --- | --- |\n| c` | d |' + SOURCES_TAIL,
+        'markdown': b'| `a | b |\n|---|---|\n| c` | d |' + DEFINITION_TAIL,
+        'expect': {'exit': 1, 'normalized_bodies_equal': False, 'table_separator_rows': [0, 0]},
+    },
+    'code_span_across_indented_continuation': {
+        'plain': b'See `refs[1]\n    more` here.' + SOURCES_TAIL,
+        'markdown': b'See `refs[^1]\n    more` here.' + DEFINITION_TAIL,
+        'expect': {
+            'exit': 1,
+            'normalized_bodies_equal': False,
+            'referenced_ids': [],
+            'shows': ["changed words: '' -> '^'"],
+        },
+    },
+    'indented_continuation_stays_literal': {
+        'plain': b'Rows[1] follow:\n| a | b |\n    | --- | --- |\n    code[1]' + SOURCES_TAIL,
+        'markdown': b'Rows[^1] follow:\n| a | b |\n    |---|---|\n    code[^1]' + DEFINITION_TAIL,
+        'expect': {
+            'exit': 1,
+            'normalized_bodies_equal': False,
+            'table_separator_rows': [0, 0],
+            'referenced_ids': [1],
+            'shows': ['warning markers_in_code_not_counted'],
+        },
+    },
+    # Positive controls: legitimate tables keep their delimiter-row normalization.
+    'table_with_code_in_header_cell': {
+        'plain': b'| `name` | b |\n| --- | --- |\n| x[1] | y |' + SOURCES_TAIL,
+        'markdown': b'| `name` | b |\n|---|---|\n| x[^1] | y |' + DEFINITION_TAIL,
+        'expect': {
+            'exit': 0,
+            'normalized_bodies_equal': True,
+            'table_separator_rows': [1, 1],
+            'referenced_ids': [1],
+        },
+    },
+    'table_after_closed_code_span': {
+        'plain': b'Use `x`[1] here:\n| a | b |\n| :-- | --: |' + SOURCES_TAIL,
+        'markdown': b'Use `x`[^1] here:\n| a | b |\n|:---|---:|' + DEFINITION_TAIL,
+        'expect': {
+            'exit': 0,
+            'normalized_bodies_equal': True,
+            'table_separator_rows': [1, 1],
+            'referenced_ids': [1],
+        },
+    },
+}
+
+
 def base_pair() -> Tuple[bytes, bytes]:
     """The full fixture pair (plain, Markdown) as raw bytes."""
     return (FIXTURES / 'full_plain.txt').read_bytes(), (FIXTURES / 'full_markdown.md').read_bytes()

@@ -1,4 +1,4 @@
-# Contract: `export_compare` 1.0.0 (schema `export-compare/1`, policy `export-compare-body-policy/1`)
+# Contract: `export_compare` 1.0.1 (schema `export-compare/1`, policy `export-compare-body-policy/1`)
 
 ## Purpose and non-goals
 
@@ -71,6 +71,12 @@ the SHA-256 of each segment's raw bytes.
 line indented by 4 spaces or a tab are code, wherever they occur. An unclosed fence is rejected. Code is
 compared literally and is never searched for citations or boundaries.
 
+**Paragraphs** (where inline code spans are matched) are runs of non-blank lines outside fenced code that
+start at a line that is not indented. Indented lines directly after such a line belong to the paragraph,
+as in CommonMark, where an indented line cannot interrupt a paragraph. So a code span may cross them, but
+they remain code and are compared literally. Headings, list items and table rows are not split apart from
+the lines around them. Code-span matching is therefore an approximation of CommonMark, not a parser.
+
 ## Normalization policy `export-compare-body-policy/1` (bodies only)
 
 | Rule | Effect |
@@ -81,7 +87,15 @@ compared literally and is never searched for citations or boundaries.
 | `blank_lines` | Whitespace-only lines count as blank; each run of blank lines becomes one empty line; blank lines at the start and end of a body are dropped. Paragraph separation (blank versus none) is kept. |
 
 No rule is applied to code, to inline code spans (matching backtick runs, also across the lines of one
-paragraph), to URLs (`http(s)://` up to whitespace), or to anything outside the bodies. Everything else is
+paragraph), to URLs (`http(s)://` up to whitespace), or to anything outside the bodies. These protected
+spans are computed once per paragraph and bind every rule, the row-based `table_separator_rows` included.
+A delimiter row is normalized only if three things lie outside every protected span: the line break before
+its header row, the line break before the delimiter row itself, and the delimiter row. So rows that sit
+inside a code span, or are indented, are never treated as a table. A code span that lies wholly inside a
+header cell does not prevent normalization.
+
+GitHub-flavored Markdown finds tables before it finds code spans, so a renderer may show such rows as a
+table. Here they stay literal and are reported as a difference, never as a match. Everything else is
 compared exactly, including Unicode (no NFC/NFKC or case folding), numbers, URLs, line breaks inside a
 paragraph, emphasis and trailing spaces.
 
@@ -100,8 +114,10 @@ rule in the unsafe catalogue is rejected as `unsafe_normalization`, with its rea
   - per-rule counts;
   - the normalized body's SHA-256 and line count.
 - `results`:
-  - **Equality:** `raw_documents_equal`, `raw_bodies_equal` (body segments before normalization), and
-    `normalized_bodies_equal`.
+  - **Equality:** `raw_documents_equal`; `raw_bodies_equal`, the exact equality of the raw bytes of the
+    two `body` segments reported in `layouts` (their byte ranges, including the final line ending, if any);
+    and `normalized_bodies_equal`. The fields are independent: equal normalized bodies may have unequal
+    raw bytes.
   - **Body differences:** `body_difference_count` and `body_differences`, which are difflib opcodes over
     normalized lines with raw line numbers. A one-line replacement also gets `words`, the changed tokens,
     with `ascii()` forms when non-ASCII.
@@ -153,3 +169,20 @@ Excerpts of offending lines in errors are at most 200 characters.
 `definition_outside_block`, `duplicate_definition`, `unsupported_html`, `invalid_option`,
 `unsafe_normalization`, `unknown_normalization`, `invalid_arguments`, `input_unreadable`,
 `output_too_large`.
+
+## Corrections from 1.0.0
+
+1.0.1 changes no field, rule text, policy ID or rejection, and no output for the 38 recorded 1.0.0 runs
+apart from `tool.version`. It corrects three ways in which 1.0.0 did not do what this contract already said:
+
+1. **C1 (reported by the requester).** The `table_separator_rows` pass ignored protected spans. So
+   table-like rows inside a multi-line inline code span were normalized, and two different code spans could
+   compare equal (`--- | ---` against `---|---`, exit 0). Now the table pass uses the same protected spans
+   as the other rules.
+2. **Sibling found while reproducing C1.** A paragraph ended at an indented line. So a code span opened
+   before the indented line was not matched with its closing backticks after it. A marker inside the span
+   was then normalized and counted as a citation (`` `refs[1] `` / `` `refs[^1] ``, exit 0). Now the
+   paragraph runs on through indented lines (see **Paragraphs**).
+3. **C2 (reported by the requester).** `raw_bodies_equal` compared the body lines joined by `\n`, which
+   loses the final line ending. So `b'Body.\n'` and `b'Body.'` were reported equal. Now it compares the exact
+   bytes of the reported body segments.

@@ -23,7 +23,7 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 SCHEMA = 'export-compare/1'
 TOOL_NAME = 'export_compare'
-TOOL_VERSION = '1.0.0'
+TOOL_VERSION = '1.0.1'
 POLICY_ID = 'export-compare-body-policy/1'
 
 MAX_DOCUMENT_BYTES = 262_144
@@ -177,16 +177,19 @@ class _Document:
         self.starts[-1] = len(raw)
         self.kinds = _classify_lines(name, self.lines)
 
+    def segment_bytes(self, first: int, end: int) -> bytes:
+        """The raw bytes of lines [first, end) (0-based), including their line endings as they are in the input."""
+        return self.raw[self.starts[first] : self.starts[end]]
+
     def segment(self, name: str, first: int, end: int, **extra: Any) -> Dict[str, Any]:
         """Lines [first, end) (0-based) as a byte-exact segment of the raw input."""
-        data = self.raw[self.starts[first] : self.starts[end]]
         return {
             'name': name,
             'first_line': first + 1 if end > first else None,
             'last_line': end if end > first else None,
             'byte_start': self.starts[first],
             'byte_end': self.starts[end],
-            'sha256': _sha256(data),
+            'sha256': _sha256(self.segment_bytes(first, end)),
             **extra,
         }
 
@@ -478,6 +481,10 @@ def _protected_spans(text: str) -> List[Tuple[int, int]]:
             i = same[position] + 1
         else:
             i += 1
+    return _merge_spans(spans)
+
+
+def _merge_spans(spans: Sequence[Tuple[int, int]]) -> List[Tuple[int, int]]:
     merged: List[Tuple[int, int]] = []
     for start, end in sorted(spans):
         if merged and start <= merged[-1][1]:
@@ -485,6 +492,12 @@ def _protected_spans(text: str) -> List[Tuple[int, int]]:
         else:
             merged.append((start, end))
     return merged
+
+
+def _overlaps(spans: List[Tuple[int, int]], starts: List[int], low: int, high: int) -> bool:
+    """Whether any of the merged, sorted `spans` (whose starts are `starts`) overlaps [low, high)."""
+    index = bisect.bisect_left(starts, high) - 1
+    return index >= 0 and spans[index][1] > low
 
 
 def _delimiter_row(line: str, header: str) -> Optional[str]:
@@ -527,10 +540,12 @@ class _Body:
                 entries.append((k + 1, doc.lines[k], True))
                 k += 1
                 continue
-            j = k
-            while j < end and doc.kinds[j] == 'text' and doc.lines[j].strip():
+            # An indented line cannot interrupt a paragraph, so the paragraph (and any code span in it) runs on
+            # through indented lines up to a blank line or a fence; those indented lines stay literal.
+            j = k + 1
+            while j < end and doc.kinds[j] != 'code' and doc.lines[j].strip():
                 j += 1
-            for offset, line in enumerate(self._paragraph(doc.lines[k:j], flavor, own, foreign, rules)):
+            for offset, line in enumerate(self._paragraph(doc, k, j, flavor, own, foreign, rules)):
                 entries.append((k + 1 + offset, line, False))
             k = j
         if 'blank_lines' in rules:
@@ -548,24 +563,44 @@ class _Body:
         self.lines = [text for _, text, _ in entries]
 
     def _paragraph(
-        self, lines: List[str], flavor: str, own: re.Pattern[str], foreign: re.Pattern[str], rules: Sequence[str]
+        self,
+        doc: _Document,
+        first: int,
+        end: int,
+        flavor: str,
+        own: re.Pattern[str],
+        foreign: re.Pattern[str],
+        rules: Sequence[str],
     ) -> List[str]:
-        text = '\n'.join(lines)
+        text = doc.text(first, end)
+        offsets = [0]  # character offset of each line in `text`, plus len(text) + 1
+        for line in doc.lines[first:end]:
+            offsets.append(offsets[-1] + len(line) + 1)
+        indented = [i - first for i in range(first, end) if doc.kinds[i] == 'indented']
+        for i in indented:
+            self.markers_in_code += len(ANY_MARKER.findall(doc.lines[first + i]))
+        # One set of protected spans serves every rule. An indented line is protected with the line break before it.
+        protected = _merge_spans(_protected_spans(text) + [(offsets[i] - 1, offsets[i + 1] - 1) for i in indented])
         pieces, position = [], 0
-        for start, end in _protected_spans(text) + [(len(text), len(text))]:
+        for start, stop in protected + [(len(text), len(text))]:
             pieces.append(self._inline(text[position:start], flavor, own, foreign, rules))
-            pieces.append(text[start:end])
-            position = end
+            pieces.append(text[start:stop])
+            position = stop
         out = ''.join(pieces).split('\n')
         if 'table_separator_rows' in rules:
-            t = 0
-            while t + 1 < len(out):
+            starts = [start for start, _ in protected]
+            for t in range(len(out) - 1):
+                # A delimiter row counts only if the line break before its header row, the line break before
+                # the row itself and the row are all unprotected: a code span may not run into or across them.
+                if t and _overlaps(protected, starts, offsets[t] - 1, offsets[t]):
+                    continue
+                if _overlaps(protected, starts, offsets[t + 1] - 1, offsets[t + 2] - 1):
+                    continue
                 canonical = _delimiter_row(out[t + 1], out[t])
                 if canonical is not None:
                     self.counts['table_separator_rows'] += 1
                     out[t + 1] = canonical
                     break  # the rest of this block is the table's data rows
-                t += 1
         return out
 
     def _inline(
@@ -676,7 +711,7 @@ def _request_id_occurrences(
     needle = request_id.encode('utf-8')
 
     def count(doc: _Document, first: int, end: int) -> int:
-        return doc.raw[doc.starts[first] : doc.starts[end]].count(needle)
+        return doc.segment_bytes(first, end).count(needle)
 
     q_line = ml['question_line']
     occurrences = {
@@ -887,7 +922,7 @@ def compare_exports(
         },
         'results': {
             'raw_documents_equal': p.raw == m.raw,
-            'raw_bodies_equal': p.text(*pl['body']) == m.text(*ml['body']),
+            'raw_bodies_equal': p.segment_bytes(*pl['body']) == m.segment_bytes(*ml['body']),
             'normalized_bodies_equal': difference_count == 0,
             'body_difference_count': difference_count,
             'body_differences': differences,
