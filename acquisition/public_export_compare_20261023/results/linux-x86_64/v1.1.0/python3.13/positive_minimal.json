@@ -1,0 +1,237 @@
+{
+  "schema": "export-compare/1",
+  "tool": {
+    "name": "export_compare",
+    "version": "1.1.0"
+  },
+  "inputs": {
+    "plain": {
+      "sha256": "15f59b2bfd23b9b3b67ee3cb623f8bc15dcf30f60b82ff4230bb733eb1ff8395",
+      "bytes": 230,
+      "lines": 5,
+      "final_newline": true
+    },
+    "markdown": {
+      "sha256": "eca03732f072d5ccea82bacae5a55a8a9528bd8754308888ddbfb7b1c9b4345f",
+      "bytes": 185,
+      "lines": 4,
+      "final_newline": true
+    }
+  },
+  "layouts": {
+    "plain": {
+      "layout": "plain-numbered-sources/1",
+      "segments": [
+        {
+          "name": "preamble",
+          "first_line": null,
+          "last_line": null,
+          "byte_start": 0,
+          "byte_end": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "body",
+          "first_line": 1,
+          "last_line": 2,
+          "byte_start": 0,
+          "byte_end": 91,
+          "sha256": "ab2b4cbb757c0bd81e080a85ea56ecbb21dc964418ea838d5ab65e9a8379fa54"
+        },
+        {
+          "name": "sources",
+          "first_line": 3,
+          "last_line": 5,
+          "byte_start": 91,
+          "byte_end": 230,
+          "sha256": "5a5cf4a4dbf1515426a7aa410a67c131237c0a7848dfbc3c2b811e429b78a708",
+          "heading_line": 3
+        }
+      ]
+    },
+    "markdown": {
+      "layout": "markdown-footnote-definitions/1",
+      "logo_url": null,
+      "segments": [
+        {
+          "name": "prelude",
+          "first_line": null,
+          "last_line": null,
+          "byte_start": 0,
+          "byte_end": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "logo_line": null,
+          "question_line": null
+        },
+        {
+          "name": "body",
+          "first_line": 1,
+          "last_line": 2,
+          "byte_start": 0,
+          "byte_end": 93,
+          "sha256": "e7fdd8626514e89443cec34b06e92c2435cdf7fe8ec62db6e259a43b37384412"
+        },
+        {
+          "name": "definitions",
+          "first_line": 3,
+          "last_line": 4,
+          "byte_start": 93,
+          "byte_end": 185,
+          "sha256": "03e3f3e5265276672f59fb97791229af9d68f5b1d67562b171e321385d90b76b"
+        }
+      ]
+    },
+    "boundaries": {
+      "plain_body_start": null,
+      "plain_sources_line": null,
+      "markdown_body_start": null,
+      "markdown_definitions_start": null
+    }
+  },
+  "normalization": {
+    "policy": "export-compare-body-policy/1",
+    "rules_applied": [
+      "citation_markers",
+      "escaped_hash",
+      "table_separator_rows",
+      "blank_lines"
+    ],
+    "rules": {
+      "citation_markers": "outside protected text, \"[N]\" in the plain body and \"[^N]\" not followed by \":\" in the Markdown body (N = 1..9999 without leading zeros, not preceded by a backslash, plain form not followed by \"(\") both become one citation token for N",
+      "escaped_hash": "outside protected text, \"\\#\" in the Markdown body becomes \"#\"",
+      "table_separator_rows": "the delimiter row directly under a table header row (same cell count) becomes \"|---|\" form, keeping alignment colons; header and data rows are not changed",
+      "blank_lines": "outside code, whitespace-only lines are blank; a run of blank lines becomes one empty line and blank lines at the start and end of the body are dropped"
+    },
+    "never_applied_to": [
+      "fenced code blocks (``` or ~~~ fences, fence lines included)",
+      "lines indented by 4 spaces or a tab (treated as code wherever they occur)",
+      "inline code spans (matching backtick runs, also across lines of one paragraph)",
+      "URLs: \"http://\" or \"https://\" up to the next whitespace",
+      "everything outside the two body segments (preamble, question, logo, sources, definitions)"
+    ],
+    "counts": {
+      "plain": {
+        "citation_markers": 2,
+        "escaped_hash": 0,
+        "table_separator_rows": 0,
+        "blank_lines_removed": 1
+      },
+      "markdown": {
+        "citation_markers": 2,
+        "escaped_hash": 0,
+        "table_separator_rows": 0,
+        "blank_lines_removed": 1
+      }
+    },
+    "normalized_body_sha256": {
+      "plain": "1ec89c0010c0f1786e814c9b50f3bffa8d7a0b1a3c97811f509120ea0a43cce6",
+      "markdown": "1ec89c0010c0f1786e814c9b50f3bffa8d7a0b1a3c97811f509120ea0a43cce6"
+    },
+    "normalized_body_lines": {
+      "plain": 1,
+      "markdown": 1
+    }
+  },
+  "results": {
+    "raw_documents_equal": false,
+    "raw_bodies_equal": false,
+    "normalized_bodies_equal": true,
+    "body_difference_count": 0,
+    "body_differences": [],
+    "citations": {
+      "referenced_ids_equal": true,
+      "reference_counts_equal": true,
+      "url_map_equal": true,
+      "url_map": [
+        {
+          "id": 1,
+          "plain_url": "https://example.org/guide/verify?version=1",
+          "markdown_url": "https://example.org/guide/verify?version=1",
+          "equal": true,
+          "plain_references": 1,
+          "markdown_references": 1
+        },
+        {
+          "id": 2,
+          "plain_url": "https://example.org/permissions#read",
+          "markdown_url": "https://example.org/permissions#read",
+          "equal": true,
+          "plain_references": 1,
+          "markdown_references": 1
+        }
+      ],
+      "all_entries_url_map_equal": true,
+      "undefined_references": {
+        "plain": [],
+        "markdown": []
+      },
+      "plain_listed_not_cited": [],
+      "markdown_defined_not_referenced": [],
+      "plain_sources": [
+        {
+          "id": 1,
+          "title": "Verification guide",
+          "url": "https://example.org/guide/verify?version=1",
+          "line": 4
+        },
+        {
+          "id": 2,
+          "title": "Permission model overview",
+          "url": "https://example.org/permissions#read",
+          "line": 5
+        }
+      ],
+      "markdown_definitions": [
+        {
+          "id": 1,
+          "url": "https://example.org/guide/verify?version=1",
+          "hidden": false,
+          "line": 3
+        },
+        {
+          "id": 2,
+          "url": "https://example.org/permissions#read",
+          "hidden": false,
+          "line": 4
+        }
+      ]
+    },
+    "question": {
+      "plain": {
+        "source": "absent",
+        "preamble_text": null,
+        "supplied_text": null
+      },
+      "markdown": {
+        "source": "absent",
+        "text": null
+      },
+      "supplied_equals_markdown_heading": null
+    },
+    "request_id": null,
+    "semantic_judgment": "NOT_ESTABLISHED",
+    "producer_authenticity": "NOT_ESTABLISHED"
+  },
+  "not_established": [
+    "semantic equivalence",
+    "producer authenticity",
+    "question identity",
+    "truth",
+    "completeness of evidence"
+  ],
+  "warnings": [
+    {
+      "code": "source_titles_only_in_plain",
+      "message": "the plain export gives a title for each source; the Markdown definitions carry URLs only, so titles cannot be compared",
+      "ids": [
+        1,
+        2
+      ]
+    },
+    {
+      "code": "question_absent",
+      "message": "at least one export carries no question; question identity cannot be compared"
+    }
+  ],
+  "notice": "Equal normalized bodies and URL maps are a textual agreement under the stated policy. They do not establish authenticity, that both exports answer the same question, truth, or that the evidence is complete. Source titles exist only in the plain export, and listed or defined entries are not evidence that anything cites them."
+}

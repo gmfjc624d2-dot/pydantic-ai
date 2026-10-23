@@ -9,7 +9,9 @@ and a Markdown export of one research answer and reports these as separate field
 - question presence;
 - request-ID presence.
 
-It is a deterministic textual aid, not a semantic-equivalence judge or a Markdown framework.
+Two layout pairs are recognized: `numbered`, the default, and `bracketed-html` since 1.1.0, which must be
+selected explicitly. It is a deterministic textual aid, not a semantic-equivalence judge or a Markdown
+framework.
 `semantic_judgment` and `producer_authenticity` are always `NOT_ESTABLISHED`, and a clean result claims
 nothing about authenticity, question identity, truth or completeness of evidence. Contract:
 [`CONTRACT.md`](CONTRACT.md).
@@ -23,7 +25,8 @@ nothing about authenticity, question identity, truth or completeness of evidence
 | Base commit | `ed6e9b152beeb3a6a9f1c2f419fda940318ca554`: the tip of the earlier, completed review-cue work, unchanged |
 | Scope | only `acquisition/public_export_compare_20261023/`; earlier acquisitions are not touched |
 | Result commits | 1.0.0: code `4cdf0017b1e10c229e39057b497e80e9606f6cfc`, report and `results/` `4d35b65f82ca9795adbe2df9d58026879836b61c` |
-| | 1.0.1 (correction): code `4ed30a0ed684dfa5e32b9d91ae2f556c1af64498`; this report and `results/linux-x86_64/v1.0.1/` in the commit after it (its ID is given in the hand-off message and by `git log`) |
+| | 1.0.1 (correction): code `4ed30a0ed684dfa5e32b9d91ae2f556c1af64498`, report and `results/linux-x86_64/v1.0.1/` `545c79db5d018351f7ba0d2269a8f139c0fb3ddf` |
+| | 1.1.0 (`bracketed-html` layout): code `1f13d341a9e43c107b161e56aed0deb6dca9c823`; this report and `results/linux-x86_64/v1.1.0/` in the commit after it (its ID is given in the hand-off message and by `git log`) |
 
 **Interruption (2026-10-23).** The first read-only environment listing of this operation kept showing as
 running in the requester's view and was stopped by the requester. That listing was `ls`, `python3 -VV`,
@@ -69,7 +72,8 @@ third defect of the same kind was found here while reproducing the first.
 
 No field, rule text, policy ID or rejection changed. Legitimate tables still normalize, including tables
 with a code span inside a header cell or after a closed span. The 38 recorded 1.0.0 runs give byte-identical
-stdout apart from the version (`tests/check_1_0_0_outputs.py`).
+stdout apart from the version (`tests/check_1_0_0_outputs.py` at `4ed30a0`; `tests/check_recorded_outputs.py` since
+1.1.0).
 
 **Which 1.0.0 statements were wrong.**
 - Two statements were wrong in general, though not for any of the 38 recorded runs:
@@ -85,6 +89,58 @@ stdout apart from the version (`tests/check_1_0_0_outputs.py`).
 
 **Not shown by this repair.** It does not show that any other export layout is supported, nor that the
 narrow layouts fit a given consumer. That remains a separate question.
+
+## Layout extension `bracketed-html` (1.1.0)
+
+**Why it exists.** The requester's consumer receives one export shape that the default recognizer
+rejects, correctly. That rejection was not a bug. 1.1.0 adds that shape as one more layout pair, selected
+only with `layout='bracketed-html'` (`--layout bracketed-html`). The synthetic sample is
+`fixtures/bracketed_html_*`, and the contract is the "Layout pair `bracketed-html`" section of
+[`CONTRACT.md`](CONTRACT.md).
+
+**Contract delta, in short.**
+- **Plain export:** `[N] title URL` sources after `Sources`.
+- **Markdown export,** in this order:
+  - the exact `<img … style="height:64px;margin-right:32px"/>` logo line;
+  - a `# `-framed question, possibly several paragraphs, which must equal the supplied complete question
+    byte for byte, final `\n` included;
+  - the body, starting at an explicit `markdown_body_start`;
+  - a `display:none` span that holds footnote markers only;
+  - the exact `⁂` ornament line;
+  - the footnote definitions.
+- **Segments and separators.** Every line outside the bodies is a named segment with its own hash. Every
+  separator is required and is exactly one empty line, except at most one optional empty line between two
+  definitions.
+- **What is rejected:**
+  - mismatches, swallowed answer text and a cut question (each with its own code);
+  - repeated or whitespace-only separators;
+  - any other logo, span or ornament form;
+  - text inside the span;
+  - a span or ornament inside the body.
+- **Hidden markers** are reported separately and are never body citations.
+- **Every listed or defined entry is compared** (`entries_url_map`). Exit 0 in this mode also requires
+  `all_entries_url_map_equal`.
+- **Question and request ID.** Question presence per document is reported apart from the supplied text.
+  Request IDs are counted literally per segment.
+- **Default layout.** Its output is unchanged.
+
+**Where the existing recognizer conflicted, and how it was resolved within this mode, without a new
+abstraction:**
+- **Question file.** The default CLI drops one trailing `\n` from `--question-file`. This mode needs the
+  question's exact bytes, final `\n` included, so here the file is used as it is.
+- **Question field.** The default `results.question.plain.source` says `supplied` when only the caller
+  supplied a question. This mode reports document presence (`region`, `literal_occurrences`) separately from
+  `supplied`, so its `results.question` has its own shape. Consumers tell the pairs apart by
+  `layouts.*.layout`.
+- **Exit status.** The default exit status covers only cited ids. Here the hidden span refers to uncited
+  entries, so a changed uncited URL also gives exit 1.
+
+The rest reuses the repaired 1.0.1 comparator unchanged: segments, body comparison, protection and policy.
+Two parallel recognizer functions were added beside the default ones. A wider parser was not needed.
+
+**Not established.** Consumer adoption is not established, and macOS is not qualified. The mode accepts the
+given shape and rejects every variation tested. That does not show that the consumer's real exports always
+take this shape.
 
 ## Design
 
@@ -145,12 +201,12 @@ This tool reports each of these as a difference.
 | `export_compare.py` | the module and CLI (the only runtime file) |
 | `LICENSE` | MIT, copied from the repository root |
 | `CONTRACT.md` | interfaces, layouts, policy, result fields, limits, rejection codes |
-| `fixtures/` | synthetic example.org pairs: `full_*` (logo, question with request ID, table, code with literal markers, escaped `#`, hidden definitions), `minimal_*`, `id_in_body_*` (`public-example-1` in the copied body without a question); `cases.py` (35 single-edit adversarial cases, 9 exact-byte `REGRESSIONS` pairs added in 1.0.1, and `describe()`) |
-| `tests/test_export_compare.py` | unit tests, including CLI subprocesses, the rejected design and the 1.0.1 `Corrections` |
-| `tests/mutation_check.py` | each of 8 broken variants (3 of them the 1.0.0 behaviours) must fail the tests; lists the failing tests |
+| `fixtures/` | synthetic example.org pairs: `full_*` (logo, question with request ID, table, code with literal markers, escaped `#`, hidden definitions), `minimal_*`, `id_in_body_*` (`public-example-1` in the copied body without a question), `bracketed_html_*` (the requester's 1.1.0 sample: plain, Markdown and complete question, byte for byte); `cases.py` (35 single-edit default cases, 22 `FRAMED_CASES` for `bracketed-html`, 9 exact-byte `REGRESSIONS` pairs from 1.0.1, `write_cli_inputs()` and `describe()`) |
+| `tests/test_export_compare.py` | unit tests, including CLI subprocesses, the rejected design, the 1.0.1 `Corrections` and `BracketedHtmlLayout` |
+| `tests/mutation_check.py` | each of 12 broken variants must fail the tests (3 restore 1.0.0 behaviours, 4 loosen `bracketed-html`); lists the failing tests |
 | `tests/run_cases.py` | runs every pair, case and regression pair through the real CLI, and times worst-case shapes |
-| `tests/check_1_0_0_outputs.py` | checks that the module reproduces the recorded 1.0.0 outputs apart from the version |
-| `results/linux-x86_64/` | 1.0.0 raw outputs and `RUN.md`; `v1.0.1/` with the 1.0.0 failures and the 1.0.1 results (Linux only) |
+| `tests/check_recorded_outputs.py` | checks that the module reproduces a recorded run set (1.0.0 or 1.0.1) apart from the version; it replaces 1.0.1's `check_1_0_0_outputs.py` |
+| `results/linux-x86_64/` | 1.0.0 raw outputs and `RUN.md`; `v1.0.1/` (the 1.0.0 failures and the 1.0.1 results); `v1.1.0/` (Linux only) |
 
 ## Commands
 
@@ -162,6 +218,9 @@ python3 tests/mutation_check.py
 python3 tests/run_cases.py "$(mktemp -d)"
 python3 export_compare.py --plain fixtures/full_plain.txt --markdown fixtures/full_markdown.md \
   --question-file fixtures/full_question.txt --request-id req-20261023-0001
+python3 export_compare.py --layout bracketed-html --plain fixtures/bracketed_html_plain.txt \
+  --markdown fixtures/bracketed_html_markdown.md --question-file fixtures/bracketed_html_question.txt \
+  --markdown-body-start 7 --request-id public-layout-2
 ```
 
 **Fresh directory, required files only, existing Python, no checkout on the path:**
@@ -179,6 +238,77 @@ python3 -I -c 'import json; r = json.load(open("result.json"))["results"]; print
 ```
 
 Expected: `exit 0`, then `True True NOT_ESTABLISHED NOT_ESTABLISHED`.
+
+**Isolated `bracketed-html` check** (fresh directory, only `export_compare.py` and `LICENSE`; it writes the
+requester's three synthetic files byte for byte, with no checkout on the path):
+
+```bash
+SRC=acquisition/public_export_compare_20261023          # in a checkout of the 1.1.0 code commit
+DEST="$(mktemp -d)"
+cp "$SRC/export_compare.py" "$SRC/LICENSE" "$DEST/" && cd "$DEST" || exit 1
+python3 -I - <<'PY'
+import hashlib
+from pathlib import Path
+files = {
+    'question.txt': b'Public source comparison. ID: public-layout-2.\n\nCompare the exports; do not infer semantic sufficiency.\n',
+    'plain.txt': b'ID: `public-layout-2`.\n\nThe value is not guaranteed.[1]\n\n| Item | Value |\n| --- | --- |\n| A | 2 |\n\n'
+    b'Sources\n[1] Guide https://example.org/a\n[2] Extra https://example.org/b\n',
+    'markdown.md': '<img src="https://example.org/logo.png" style="height:64px;margin-right:32px"/>\n\n'
+    '# Public source comparison. ID: public-layout-2.\n\nCompare the exports; do not infer semantic sufficiency.\n\n'
+    'ID: `public-layout-2`.\n\nThe value is not guaranteed.[^1]\n\n| Item | Value |\n|---|---|\n| A | 2 |\n\n'
+    '<span style="display:none">[^2]</span>\n\n<div align="center">⁂</div>\n\n'
+    '[^1]: https://example.org/a\n\n[^2]: https://example.org/b\n'.encode('utf-8'),
+}
+for name, data in files.items():
+    Path(name).write_bytes(data)
+    print(name, hashlib.sha256(data).hexdigest()[:12])
+PY
+ls
+ARGS="--layout bracketed-html --plain plain.txt --markdown markdown.md --question-file question.txt --request-id public-layout-2"
+python3 -I export_compare.py $ARGS --markdown-body-start 7 > result.json; echo "exit $?"
+python3 -I -c 'import json; r = json.load(open("result.json")); x = r["results"]; c = x["citations"]; o = x["request_id"]["occurrences"]; print(r["tool"]["version"], x["raw_bodies_equal"], x["normalized_bodies_equal"], [e["id"] for e in c["url_map"]], [e["id"] for e in c["entries_url_map"]], c["hidden_markers"]["ids"], o["plain_body"], o["markdown_question"], o["markdown_body"], o["markdown_document"], x["semantic_judgment"], x["producer_authenticity"])'
+python3 -I export_compare.py $ARGS --markdown-body-start 9 > rejected.json; echo "exit $? $(python3 -I -c 'import json; print(json.load(open("rejected.json"))["error"]["code"])')"
+```
+
+Expected output:
+- the hashes `5e87f555f327`, `fe9fc4f85122` and `c8735a8afe2f`;
+- `exit 0`, then `1.1.0 False True [1] [1, 2] [2] 1 1 1 2 NOT_ESTABLISHED NOT_ESTABLISHED`;
+- `exit 2 boundary_swallows_answer`.
+
+The `1.1.0 …` line gives, in order:
+- the version;
+- raw, then normalized, body equality;
+- the cited ids, then all entry ids, then the hidden-marker ids;
+- request-ID counts in the plain body, the Markdown question, the Markdown body and the whole Markdown
+  document;
+- the semantic judgment and the producer authenticity.
+
+## Results 1.1.0 (Linux x86_64 only; clean worktree of `1f13d34`)
+
+Full record: [`results/linux-x86_64/v1.1.0/RUN.md`](results/linux-x86_64/v1.1.0/RUN.md).
+- **Tests:** on CPython 3.9.25 and 3.13.16, 24 / 24 tests pass and 12 / 12 mutations are rejected.
+- **CLI:** all 70 runs gave their expected exit status with empty stderr (0: 11, 1: 26, 2: 33). Their
+  stdout was byte-identical between the two interpreters. The runs are 4 positive pairs, 35 default cases,
+  22 `bracketed-html` cases and 9 regression pairs.
+- **Default layout unchanged:** all 38 recorded 1.0.0 runs and all 47 recorded 1.0.1 runs are reproduced
+  byte for byte, apart from the version.
+- **Isolated `bracketed-html` check:** the output above, on both interpreters.
+
+What a reader sees for the sample pair (`results/linux-x86_64/v1.1.0/python3.13/cases.md`):
+
+```
+raw documents equal: False; normalized bodies equal: True; cited URL map equal: True; all entries equal: True; semantic judgment: NOT_ESTABLISHED
+hidden markers, not citations: [2]
+question: Markdown lines 3-5 equal "# " + the supplied question; plain export: no question region
+request ID 'public-layout-2': plain body 1, Markdown question 1, Markdown body 1, supplied question 1
+warning source_titles_only_in_plain
+warning uncited_entries
+warning hidden_markers_not_citations
+warning question_absent
+```
+
+`framed_uncited_entry_url_changed` gives exit 1 with
+`[2] listed entry URL differs at character 20: 'b' -> 'c' (not cited; hidden marker)`.
 
 ## Results 1.0.1 (Linux x86_64 only; clean worktree of `4ed30a0`)
 
@@ -238,20 +368,33 @@ git rev-parse HEAD && python3 -VV && python3 -m unittest discover -s tests -v &&
   && OUT="$(mktemp -d)" && python3 tests/run_cases.py "$OUT" && echo "outputs in $OUT"
 ```
 
-Then run `python3 tests/check_1_0_0_outputs.py` and the fresh-directory commands above.
+Then run `python3 tests/check_recorded_outputs.py results/linux-x86_64 1.0.0`,
+`python3 tests/check_recorded_outputs.py results/linux-x86_64/v1.0.1 1.0.1`, and both fresh-directory commands
+above (the default one and the isolated `bracketed-html` check).
 
-Expected for 1.0.1:
-- 21 tests OK, 8 mutations rejected, and `47 CLI runs; unexpected exit status or stderr output: []`;
-- `identical apart from the version: 38`;
-- the `stdout_sha256` values in `$OUT/cases.jsonl` match `results/linux-x86_64/v1.0.1/python3.*/cases.jsonl`.
+Expected for 1.1.0:
+- 24 tests OK, 12 mutations rejected, and `70 CLI runs; unexpected exit status or stderr output: []`;
+- `identical apart from the version: 38` and `: 47`;
+- the `stdout_sha256` values in `$OUT/cases.jsonl` match `results/linux-x86_64/v1.1.0/python3.*/cases.jsonl`;
+- the isolated check prints what is listed above.
+
+The requester's focal macOS observations (C1 and C2 on 1.0.0) are not a qualification of 1.0.1 or 1.1.0.
 
 Apple's `/usr/bin/python3` is 3.9.x; any CPython ≥ 3.9 works. Timings will differ.
 
 ## Residual limits
 
-- **Two layouts only.**
-  - A plain copy that renders tables as tab-separated text, drops code fences, or uses
-    `[1] Title - URL` or `Sources:` is rejected or differs; it is never accepted by guessing.
+- **Two layout pairs only.**
+  - A plain copy that renders tables as tab-separated text, drops code fences, or uses `Sources:` is
+    rejected or differs; it is never accepted by guessing.
+  - `[N] title URL` entries are accepted only with `bracketed-html`. That mode's title is everything
+    before the URL, so `[1] Title - URL` has the title `Title -`.
+  - `bracketed-html` takes one fixed shape: one logo style, one ornament, one hidden span, and single empty
+    separators. Real exports that vary are rejected; this needs a contract change, not a looser rule.
+  - In `bracketed-html`, a `display:none` opener anywhere on a body text line is rejected, even inside
+    inline code (over-rejection).
+  - The question's `literal_occurrences` counts the whole question's bytes in each whole document; it
+    proves nothing about where or why they occur.
   - A Markdown answer that itself starts with a `# ` heading is read as having that heading as its
     question, so the comparison reports it as a body difference. Pass `--markdown-body-start 1` to include
     it in the body.
