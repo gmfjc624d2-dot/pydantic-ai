@@ -1,0 +1,1 @@
+Which conditions apply before running the export check?
