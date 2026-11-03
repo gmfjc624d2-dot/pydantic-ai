@@ -1,0 +1,57 @@
+unmutated copy: exit 0, failing []
+CRLF split across two chunks read as two line ends: 6 failing test(s) -> rejected
+    KnownCases.test_each_case_at_every_chunk_size
+    Differential.test_every_prefix_extent
+    Differential.test_every_short_string_at_every_split
+    Snapshot.test_in_place_rewrite_inside_the_extent_is_not_detected_by_reading
+    Differential.test_random_documents_fixed_seed
+    KnownCases.test_raw_terminators_are_kept
+CR position not rescanned after a CRLF: 6 failing test(s) -> rejected
+    KnownCases.test_each_case_at_every_chunk_size
+    Differential.test_every_prefix_extent
+    Differential.test_every_short_string_at_every_split
+    Differential.test_random_documents_fixed_seed
+    KnownCases.test_raw_terminators_are_kept
+    Failures.test_short_reads_are_completed
+phantom empty line after a final line end: 11 failing test(s) -> rejected
+    EarlyStop.test_bytes_read_stay_near_the_lines_consumed
+    KnownCases.test_each_case_at_every_chunk_size
+    Differential.test_every_prefix_extent
+    Differential.test_every_short_string_at_every_split
+    TextLines.test_generator_closes_the_file
+    Snapshot.test_in_place_rewrite_inside_the_extent_is_not_detected_by_reading
+    Failures.test_invalid_arguments_and_files
+    Failures.test_line_limit_fails_before_reading_the_whole_line
+    Snapshot.test_path_replacement_keeps_reading_the_opened_file
+    Differential.test_random_documents_fixed_seed
+    EarlyStop.test_streak_scan_stops_at_the_first_break
+initial empty line dropped: 3 failing test(s) -> rejected
+    KnownCases.test_each_case_at_every_chunk_size
+    Differential.test_every_short_string_at_every_split
+    Differential.test_random_documents_fixed_seed
+line start offset one byte early: 4 failing test(s) -> rejected
+    KnownCases.test_each_case_at_every_chunk_size
+    Differential.test_every_short_string_at_every_split
+    Differential.test_random_documents_fixed_seed
+    KnownCases.test_raw_terminators_are_kept
+invalid UTF-8 dropped instead of replaced: 5 failing test(s) -> rejected
+    KnownCases.test_each_case_at_every_chunk_size
+    Differential.test_every_prefix_extent
+    Differential.test_every_short_string_at_every_split
+    Differential.test_random_documents_fixed_seed
+    Json.test_report_keeps_every_line_and_raise_stops
+terminator kept raw instead of normalized: 6 failing test(s) -> rejected
+    KnownCases.test_each_case_at_every_chunk_size
+    Differential.test_every_prefix_extent
+    Differential.test_every_short_string_at_every_split
+    Differential.test_random_documents_fixed_seed
+    KnownCases.test_raw_terminators_are_kept
+    Failures.test_short_reads_are_completed
+short read taken as end of data: 1 failing test(s) -> rejected
+    Failures.test_truncation_while_reading_is_an_error_not_a_short_result
+explicit end ignored: 1 failing test(s) -> rejected
+    Differential.test_every_prefix_extent
+max_line_bytes ignored: 1 failing test(s) -> rejected
+    Failures.test_line_limit_fails_before_reading_the_whole_line
+malformed JSON silently skipped under report: 1 failing test(s) -> rejected
+    Json.test_report_keeps_every_line_and_raise_stops

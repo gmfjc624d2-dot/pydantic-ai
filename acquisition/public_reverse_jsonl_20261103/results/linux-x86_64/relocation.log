@@ -1,0 +1,25 @@
+# Linux rehearsal of the README macOS commands (copied independent directory), commit 5756e959cb03ab9a7681c18ef3aa180f364f1b76, 2026-11-03T05:36:27Z
+# python3 here is CPython 3.9.25 via PATH; the bench and candidate steps were run separately and are in python3.*/
+Python 3.9.25 (main, Oct 31 2025, 23:00:23) 
+[Clang 21.1.4 ]
+6ee5107635c4f5a511f75e8753affb7ed7ea01e7fd260732e02acf727ac7e858  reverse_lines.py
+LICENSE
+bench
+evaluation
+reverse_lines.py
+tests
+Ran 18 tests in 1.739s
+
+OK
+unmutated copy: exit 0, failing []
+CRLF split across two chunks read as two line ends: 6 failing test(s) -> rejected
+CR position not rescanned after a CRLF: 6 failing test(s) -> rejected
+phantom empty line after a final line end: 11 failing test(s) -> rejected
+initial empty line dropped: 3 failing test(s) -> rejected
+line start offset one byte early: 4 failing test(s) -> rejected
+invalid UTF-8 dropped instead of replaced: 5 failing test(s) -> rejected
+terminator kept raw instead of normalized: 6 failing test(s) -> rejected
+short read taken as end of data: 1 failing test(s) -> rejected
+explicit end ignored: 1 failing test(s) -> rejected
+max_line_bytes ignored: 1 failing test(s) -> rejected
+malformed JSON silently skipped under report: 1 failing test(s) -> rejected

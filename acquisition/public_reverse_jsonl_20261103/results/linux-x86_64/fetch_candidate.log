@@ -1,0 +1,4 @@
+<scratch>/wt/acquisition/public_reverse_jsonl_20261103/evaluation/fetch_candidate.py:45: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.
+  archive.extractall(dest, members=members)  # noqa: S202 (members checked above)
+https://files.pythonhosted.org/packages/5e/53/804f4321dd72e2953c6d5875e9d07d79415a1f8055d5197b92d6d97da19a/file_read_backwards-3.2.0.tar.gz
+sha256 5478d305ebaeaae8fe3c6585a24dfc3262170224450acc9321398f0d26cdd109 verified; unpacked 43 members into <scratch>/frb_run/file_read_backwards-3.2.0

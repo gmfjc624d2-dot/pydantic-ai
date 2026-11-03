@@ -87,8 +87,9 @@ what it means.
   `bytes_read ≤ (extent − a) + chunk_size + 1`, which is tested at chunk sizes 1, 16 and 4096. Stopping
   iteration stops reading.
 - **Time.** A full pass is linear in the extent. Each chunk is searched once for CR and once for LF, and each
-  line's pieces are joined once. Measured on this host: 3.5–6.5 s for 8 MiB of nothing but line ends, about
-  0.8 µs per line. That is pure-Python per-line overhead; forward text mode is faster per line.
+  line's pieces are joined once. Measured on this host (CPython 3.9.25 and 3.13.16): 3.8–9.5 s for 8 MiB of
+  nothing but line ends, about 1 µs per line. That is pure-Python per-line overhead; forward text mode is
+  faster per line.
 - **Memory.** Memory is O(`chunk_size` + the current line), **not constant**.
   - A line is held whole: its pieces, then the joined bytes, and the decoded `str` if `text()` is called.
   - Measured on this host: a 16 MiB line peaked at 33.7 MB of Python allocations.

@@ -1,0 +1,26 @@
+test_every_prefix_extent (test_reverse_lines.Differential.test_every_prefix_extent)
+end=k reads exactly the first k bytes, as if the file had not yet grown past k. ... ok
+test_every_short_string_at_every_split (test_reverse_lines.Differential.test_every_short_string_at_every_split)
+All 1,555 strings of up to 4 bytes over CR, LF, 'a' and the bytes of the euro sign E2 82 AC. ... ok
+test_random_documents_fixed_seed (test_reverse_lines.Differential.test_random_documents_fixed_seed)
+2,000 random documents mixing line ends, valid and invalid UTF-8 and non-delimiting separators. ... ok
+test_bytes_read_stay_near_the_lines_consumed (test_reverse_lines.EarlyStop.test_bytes_read_stay_near_the_lines_consumed) ... ok
+test_streak_scan_stops_at_the_first_break (test_reverse_lines.EarlyStop.test_streak_scan_stops_at_the_first_break) ... ok
+test_invalid_arguments_and_files (test_reverse_lines.Failures.test_invalid_arguments_and_files) ... ok
+test_line_limit_fails_before_reading_the_whole_line (test_reverse_lines.Failures.test_line_limit_fails_before_reading_the_whole_line) ... ok
+test_read_errors_propagate (test_reverse_lines.Failures.test_read_errors_propagate) ... ok
+test_short_reads_are_completed (test_reverse_lines.Failures.test_short_reads_are_completed) ... ok
+test_truncation_while_reading_is_an_error_not_a_short_result (test_reverse_lines.Failures.test_truncation_while_reading_is_an_error_not_a_short_result) ... ok
+test_policy_must_be_chosen (test_reverse_lines.Json.test_policy_must_be_chosen) ... ok
+test_report_keeps_every_line_and_raise_stops (test_reverse_lines.Json.test_report_keeps_every_line_and_raise_stops) ... ok
+test_each_case_at_every_chunk_size (test_reverse_lines.KnownCases.test_each_case_at_every_chunk_size) ... ok
+test_raw_terminators_are_kept (test_reverse_lines.KnownCases.test_raw_terminators_are_kept) ... ok
+test_appends_after_opening_are_not_seen_but_are_reported (test_reverse_lines.Snapshot.test_appends_after_opening_are_not_seen_but_are_reported) ... ok
+test_in_place_rewrite_inside_the_extent_is_not_detected_by_reading (test_reverse_lines.Snapshot.test_in_place_rewrite_inside_the_extent_is_not_detected_by_reading) ... ok
+test_path_replacement_keeps_reading_the_opened_file (test_reverse_lines.Snapshot.test_path_replacement_keeps_reading_the_opened_file) ... ok
+test_generator_closes_the_file (test_reverse_lines.TextLines.test_generator_closes_the_file) ... ok
+
+----------------------------------------------------------------------
+Ran 18 tests in 1.880s
+
+OK

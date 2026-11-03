@@ -1,0 +1,139 @@
+{
+ "python": "3.9.25",
+ "platform": "Linux-6.18.44-fc-v230-x86_64-with-glibc2.39",
+ "candidate": {
+  "package_dir": "file_read_backwards-3.2.0",
+  "module_sha256": {
+   "__init__.py": "8aa2cd7182dbc683f9879550715f4dc00226142ea874e0d7411155ceb7386c40",
+   "buffer_work_space.py": "b1c7fc74636e5232be198b33407a58b3c7b33d10e839248b969e898460d2d2ab",
+   "file_read_backwards.py": "1a2f8feaf3535ad951f49ff6a343a7584b039197636897101a4c6cb6f2080af0"
+  }
+ },
+ "differential_contents": {
+  "outcomes": {
+   "valid_utf8": {
+    "equal": 1345
+   },
+   "invalid_utf8": {
+    "raised UnicodeDecodeError": 16430
+   }
+  },
+  "first_example_of_each_non_equal_outcome": {
+   "raised UnicodeDecodeError": {
+    "data": "b'\\xe2'",
+    "chunk_size": 1
+   }
+  }
+ },
+ "terminator_information": {
+  "b'a'": {
+   "file_read_backwards": [
+    "a"
+   ],
+   "reverse_lines_content_and_terminator": [
+    [
+     "a",
+     ""
+    ]
+   ]
+  },
+  "b'a\\n'": {
+   "file_read_backwards": [
+    "a"
+   ],
+   "reverse_lines_content_and_terminator": [
+    [
+     "a",
+     "\n"
+    ]
+   ]
+  },
+  "b'a\\r\\n'": {
+   "file_read_backwards": [
+    "a"
+   ],
+   "reverse_lines_content_and_terminator": [
+    [
+     "a",
+     "\r\n"
+    ]
+   ]
+  },
+  "b'a\\r'": {
+   "file_read_backwards": [
+    "a"
+   ],
+   "reverse_lines_content_and_terminator": [
+    [
+     "a",
+     "\r"
+    ]
+   ]
+  }
+ },
+ "long_lines": [
+  {
+   "line_bytes": 262144,
+   "chunk_size": 8192,
+   "same_contents": true,
+   "file_read_backwards_seconds": 0.0044,
+   "reverse_lines_seconds": 0.0003
+  },
+  {
+   "line_bytes": 524288,
+   "chunk_size": 8192,
+   "same_contents": true,
+   "file_read_backwards_seconds": 0.0159,
+   "reverse_lines_seconds": 0.0007
+  },
+  {
+   "line_bytes": 1048576,
+   "chunk_size": 8192,
+   "same_contents": true,
+   "file_read_backwards_seconds": 0.088,
+   "reverse_lines_seconds": 0.0013
+  },
+  {
+   "line_bytes": 2097152,
+   "chunk_size": 8192,
+   "same_contents": true,
+   "file_read_backwards_seconds": 0.3275,
+   "reverse_lines_seconds": 0.0029
+  },
+  {
+   "line_bytes": 4194304,
+   "chunk_size": 8192,
+   "same_contents": true,
+   "file_read_backwards_seconds": 1.1545,
+   "reverse_lines_seconds": 0.0055
+  }
+ ],
+ "truncation_during_iteration": {
+  "file_read_backwards": {
+   "lines_returned": 17,
+   "last_lines": [
+    "line 0002",
+    "line 0001",
+    "line 0000"
+   ],
+   "error": null
+  },
+  "reverse_lines": {
+   "lines_returned": 6,
+   "last_lines": [
+    "line 0996\n",
+    "line 0995\n",
+    "line 0994\n"
+   ],
+   "error": "ExtentChangedError: <path>: expected bytes 9872-9936 of the 10000-byte extent, but the file ended at byte 9872; it was truncated or replaced in place while being read"
+  },
+  "lines_in_original_file": 1000
+ },
+ "os_read_bytes_for_early_stop": {
+  "file_bytes": 3088890,
+  "file_read_backwards_10_lines_rchar": 8316,
+  "reverse_lines_10_lines_rchar": 8316,
+  "reverse_lines_bytes_read_counter": 8192,
+  "same_lines": true
+ }
+}
